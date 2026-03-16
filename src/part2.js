@@ -836,7 +836,8 @@ async function main() {
   fs.mkdirSync("output", { recursive: true });
 
   const pres    = new pptxgen();
-  pres.layout   = "LAYOUT_WIDE";
+  pres.defineLayout({ name: "WIDESCREEN", width: 10, height: 5.5 });
+  pres.layout = "WIDESCREEN";
 
   buildSlide13(pres);
   buildSlide14(pres);

@@ -848,7 +848,8 @@ function buildSlide12(pres) {
 // ─────────────────────────────────────────────────────────────────────────────
 async function main() {
   const pres = new pptxgen();
-  pres.layout = "LAYOUT_WIDE";   // 10" × 5.5"
+  pres.defineLayout({ name: "WIDESCREEN", width: 10, height: 5.5 });
+  pres.layout = "WIDESCREEN";   // 10" × 5.5"
 
   buildSlide1(pres);
   buildSlide2(pres);

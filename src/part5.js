@@ -921,7 +921,8 @@ function slide42(pres) {
 async function main() {
   fs.mkdirSync("output", { recursive: true });
   const pres = new pptxgen();
-  pres.layout = "LAYOUT_WIDE";
+  pres.defineLayout({ name: "WIDESCREEN", width: 10, height: 5.5 });
+  pres.layout = "WIDESCREEN";
   for (const fn of [slide35, slide36, slide37, slide38, slide39, slide40, slide41, slide42]) {
     await fn(pres);
   }

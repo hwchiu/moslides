@@ -15,6 +15,10 @@ const PARTS = [
   "src/part4.js",
   "src/part5.js",
   "src/part6.js",
+  "src/part7_metrics.js",
+  "src/part8_logs.js",
+  "src/part9_tracing.js",
+  "src/part10_sre.js",
 ];
 
 const OUTPUT_DIR = "output";
@@ -47,6 +51,10 @@ async function main() {
     "output/part4.pptx",
     "output/part5.pptx",
     "output/part6.pptx",
+    "output/part7_metrics.pptx",
+    "output/part8_logs.pptx",
+    "output/part9_tracing.pptx",
+    "output/part10_sre.pptx",
   ];
 
   const pythonScript = `
