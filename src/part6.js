@@ -228,7 +228,7 @@ function slide44(pres) {
 
   // ── Arrows between columns ────────────────────────────────────────────────
   slide.addShape(pres.ShapeType.line, {
-    x: 3.35, y: 1.45, w: 0.18, h: 0,
+    x: 3.35, y: 1.45, w: 0.18, h: 0.01,
     line: { color: COLORS.textMuted, width: 1.5, endArrowType: "arrow" },
   });
   slide.addText("measured by", {
@@ -237,7 +237,7 @@ function slide44(pres) {
   });
 
   slide.addShape(pres.ShapeType.line, {
-    x: 6.6, y: 1.45, w: 0.18, h: 0,
+    x: 6.6, y: 1.45, w: 0.18, h: 0.01,
     line: { color: COLORS.textMuted, width: 1.5, endArrowType: "arrow" },
   });
   slide.addText("defines", {
@@ -344,7 +344,7 @@ function slide45(pres) {
 
   // Budget Limit line at 100%
   slide.addShape(pres.ShapeType.line, {
-    x: chartX, y: 1.08, w: 4.45, h: 0,
+    x: chartX, y: 1.08, w: 4.45, h: 0.01,
     line: { color: COLORS.danger, width: 1.0, dashType: "dash" },
   });
   slide.addText("Budget Limit (100%)", {
@@ -411,7 +411,7 @@ function slide46(pres) {
 
   // Scrape arrow
   slide.addShape(pres.ShapeType.line, {
-    x: 2.3, y: 1.35 + 0.15, w: 0.5, h: 0,
+    x: 2.3, y: 1.35 + 0.15, w: 0.5, h: 0.01,
     line: { color: COLORS.success, width: 1.5, endArrowType: "arrow" },
   });
   slide.addText("scrape\n15s", {
@@ -429,7 +429,7 @@ function slide46(pres) {
 
   // Grafana arrow
   slide.addShape(pres.ShapeType.line, {
-    x: 4.6, y: 1.32 + 0.15, w: 0.45, h: 0,
+    x: 4.6, y: 1.32 + 0.15, w: 0.45, h: 0.01,
     line: { color: COLORS.accent, width: 1.5, endArrowType: "arrow" },
   });
 
@@ -453,7 +453,7 @@ function slide46(pres) {
 
   // AlertManager → notify arrow
   slide.addShape(pres.ShapeType.line, {
-    x: 4.6, y: 2.85 + 0.15, w: 0.5, h: 0,
+    x: 4.6, y: 2.85 + 0.15, w: 0.5, h: 0.01,
     line: { color: COLORS.warning, width: 1.5, endArrowType: "arrow" },
   });
   slide.addText("notify", {
@@ -802,7 +802,7 @@ function slide50(pres) {
   // Connecting arrows between milestone cards
   [1.73, 3.3, 4.87, 6.44, 8.01].forEach((ax) => {
     slide.addShape(pres.ShapeType.line, {
-      x: ax, y: 1.5, w: 0.07, h: 0,
+      x: ax, y: 1.5, w: 0.07, h: 0.01,
       line: { color: COLORS.accent, width: 1.5, endArrowType: "arrow" },
     });
   });

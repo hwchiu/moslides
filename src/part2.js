@@ -196,7 +196,7 @@ function buildSlide14(pres) {
 
   // ── Vertical divider ─────────────────────────────────────────────────────────
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.55, w: 0, h: 4.9,
+    x: 5.0, y: 0.55, w: 0.01, h: 4.9,
     line: { color: COLORS.border, width: 0.5 },
   });
 

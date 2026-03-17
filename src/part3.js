@@ -40,7 +40,7 @@ function slide21(pres) {
 
   // ── Divider ──────────────────────────────────────────────────────────────
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.55, w: 0, h: 4.85,
+    x: 5.0, y: 0.55, w: 0.01, h: 4.85,
     line: { color: COLORS.border, width: 0.75 },
   });
 
@@ -705,7 +705,7 @@ function slide26(pres) {
 
   // ── Divider ──────────────────────────────────────────────────────────────
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.55, w: 0, h: 3.12,
+    x: 5.0, y: 0.55, w: 0.01, h: 3.12,
     line: { color: COLORS.border, width: 0.75 },
   });
 

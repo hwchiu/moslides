@@ -39,7 +39,7 @@ function slide91(pres) {
 
   // Divider
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.58, w: 0, h: 3.62,
+    x: 5.0, y: 0.58, w: 0.01, h: 3.62,
     line: { color: COLORS.border, width: 0.5 },
   });
 
@@ -193,7 +193,7 @@ function slide93(pres) {
 
   // Divider
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.58, w: 0, h: 4.3,
+    x: 5.0, y: 0.58, w: 0.01, h: 4.3,
     line: { color: COLORS.border, width: 0.5 },
   });
 
@@ -446,11 +446,11 @@ function slide95(pres) {
   steps.forEach((s, i) => {
     if (i < steps.length - 1) {
       slide.addShape(pres.ShapeType.line, {
-        x: s[0], y: s[1], w: 0.35, h: 0,
+        x: s[0], y: s[1], w: 0.35, h: 0.01,
         line: { color: COLORS.success, width: 1.5 },
       });
       slide.addShape(pres.ShapeType.line, {
-        x: s[0] + 0.35, y: s[1], w: 0, h: steps[i + 1][1] - s[1],
+        x: s[0] + 0.35, y: s[1], w: 0.01, h: Math.max(Math.abs(steps[i + 1][1] - s[1]), 0.01),
         line: { color: COLORS.success, width: 1.5 },
       });
     }
@@ -486,8 +486,14 @@ function slide95(pres) {
   const wavePoints = [[5.4, 2.38], [5.65, 2.22], [5.9, 2.48], [6.15, 2.18], [6.4, 2.42], [6.65, 2.25], [6.9, 2.52]];
   wavePoints.forEach((pt, i) => {
     if (i < wavePoints.length - 1) {
+      const dx = wavePoints[i + 1][0] - pt[0];
+      const dy = wavePoints[i + 1][1] - pt[1];
+      // Normalize negative dimensions: start from the "earlier" corner
       slide.addShape(pres.ShapeType.line, {
-        x: pt[0], y: pt[1], w: wavePoints[i + 1][0] - pt[0], h: wavePoints[i + 1][1] - pt[1],
+        x: dx < 0 ? pt[0] + dx : pt[0],
+        y: dy < 0 ? pt[1] + dy : pt[1],
+        w: Math.max(Math.abs(dx), 0.01),
+        h: Math.max(Math.abs(dy), 0.01),
         line: { color: COLORS.accent, width: 1.5 },
       });
     }
@@ -561,7 +567,7 @@ function slide96(pres) {
 
   // Vertical divider
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.58, w: 0, h: 4.85,
+    x: 5.0, y: 0.58, w: 0.01, h: 4.85,
     line: { color: COLORS.border, width: 0.5 },
   });
 
@@ -1249,9 +1255,9 @@ function slide104(pres) {
     emoji: "📧", label: "Email\n(P3 only)", borderColor: COLORS.textMuted,
   });
 
-  // Arrows from AlertManager to receivers
+  // Arrows from AlertManager to receivers — normalize to positive dimensions
   slide.addShape(pres.ShapeType.line, {
-    x: 3.3, y: 2.17, w: -0.65, h: 0.35,
+    x: 3.3 - 0.65, y: 2.17, w: 0.65, h: 0.35,
     line: { color: COLORS.danger, width: 1.0, endArrowType: "arrow" },
   });
   slide.addShape(pres.ShapeType.line, {

@@ -79,7 +79,7 @@ function slide35(pres) {
 
   // ── Center wall ───────────────────────────────────────────────────────────
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.55, w: 0, h: 4.62,
+    x: 5.0, y: 0.55, w: 0.01, h: 4.62,
     line: { color: COLORS.danger, width: 3 },
   });
   slide.addText("🧱  THE WALL", {
@@ -91,11 +91,11 @@ function slide35(pres) {
   // Conflict arrows pointing at wall
   [1.3, 2.1, 2.9].forEach(arrowY => {
     slide.addShape(pres.ShapeType.line, {
-      x: 4.5, y: arrowY, w: 0.48, h: 0,
+      x: 4.5, y: arrowY, w: 0.48, h: 0.01,
       line: { color: COLORS.danger, width: 1.5, endArrowType: "arrow" },
     });
     slide.addShape(pres.ShapeType.line, {
-      x: 5.02, y: arrowY, w: 0.48, h: 0,
+      x: 5.02, y: arrowY, w: 0.48, h: 0.01,
       line: { color: COLORS.danger, width: 1.5, beginArrowType: "arrow" },
     });
   });
@@ -198,7 +198,7 @@ function slide36(pres) {
   ];
   arrowDefs.forEach(a => {
     slide.addShape(pres.ShapeType.line, {
-      x: a.x, y: 1.6, w: 0.3, h: 0,
+      x: a.x, y: 1.6, w: 0.3, h: 0.01,
       line: { color: a.color, width: 1.5, endArrowType: "arrow" },
     });
     slide.addText(a.label, {
@@ -330,7 +330,7 @@ function slide37(pres) {
 
   // Arrow right: Git Repo → ArgoCD
   slide.addShape(pres.ShapeType.line, {
-    x: 6.55, y: 2.82, w: 0.55, h: 0,
+    x: 6.55, y: 2.82, w: 0.55, h: 0.01,
     line: { color: COLORS.infra, width: 1.5, endArrowType: "arrow" },
   });
   slide.addText("watch", {
@@ -347,7 +347,7 @@ function slide37(pres) {
 
   // Arrow right: ArgoCD → K8s
   slide.addShape(pres.ShapeType.line, {
-    x: 8.6, y: 2.82, w: 0.45, h: 0,
+    x: 8.6, y: 2.82, w: 0.45, h: 0.01,
     line: { color: COLORS.success, width: 1.5, endArrowType: "arrow" },
   });
   slide.addText("apply", {
@@ -364,15 +364,15 @@ function slide37(pres) {
 
   // Drift detection feedback arc (K8s → ArgoCD) — bottom curved path
   slide.addShape(pres.ShapeType.line, {
-    x: 8.6, y: 3.55, w: 0.9, h: 0,
+    x: 8.6, y: 3.55, w: 0.9, h: 0.01,
     line: { color: COLORS.warning, width: 1.2, dashType: "dash" },
   });
   slide.addShape(pres.ShapeType.line, {
-    x: 7.15, y: 3.28, w: 0, h: 0.27,
+    x: 7.15, y: 3.28, w: 0.01, h: 0.27,
     line: { color: COLORS.warning, width: 1.2, dashType: "dash" },
   });
   slide.addShape(pres.ShapeType.line, {
-    x: 7.15, y: 3.55, w: 1.45, h: 0,
+    x: 7.15, y: 3.55, w: 1.45, h: 0.01,
     line: { color: COLORS.warning, width: 1.2, dashType: "dash", endArrowType: "arrow" },
   });
   slide.addText("drift detect → auto-heal", {
@@ -421,7 +421,7 @@ function slide38(pres) {
 
   // Vertical divider
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.55, w: 0, h: 4.2,
+    x: 5.0, y: 0.55, w: 0.01, h: 4.2,
     line: { color: COLORS.border, width: 0.75 },
   });
 
@@ -478,7 +478,7 @@ function slide38(pres) {
 
   // Center divider
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 3.55, w: 0, h: 1.1,
+    x: 5.0, y: 3.55, w: 0.01, h: 1.1,
     line: { color: COLORS.border, width: 0.75 },
   });
 
@@ -545,7 +545,7 @@ function slide39(pres) {
     fontSize: 8.5, color: COLORS.accent, fontFace: FONTS.body, bold: true,
   });
   slide.addShape(pres.ShapeType.line, {
-    x: 2.4, y: 1.96, w: 0.6, h: 0,
+    x: 2.4, y: 1.96, w: 0.6, h: 0.01,
     line: { color: COLORS.accent, width: 1.5, endArrowType: "arrow" },
   });
   slide.addShape(pres.ShapeType.roundRect, {
@@ -582,7 +582,7 @@ function slide39(pres) {
 
   // ── Divider ───────────────────────────────────────────────────────────────
   slide.addShape(pres.ShapeType.line, {
-    x: 4.95, y: 0.55, w: 0, h: 4.85,
+    x: 4.95, y: 0.55, w: 0.01, h: 4.85,
     line: { color: COLORS.border, width: 0.75 },
   });
 
@@ -600,21 +600,21 @@ function slide39(pres) {
 
   // Arrow from LB to v1 branch
   slide.addShape(pres.ShapeType.line, {
-    x: 6.05, y: 1.72, w: 0, h: 0.35,
+    x: 6.05, y: 1.72, w: 0.01, h: 0.35,
     line: { color: COLORS.client, width: 1.2 },
   });
   slide.addShape(pres.ShapeType.line, {
-    x: 5.72, y: 2.07, w: 0.33, h: 0,
+    x: 5.72, y: 2.07, w: 0.33, h: 0.01,
     line: { color: COLORS.client, width: 1.2, endArrowType: "arrow" },
   });
 
   // Arrow from LB to v2 branch
   slide.addShape(pres.ShapeType.line, {
-    x: 6.05, y: 1.72, w: 0, h: 0.35,
+    x: 6.05, y: 1.72, w: 0.01, h: 0.35,
     line: { color: COLORS.warning, width: 1.2 },
   });
   slide.addShape(pres.ShapeType.line, {
-    x: 6.05, y: 2.07, w: 0.98, h: 0,
+    x: 6.05, y: 2.07, w: 0.98, h: 0.01,
     line: { color: COLORS.warning, width: 1.2, endArrowType: "arrow" },
   });
 
@@ -811,7 +811,7 @@ function slide41(pres) {
 
   // Speed indicator arrow (right side of pyramid)
   slide.addShape(pres.ShapeType.line, {
-    x: 4.95, y: 4.1, w: 0, h: -2.4,
+    x: 4.95, y: 1.7, w: 0.01, h: 2.4,
     line: { color: COLORS.textMuted, width: 1.2, endArrowType: "arrow" },
   });
   slide.addText("慢 🐌", {

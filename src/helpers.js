@@ -231,7 +231,7 @@ function addHArrow(slide, pres, opts = {}) {
   const { x, y, w = 0.55, label = "", color = COLORS.accent } = opts;
 
   slide.addShape(pres.ShapeType.line, {
-    x, y: y + 0.15, w, h: 0,
+    x, y: y + 0.15, w, h: 0.01,
     line: { color, width: 1.5, endArrowType: "arrow" },
   });
 
@@ -248,9 +248,12 @@ function addHArrow(slide, pres, opts = {}) {
  * opts: { x, y, h=0.22, color }
  */
 function addVArrow(slide, pres, opts = {}) {
-  const { x, y, h = 0.22, color = COLORS.border } = opts;
+  const { x, color = COLORS.border } = opts;
+  let { y, h = 0.22 } = opts;
+  // Normalize: negative h means arrow goes up — adjust y and flip
+  if (h < 0) { y = y + h; h = -h; }
   slide.addShape(pres.ShapeType.line, {
-    x, y, w: 0, h,
+    x, y, w: 0.01, h,
     line: { color, width: 1.5, endArrowType: "arrow" },
   });
 }

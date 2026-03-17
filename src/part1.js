@@ -96,7 +96,7 @@ function buildSlide1(pres) {
 
   // Vertical divider
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.3, w: 0, h: 4.9,
+    x: 5.0, y: 0.3, w: 0.01, h: 4.9,
     line: { color: COLORS.border, width: 0.75 },
   });
 
@@ -341,7 +341,7 @@ function buildSlide4(pres) {
 
   // Response arrow (going left — draw as a line)
   slide.addShape(pres.ShapeType.line, {
-    x: 1.4, y: 2.85, w: 6.6, h: 0,
+    x: 1.4, y: 2.85, w: 6.6, h: 0.01,
     line: { color: COLORS.success, width: 1.5, endArrowType: "arrow" },
   });
   slide.addText("← HTTP Response (JSON)", {
@@ -688,7 +688,7 @@ function buildSlide10(pres) {
 
   // Vertical divider
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.55, w: 0, h: 4.85,
+    x: 5.0, y: 0.55, w: 0.01, h: 4.85,
     line: { color: COLORS.border, width: 0.75 },
   });
 
@@ -737,7 +737,7 @@ function buildSlide10(pres) {
     addMiniNode(slide, pres, { x: 6.8, y: sy, w: 1.1, h: 0.45, emoji: "⚙️", label: "Server", borderColor: COLORS.backend });
     // Arrow from LB to server
     slide.addShape(pres.ShapeType.line, {
-      x: 6.3, y: sy + 0.22, w: 0.5, h: 0,
+      x: 6.3, y: sy + 0.22, w: 0.5, h: 0.01,
       line: { color: COLORS.infra, width: 1.0, endArrowType: "arrow" },
     });
   });
@@ -761,7 +761,7 @@ function buildSlide11(pres) {
 
   // Vertical divider
   slide.addShape(pres.ShapeType.line, {
-    x: 5.0, y: 0.55, w: 0, h: 4.85,
+    x: 5.0, y: 0.55, w: 0.01, h: 4.85,
     line: { color: COLORS.border, width: 0.75 },
   });
 
@@ -778,7 +778,7 @@ function buildSlide11(pres) {
   addNodeCard(slide, pres, { x: 3.1, y: 1.85, w: 1.2, h: 0.75, emoji: "💾", name: "Server B", borderColor: COLORS.backend });
 
   // Arrows from LB to servers
-  slide.addShape(pres.ShapeType.line, { x: 2.83, y: 1.42, w: 0.27, h: -0.15, line: { color: COLORS.infra, width: 1.0, endArrowType: "arrow" } });
+  slide.addShape(pres.ShapeType.line, { x: 2.83, y: 1.27, w: 0.27, h: 0.15, line: { color: COLORS.infra, width: 1.0, endArrowType: "arrow" } });
   slide.addShape(pres.ShapeType.line, { x: 2.83, y: 1.55, w: 0.27, h: 0.55,  line: { color: COLORS.infra, width: 1.0, endArrowType: "arrow" } });
 
   // Problem annotation
@@ -806,13 +806,13 @@ function buildSlide11(pres) {
   addMiniNode(slide, pres, { x: 7.95, y: 1.55, w: 1.45, h: 0.45, emoji: "⚙️", label: "Server B", borderColor: COLORS.backend });
 
   // Arrows from LB to servers
-  slide.addShape(pres.ShapeType.line, { x: 7.73, y: 1.48, w: 0.22, h: -0.16, line: { color: COLORS.infra, width: 1.0, endArrowType: "arrow" } });
+  slide.addShape(pres.ShapeType.line, { x: 7.73, y: 1.32, w: 0.22, h: 0.16, line: { color: COLORS.infra, width: 1.0, endArrowType: "arrow" } });
   slide.addShape(pres.ShapeType.line, { x: 7.73, y: 1.57, w: 0.22, h: 0.22,  line: { color: COLORS.infra, width: 1.0, endArrowType: "arrow" } });
 
   // Redis node
   addNodeCard(slide, pres, { x: 8.3, y: 2.8, w: 1.4, h: 0.9, emoji: "⚡", name: "Redis", meta: "Session Store", borderColor: COLORS.infra });
   // Arrows from servers to Redis
-  slide.addShape(pres.ShapeType.line, { x: 9.0, y: 1.5, w: 0, h: 1.3, line: { color: COLORS.infra, width: 1.0, dashType: "dash", endArrowType: "arrow" } });
+  slide.addShape(pres.ShapeType.line, { x: 9.0, y: 1.5, w: 0.01, h: 1.3, line: { color: COLORS.infra, width: 1.0, dashType: "dash", endArrowType: "arrow" } });
 
   addCompareItem(slide, pres, { x: 5.2, y: 3.05, w: 4.4, emoji: "✓", title: "Session 集中存入 Redis",                                              type: "good" });
   addCompareItem(slide, pres, { x: 5.2, y: 3.62, w: 4.4, emoji: "✓", title: "任一 Server 都能處理任意請求",  sub: "LB 可自由分配，Server 可隨時加減", type: "good" });
