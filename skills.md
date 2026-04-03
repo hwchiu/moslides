@@ -1,30 +1,25 @@
-# Moslides — Slide Generation Skills & Design Conventions
+# Slide Generation — Design System & Style Guide
 
-> This document captures all design conventions, style rules, theme system usage, and helper patterns for the `moslides` slide generation project. Use it as the single source of truth when creating or modifying slides.
+> Reusable design conventions for programmatic slide decks built with **pptxgenjs** in Node.js. This guide is topic-agnostic — apply it to any presentation subject.
 
 ---
 
-## 1. Project Architecture
+## 1. Project Structure
 
 ```
 src/
   design-system.js   # Colors, fonts, theme switching (single source of truth)
   helpers.js         # All shared slide-building utilities
-  part1.js           # Slides 1-12   (Traditional Deployment Evolution)
-  part2.js           # Slides 13-20  (Scale Out Challenges)
-  part3.js           # Slides 21-26  (Container Revolution)
-  part4.js           # Slides 27-34  (12-Factor App)
-  part5.js           # Slides 35-42  (DevOps Integration)
-  part6.js           # Slides 43-50  (SDLC & Observability)
-  part7_metrics.js   # Slides 91-105 (Metrics Deep Dive)
-  part8_logs.js      # Slides 106-120 (Logs Management)
-  part9_tracing.js   # Slides 121-135 (Distributed Tracing)
-  part10_sre.js      # Slides 136-150 (SRE Complete Picture)
-  merge.js           # Merges all part .pptx files into final deck
+  partN.js           # Each part is a standalone script generating its own .pptx
+  merge.js           # Merges multiple part .pptx files into one final deck
 output/              # Generated .pptx files
 ```
 
-Each `partN.js` is standalone. Run `node src/partN.js` to generate its deck, then `node src/merge.js` to produce the final merged file.
+### How It Works
+
+- Each **part file** is a standalone Node.js script that imports `design-system.js` and `helpers.js`, builds slides, and saves a `.pptx` file.
+- Parts are independent — run `node src/partN.js` to generate one part, or `node src/merge.js` to rebuild and merge all parts into a final deck.
+- To create a new presentation, create a new part file following the same pattern: require the design system, call `setTheme()`, define `buildSlideN()` functions, and export via `main()`.
 
 ---
 
@@ -39,7 +34,7 @@ const { COLORS, FONTS, setTheme } = require("./design-system");
 setTheme("light");
 ```
 
-The `setTheme()` function mutates the shared `COLORS` object. Since each part runs in a separate `node` process, this is safe.
+This mutates the shared `COLORS` object. Safe because each part runs in a separate `node` process.
 
 ### Available Themes
 
@@ -91,7 +86,7 @@ The `setTheme()` function mutates the shared `COLORS` object. Since each part ru
 1. **Fill the slide** — no large empty areas. Content should span the full canvas.
 2. **Readable text** — minimum font size 9pt for body, 7.5pt only for labels/tags.
 3. **Use PowerPoint native text** — Excalidraw is for diagrams/images only. All text goes through `slide.addText()` for easy future editing.
-4. **No page numbers** — partLabel should be just `"PART N"`, no "XX / 50" suffixes.
+4. **No page numbers** — partLabel should be a short section identifier (e.g. `"PART 1"`), not `"03 / 50"`.
 
 ---
 
@@ -178,25 +173,29 @@ The current style is inspired by a "terminal / engineer handbook" aesthetic opti
 
 ---
 
-## 6. Slide Template Types
+## 6. Slide Template Patterns
 
-| Template | Use Case | Key Elements |
-|----------|----------|-------------|
-| T1 | Cover page | Big title, journey cards on right |
-| T2 | Part opener | Large part number, bullet list of topics |
-| T3 | Architecture diagram | Diagram top 65%, pros/cons bottom 35% via `addBottomPanel` |
-| T4 | Comparison | Left/right dual column via `addCompareHeading` + `addCompareItem` |
-| T5 | Concept explanation | Large icon left, 3-4 bullets right |
-| T6 | Code page | Dark code card + diagram via `addCodeCard` |
-| T7 | Part summary | 2x3 card grid via `addSummaryCard` |
+These are reusable layout patterns. Mix and match for any topic:
+
+| Pattern | Use Case | Key Elements |
+|---------|----------|-------------|
+| Cover | Opening slide | Big title text, optional journey/outline cards on right |
+| Section Opener | Start of a new section | Large section number, bullet list of upcoming topics |
+| Architecture Diagram | System/flow diagrams | Diagram area top 65%, pros/cons bottom 35% via `addBottomPanel` |
+| Comparison | Side-by-side evaluation | Left/right columns via `addCompareHeading` + `addCompareItem` |
+| Concept Explainer | Teaching a concept | Large icon/emoji left, 3-4 bullet points right |
+| Code Walkthrough | Showing code | Dark code card via `addCodeCard`, optional diagram beside it |
+| Summary | Section recap | 2x3 card grid via `addSummaryCard` |
+| Three-Column | Categorized content | Three equal columns via `addThreeCols` |
+| Metrics/KPI | Key numbers | Big number cards via `addMetricCard` |
 
 ---
 
-## 7. Language
+## 7. Language & Content
 
-- **All user-visible text must be in English.** No Chinese text in rendered content.
-- Code comments in source files may remain in Chinese (not rendered).
-- Code snippets inside `addCodeCard` should use English comments.
+- **All user-visible slide text should be in English** unless the presentation specifically targets a non-English audience.
+- Code snippets inside `addCodeCard` should use English comments for international readability.
+- Keep text concise — slides are visual aids, not documents.
 
 ---
 
@@ -206,21 +205,20 @@ The current style is inspired by a "terminal / engineer handbook" aesthetic opti
 
 ```bash
 # Generate a single part
-node src/part1.js          # outputs output/part1.pptx
+node src/<part-file>.js      # outputs output/<part-file>.pptx
 
 # Merge all parts into final deck
-node src/merge.js          # outputs output/cloud_native_slides_final.pptx
+node src/merge.js            # outputs output/cloud_native_slides_final.pptx
 ```
 
 ### QA Checklist
 
-- All architecture diagrams use icons/emojis, not ASCII art
+- Architecture diagrams use icons/emojis, not ASCII art
 - Component colors match the design system table
-- Complexity bar progresses correctly across parts
 - No text overflow or element overlap
-- No Chinese text in rendered slide content
 - Slide fills the canvas — no large empty areas
 - Fonts render correctly (Calibri for text, Consolas for code)
+- If complexity meter is used, it progresses logically across slides
 
 ### No Test Suite
 
@@ -240,10 +238,26 @@ The `pres` object must be passed into helper functions for shape access.
 
 ---
 
-## 10. Commit Convention
+## 10. Creating a New Presentation
+
+To start a new deck on any topic:
+
+1. Create `src/myTopic.js` (or split into multiple part files for large decks)
+2. Add the boilerplate:
+   ```js
+   const { COLORS, FONTS, setTheme } = require("./design-system");
+   setTheme("light");
+   const { initSlide, addSlideHeader, /* ...helpers you need */ } = require("./helpers");
+   ```
+3. Define `buildSlideN(pres)` functions for each slide
+4. Write `async function main()` that creates `new pptxgen()`, calls each builder, and saves
+5. Run `node src/myTopic.js` to generate
+6. If merging multiple parts, add the file path to `merge.js`
+
+### Commit Convention
 
 ```
-feat: add Part N slides (description)
-fix: correct [issue] in partN
-style: update theme/colors for projector readability
+feat: add <topic> slides (<description>)
+fix: correct <issue> in <file>
+style: update theme/colors
 ```
