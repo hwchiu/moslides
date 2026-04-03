@@ -238,7 +238,85 @@ The `pres` object must be passed into helper functions for shape access.
 
 ---
 
-## 10. Creating a New Presentation
+## 10. Working with .pptx Template Masters
+
+When a `.pptx` template file is provided (e.g., from a school or company), follow this workflow:
+
+### Setup Workflow
+
+1. **Analyze the template** — Use python-pptx to extract master/layout info:
+   ```python
+   from pptx import Presentation
+   tmpl = Presentation("template.pptx")
+   for layout in tmpl.slide_layouts:
+       print(f"Layout: {layout.name}")
+       for ph in layout.placeholders:
+           print(f"  Placeholder {ph.placeholder_format.idx}: {ph.name} ({ph.left}, {ph.top}, {ph.width}, {ph.height})")
+   ```
+
+2. **Update `design-system.js`** — Match the template's color palette, fonts, and spacing so generated content is visually consistent with the master.
+
+3. **Determine safe zones** — Identify the content area that doesn't overlap with master chrome (logo, footer, header strip). Document these as constants:
+   ```js
+   // Safe content area (inside master chrome)
+   const SAFE = { x: 0.5, y: 0.8, w: 9.0, h: 4.2 };
+   ```
+
+4. **Update `helpers.js`** — Adjust header, tip bar, and card positions to fit within the template's safe zones.
+
+### Generation Workflow
+
+Two-stage process:
+
+```
+Stage 1: pptxgenjs        Stage 2: python-pptx
+Generate content slides → Apply template masters & layouts
+(src/partN.js)            (src/apply-template.py)
+```
+
+**Stage 1** — Generate slides as usual with pptxgenjs. Content placement respects the safe zones defined above. Skip any elements the master already provides (background, logo, footer, page numbers).
+
+**Stage 2** — Post-process with python-pptx to apply the real master:
+```python
+from pptx import Presentation
+from pptx.util import Emu
+
+template = Presentation("template.pptx")
+content  = Presentation("output/partN.pptx")
+
+# Get the desired layout from template
+layout = template.slide_layouts[1]  # e.g., "Content" layout
+
+for slide in content.slides:
+    slide.slide_layout = layout  # Apply master layout
+
+content.save("output/partN_final.pptx")
+```
+
+### Template Checklist
+
+When receiving a new template:
+- [ ] Extract all layout names and placeholder positions
+- [ ] Map template colors → `design-system.js` tokens
+- [ ] Map template fonts → `FONTS` object
+- [ ] Measure safe zones (content area boundaries)
+- [ ] Identify which elements the master provides (skip in helpers)
+- [ ] Test with a single slide before full generation
+
+### File Organization
+
+```
+templates/
+  corporate.pptx       # The source template file
+  README.md            # Documents layout names, safe zones, color mapping
+src/
+  apply-template.py    # Post-processing script to apply master
+  design-system.js     # Updated to match template palette
+```
+
+---
+
+## 11. Creating a New Presentation
 
 To start a new deck on any topic:
 
@@ -252,7 +330,8 @@ To start a new deck on any topic:
 3. Define `buildSlideN(pres)` functions for each slide
 4. Write `async function main()` that creates `new pptxgen()`, calls each builder, and saves
 5. Run `node src/myTopic.js` to generate
-6. If merging multiple parts, add the file path to `merge.js`
+6. If using a template, run `python3 src/apply-template.py` to apply masters
+7. If merging multiple parts, add the file path to `merge.js`
 
 ### Commit Convention
 
