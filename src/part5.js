@@ -5,7 +5,8 @@
 
 const fs      = require("fs");
 const pptxgen = require("pptxgenjs");
-const { COLORS, FONTS } = require("./design-system");
+const { COLORS, FONTS, setTheme } = require("./design-system");
+setTheme("light");
 const {
   W, H, HEADER_H, BOTTOM_Y,
   initSlide,
@@ -27,27 +28,27 @@ const {
 } = require("./helpers");
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 35 — DevOps 是什麼？
+// Slide 35 — What is DevOps?
 // ─────────────────────────────────────────────────────────────────────────────
 function slide35(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "DevOps：打破開發與維運的高牆",
-    partLabel: "PART 5  ·  35 / 50",
+    title: "DevOps: Breaking Down the Wall Between Dev and Ops",
+    partLabel: "PART 5",
     accentColor: COLORS.accent,
   });
 
   // ── Left column — Dev side ────────────────────────────────────────────────
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.2,
-    label: "👨‍💻 開發團隊 (Dev)", type: "good",
+    label: "👨‍💻 Dev Team", type: "good",
   });
 
   const devItems = [
-    { text: "💡 快速開發新功能", border: COLORS.frontend, bold: true },
-    { text: "🔀 頻繁合併代碼",   border: COLORS.frontend, bold: false },
-    { text: "⚡ 下午 5 點 push code", border: COLORS.frontend, bold: false },
-    { text: "🙏 「快點上線！」",  border: COLORS.frontend, bold: false },
+    { text: "💡 Rapidly develop new features", border: COLORS.frontend, bold: true },
+    { text: "🔀 Frequently merge code",   border: COLORS.frontend, bold: false },
+    { text: "⚡ Push code at 5 PM Friday", border: COLORS.frontend, bold: false },
+    { text: "🙏 \"Ship it now!\"",  border: COLORS.frontend, bold: false },
   ];
   devItems.forEach((item, i) => {
     const y = 1.1 + i * 0.52;
@@ -72,7 +73,7 @@ function slide35(pres) {
     x: 0.4, y: 3.28, w: 1.9, h: 0.42,
     fontSize: 22, bold: true, color: COLORS.success, fontFace: FONTS.title, align: "center",
   });
-  slide.addText("feature/week  ·  功能開發速度", {
+  slide.addText("feature/week  ·  Dev Velocity", {
     x: 0.4, y: 3.68, w: 1.9, h: 0.22,
     fontSize: 7.5, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
@@ -103,14 +104,14 @@ function slide35(pres) {
   // ── Right column — Ops side ───────────────────────────────────────────────
   addCompareHeading(slide, pres, {
     x: 5.3, y: 0.62, w: 4.2,
-    label: "🔧 維運團隊 (Ops)", type: "bad",
+    label: "🔧 Ops Team", type: "bad",
   });
 
   const opsItems = [
-    "🚨 穩定第一，不要動！",
-    "😰 週五 5 點不能部署",
-    "📋 變更管理需要審批",
-    "😤 「你們搞壞了 Prod！」",
+    "🚨 Stability first, don't touch it!",
+    "😰 No deploys on Friday at 5 PM",
+    "📋 Change management requires approval",
+    "😤 \"You broke Prod!\"",
   ];
   opsItems.forEach((text, i) => {
     const y = 1.1 + i * 0.52;
@@ -134,7 +135,7 @@ function slide35(pres) {
     x: 5.4, y: 3.28, w: 1.9, h: 0.42,
     fontSize: 22, bold: true, color: COLORS.warning, fontFace: FONTS.title, align: "center",
   });
-  slide.addText("MTTR  ·  平均故障恢復時間", {
+  slide.addText("MTTR  ·  Mean Time To Restore", {
     x: 5.4, y: 3.68, w: 1.9, h: 0.22,
     fontSize: 7.5, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
@@ -145,7 +146,7 @@ function slide35(pres) {
     fill: { color: COLORS.bg2 }, line: { color: COLORS.success, width: 1.2 },
   });
   slide.addText(
-    "✅  DevOps 的核心目標：拆掉這道牆 — 讓開發、測試、部署、維運成為統一的連續流程",
+    "✅  The core goal of DevOps: tear down this wall — unify dev, test, deploy, and ops into one continuous flow",
     {
       x: 0.4, y: 4.28, w: 9.2, h: 0.72,
       fontSize: 12, bold: true, color: COLORS.success, fontFace: FONTS.body,
@@ -155,7 +156,7 @@ function slide35(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "DevOps 不是職稱，是文化和實踐 — Dev 懂 Ops，Ops 懂 Dev，自動化一切",
+    text: "DevOps is not a job title — it's a culture and practice. Dev understands Ops, Ops understands Dev, automate everything",
   });
 }
 
@@ -165,8 +166,8 @@ function slide35(pres) {
 function slide36(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "CI/CD Pipeline：從 Commit 到 Production 全自動",
-    partLabel: "PART 5  ·  36 / 50",
+    title: "CI/CD Pipeline: Fully Automated from Commit to Production",
+    partLabel: "PART 5",
     accentColor: COLORS.success,
   });
 
@@ -244,10 +245,10 @@ function slide36(pres) {
 
   // ── Metric cards (2×2) ────────────────────────────────────────────────────
   const metrics = [
-    { x: 5.4,  y: 2.75, value: "< 10min", label: "Pipeline 時間目標",        color: COLORS.success },
-    { x: 7.55, y: 2.75, value: "100%",    label: "自動化測試覆蓋",            color: COLORS.accent  },
-    { x: 5.4,  y: 3.95, value: "× 50+",  label: "每天部署次數 (Netflix)",    color: COLORS.warning },
-    { x: 7.55, y: 3.95, value: "< 1hr",  label: "Commit→Prod 時間",          color: COLORS.success },
+    { x: 5.4,  y: 2.75, value: "< 10min", label: "Pipeline Time Target",        color: COLORS.success },
+    { x: 7.55, y: 2.75, value: "100%",    label: "Automated Test Coverage",            color: COLORS.accent  },
+    { x: 5.4,  y: 3.95, value: "× 50+",  label: "Deploys/Day (Netflix)",    color: COLORS.warning },
+    { x: 7.55, y: 3.95, value: "< 1hr",  label: "Commit→Prod Time",          color: COLORS.success },
   ];
   metrics.forEach(m => {
     addMetricCard(slide, pres, { x: m.x, y: m.y, w: 1.95, h: 1.05, value: m.value, label: m.label, color: m.color });
@@ -255,26 +256,26 @@ function slide36(pres) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 37 — GitOps 工作流
+// Slide 37 — GitOps Workflow
 // ─────────────────────────────────────────────────────────────────────────────
 function slide37(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "GitOps：Git 作為唯一真相來源",
-    partLabel: "PART 5  ·  37 / 50",
+    title: "GitOps: Git as the Single Source of Truth",
+    partLabel: "PART 5",
     accentColor: COLORS.infra,
   });
 
   // ── Left — principles ─────────────────────────────────────────────────────
   addCompareHeading(slide, pres, {
-    x: 0.3, y: 0.62, w: 4.4, label: "GitOps 核心原則", type: "good",
+    x: 0.3, y: 0.62, w: 4.4, label: "GitOps Core Principles", type: "good",
   });
 
   const principles = [
-    "① Git 是唯一真相來源 (Single Source of Truth)",
-    "② 所有變更通過 Pull Request",
-    "③ 自動同步 — Git state = Cluster state",
-    "④ 可審計、可回滾 — git revert 即回滾",
+    "① Git is the Single Source of Truth",
+    "② All changes go through Pull Requests",
+    "③ Auto-sync — Git state = Cluster state",
+    "④ Auditable & rollbackable — git revert = rollback",
   ];
   principles.forEach((text, i) => {
     const y = 1.1 + i * 0.52;
@@ -382,7 +383,7 @@ function slide37(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "GitOps 讓基礎設施變成 Code — 每次 Prod 變更都有 git commit 記錄，可審計可回滾",
+    text: "GitOps turns infrastructure into code — every Prod change has a git commit record, auditable and rollbackable",
   });
 }
 
@@ -392,20 +393,20 @@ function slide37(pres) {
 function slide38(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Feature Flags：從部署中解放功能發布",
-    partLabel: "PART 5  ·  38 / 50",
+    title: "Feature Flags: Decouple Deployment from Feature Release",
+    partLabel: "PART 5",
     accentColor: COLORS.warning,
   });
 
   // ── Left — traditional approach ───────────────────────────────────────────
   addCompareHeading(slide, pres, {
-    x: 0.3, y: 0.62, w: 4.4, label: "❌ 傳統做法：部署 = 上線", type: "bad",
+    x: 0.3, y: 0.62, w: 4.4, label: "❌ Traditional: Deploy = Release", type: "bad",
   });
 
   const painItems = [
-    { text: "😱 每次部署都影響所有用戶", color: COLORS.danger },
-    { text: "⏱️ 發現問題只能全量回滾",   color: COLORS.danger },
-    { text: "🚫 無法針對特定用戶測試",   color: COLORS.warning },
+    { text: "😱 Every deploy impacts all users", color: COLORS.danger },
+    { text: "⏱️ Issues require a full rollback",   color: COLORS.danger },
+    { text: "🚫 Cannot test with specific users",   color: COLORS.warning },
   ];
   painItems.forEach((item, i) => {
     const y = 1.1 + i * 0.52;
@@ -427,14 +428,14 @@ function slide38(pres) {
 
   // ── Right — Feature Flags ─────────────────────────────────────────────────
   addCompareHeading(slide, pres, {
-    x: 5.2, y: 0.62, w: 4.4, label: "✅ Feature Flags：部署 ≠ 上線", type: "good",
+    x: 5.2, y: 0.62, w: 4.4, label: "✅ Feature Flags: Deploy ≠ Release", type: "good",
   });
 
   addCodeCard(slide, pres, {
     x: 5.25, y: 1.08, w: 4.35, h: 1.68,
     language: "Python",
     code: [
-      "# Feature Flag 控制",
+      "# Feature Flag control",
       "if feature_flags.is_enabled('new_checkout', user):",
       "    return new_checkout_flow(user)",
       "else:",
@@ -467,11 +468,11 @@ function slide38(pres) {
   });
 
   // Left half
-  slide.addText("🚀 部署 (Deploy)", {
+  slide.addText("🚀 Deploy", {
     x: 0.45, y: 3.58, w: 4.4, h: 0.32,
     fontSize: 12, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
-  slide.addText("把 Code 放到 Prod Server — 但 Flag = OFF，用戶看不到", {
+  slide.addText("Code is on Prod server — but Flag = OFF, users can't see it", {
     x: 0.45, y: 3.9, w: 4.4, h: 0.28,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -483,40 +484,40 @@ function slide38(pres) {
   });
 
   // Right half
-  slide.addText("🎉 發布 (Release)", {
+  slide.addText("🎉 Release", {
     x: 5.2, y: 3.58, w: 4.3, h: 0.32,
     fontSize: 12, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
-  slide.addText("把 Flag 切到 ON — 功能對用戶可見 (隨時可關)", {
+  slide.addText("Flip the Flag to ON — feature visible to users (can turn off anytime)", {
     x: 5.2, y: 3.9, w: 4.3, h: 0.28,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
 
   addTipBar(slide, pres, {
     y: 4.85,
-    text: "Feature Flag 讓你做到 Continuous Deployment — 每天部署數十次，功能上線時機由 PM 決定",
+    text: "Feature Flags enable Continuous Deployment — deploy dozens of times a day, let PM decide when to release",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 39 — 藍綠部署 vs 金絲雀部署
+// Slide 39 — Blue/Green vs Canary Deployment
 // ─────────────────────────────────────────────────────────────────────────────
 function slide39(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "部署策略：Blue/Green vs Canary Release",
-    partLabel: "PART 5  ·  39 / 50",
+    title: "Deployment Strategies: Blue/Green vs Canary Release",
+    partLabel: "PART 5",
     accentColor: COLORS.accent,
   });
 
   // ── Left — Blue/Green ─────────────────────────────────────────────────────
-  slide.addText("🔵🟢 Blue/Green 部署", {
+  slide.addText("🔵🟢 Blue/Green Deployment", {
     x: 0.3, y: 0.65, w: 4.4, h: 0.35,
     fontSize: 13, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
 
   // Step 1 — Blue active, Green standby
-  slide.addText("Step 1：部署新版本到 Green", {
+  slide.addText("Step 1: Deploy new version to Green", {
     x: 0.3, y: 1.02, w: 4.4, h: 0.2,
     fontSize: 8.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -524,7 +525,7 @@ function slide39(pres) {
     x: 0.3, y: 1.22, w: 2.0, h: 0.55, rectRadius: 0.08,
     fill: { color: COLORS.cardSuccess }, line: { color: COLORS.success, width: 1.2 },
   });
-  slide.addText("🔵 Blue (v1) — 100% 流量", {
+  slide.addText("🔵 Blue (v1) — 100% Traffic", {
     x: 0.3, y: 1.22, w: 2.0, h: 0.55,
     fontSize: 9, bold: true, color: COLORS.success, fontFace: FONTS.body,
     align: "center", valign: "middle",
@@ -533,14 +534,14 @@ function slide39(pres) {
     x: 2.45, y: 1.22, w: 2.0, h: 0.55, rectRadius: 0.08,
     fill: { color: COLORS.bg2 }, line: { color: COLORS.textMuted, width: 1.0 },
   });
-  slide.addText("🟢 Green (v2) — 0% 流量", {
+  slide.addText("🟢 Green (v2) — 0% Traffic", {
     x: 2.45, y: 1.22, w: 2.0, h: 0.55,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
     align: "center", valign: "middle",
   });
 
   // Step 2 — LB switch
-  slide.addText("Step 2：LB 切換流量至 Green", {
+  slide.addText("Step 2: LB switches traffic to Green", {
     x: 0.3, y: 1.82, w: 4.4, h: 0.2,
     fontSize: 8.5, color: COLORS.accent, fontFace: FONTS.body, bold: true,
   });
@@ -569,9 +570,9 @@ function slide39(pres) {
 
   // Benefits
   const bgBenefits = [
-    { text: "✅ 零停機時間",        color: COLORS.success, bold: true  },
-    { text: "✅ 回滾只需切 LB",     color: COLORS.success, bold: true  },
-    { text: "⚠️ 需要兩套環境 (成本)", color: COLORS.warning, bold: false },
+    { text: "✅ Zero downtime",        color: COLORS.success, bold: true  },
+    { text: "✅ Rollback by switching LB",     color: COLORS.success, bold: true  },
+    { text: "⚠️ Requires two environments (cost)", color: COLORS.warning, bold: false },
   ];
   bgBenefits.forEach((b, i) => {
     slide.addText(b.text, {
@@ -621,14 +622,14 @@ function slide39(pres) {
   // v1 card
   addNodeCard(slide, pres, {
     x: 5.25, y: 2.1, w: 1.5, h: 0.75,
-    emoji: "⚙️", name: "v1 × 9", meta: "90% 流量",
+    emoji: "⚙️", name: "v1 × 9", meta: "90% Traffic",
     borderColor: COLORS.client,
   });
 
   // v2 card
   addNodeCard(slide, pres, {
     x: 7.25, y: 2.1, w: 1.5, h: 0.75,
-    emoji: "⚙️", name: "v2 × 1", meta: "10% 流量 (Canary)",
+    emoji: "⚙️", name: "v2 × 1", meta: "10% Traffic (Canary)",
     borderColor: COLORS.warning,
   });
 
@@ -643,19 +644,19 @@ function slide39(pres) {
   addVArrow(slide, pres, { x: 8.0, y: 2.88, h: 0.15, color: COLORS.infra });
 
   // Success / fail paths
-  slide.addText("✅ 自動增加 Canary 流量", {
+  slide.addText("✅ Auto-increase Canary traffic", {
     x: 5.25, y: 3.2, w: 2.1, h: 0.26,
     fontSize: 9.5, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
-  slide.addText("❌ 自動回滾 Canary", {
+  slide.addText("❌ Auto-rollback Canary", {
     x: 7.45, y: 3.9, w: 2.1, h: 0.26,
     fontSize: 9.5, bold: true, color: COLORS.danger, fontFace: FONTS.body,
   });
 
   // Canary benefits
   const canaryBenefits = [
-    { text: "✅ 小範圍驗證新版本",  bold: true  },
-    { text: "✅ 問題只影響少數用戶", bold: false },
+    { text: "✅ Validate new version at small scale",  bold: true  },
+    { text: "✅ Issues only affect a small subset of users", bold: false },
   ];
   canaryBenefits.forEach((b, i) => {
     slide.addText(b.text, {
@@ -671,35 +672,35 @@ function slide39(pres) {
 function slide40(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "DORA Metrics：衡量 DevOps 成熟度的四個指標",
-    partLabel: "PART 5  ·  40 / 50",
+    title: "DORA Metrics: Four Indicators of DevOps Maturity",
+    partLabel: "PART 5",
     accentColor: COLORS.success,
   });
 
   const cards = [
     {
       x: 0.3, y: 0.65, border: COLORS.success,
-      emoji: "🚀", name: "Deployment Frequency", sub: "部署頻率",
+      emoji: "🚀", name: "Deployment Frequency", sub: "How often you deploy",
       nameColor: COLORS.success,
       tiers: [
-        { text: "Elite: 多次/天",   color: COLORS.success },
-        { text: "High: 每天~每週",  color: COLORS.accent  },
-        { text: "Medium: 每週~每月", color: COLORS.warning },
+        { text: "Elite: Multiple/day",   color: COLORS.success },
+        { text: "High: Daily to weekly",  color: COLORS.accent  },
+        { text: "Medium: Weekly to monthly", color: COLORS.warning },
       ],
     },
     {
       x: 5.2, y: 0.65, border: COLORS.accent,
-      emoji: "⚡", name: "Lead Time for Changes", sub: "從 Commit 到 Prod 的時間",
+      emoji: "⚡", name: "Lead Time for Changes", sub: "Time from Commit to Prod",
       nameColor: COLORS.accent,
       tiers: [
-        { text: "Elite: < 1 小時",  color: COLORS.success },
-        { text: "High: < 1 天",     color: COLORS.accent  },
-        { text: "Medium: 1週~1月",  color: COLORS.warning },
+        { text: "Elite: < 1 hour",  color: COLORS.success },
+        { text: "High: < 1 day",     color: COLORS.accent  },
+        { text: "Medium: 1 week to 1 month",  color: COLORS.warning },
       ],
     },
     {
       x: 0.3, y: 2.95, border: COLORS.danger,
-      emoji: "🔥", name: "Change Failure Rate", sub: "部署導致 Prod 問題的比率",
+      emoji: "🔥", name: "Change Failure Rate", sub: "Rate of deploys causing Prod issues",
       nameColor: COLORS.danger,
       tiers: [
         { text: "Elite: < 5%",    color: COLORS.success },
@@ -709,12 +710,12 @@ function slide40(pres) {
     },
     {
       x: 5.2, y: 2.95, border: COLORS.warning,
-      emoji: "🔧", name: "MTTR", sub: "Mean Time To Restore — 恢復時間",
+      emoji: "🔧", name: "MTTR", sub: "Mean Time To Restore",
       nameColor: COLORS.warning,
       tiers: [
-        { text: "Elite: < 1 小時", color: COLORS.success },
-        { text: "High: < 1 天",    color: COLORS.accent  },
-        { text: "Medium: 1天~1週", color: COLORS.warning },
+        { text: "Elite: < 1 hour", color: COLORS.success },
+        { text: "High: < 1 day",    color: COLORS.accent  },
+        { text: "Medium: 1 day to 1 week", color: COLORS.warning },
       ],
     },
   ];
@@ -751,18 +752,18 @@ function slide40(pres) {
 
   addTipBar(slide, pres, {
     y: 5.15,
-    text: "DORA Research (2019): Elite 表現者比低表現者 — 部署快 208x，故障恢復快 2604x",
+    text: "DORA Research (2019): Elite performers vs low performers — 208x faster deploys, 2604x faster recovery",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 41 — 持續測試金字塔
+// Slide 41 — Testing Pyramid
 // ─────────────────────────────────────────────────────────────────────────────
 function slide41(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "持續測試金字塔：測試的層次與速度",
-    partLabel: "PART 5  ·  41 / 50",
+    title: "Testing Pyramid: Layers and Speed of Testing",
+    partLabel: "PART 5",
     accentColor: COLORS.warning,
   });
 
@@ -776,7 +777,7 @@ function slide41(pres) {
     x: 1.05, y: 1.79, w: 3.1, h: 0.26,
     fontSize: 10, bold: true, color: COLORS.danger, fontFace: FONTS.body, align: "center",
   });
-  slide.addText("模擬真實用戶 | 分鐘級", {
+  slide.addText("Simulate real users | Minutes", {
     x: 1.05, y: 2.04, w: 3.1, h: 0.2,
     fontSize: 8.5, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
@@ -790,7 +791,7 @@ function slide41(pres) {
     x: 0.7, y: 2.59, w: 3.8, h: 0.26,
     fontSize: 10, bold: true, color: COLORS.warning, fontFace: FONTS.body, align: "center",
   });
-  slide.addText("API + DB 整合 | 秒級", {
+  slide.addText("API + DB integration | Seconds", {
     x: 0.7, y: 2.84, w: 3.8, h: 0.2,
     fontSize: 8.5, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
@@ -804,7 +805,7 @@ function slide41(pres) {
     x: 0.35, y: 3.42, w: 4.5, h: 0.26,
     fontSize: 10, bold: true, color: COLORS.success, fontFace: FONTS.body, align: "center",
   });
-  slide.addText("快速 | 隔離 | 毫秒級    jest, pytest, go test", {
+  slide.addText("Fast | Isolated | Milliseconds    jest, pytest, go test", {
     x: 0.35, y: 3.67, w: 4.5, h: 0.2,
     fontSize: 8.5, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
@@ -814,11 +815,11 @@ function slide41(pres) {
     x: 4.95, y: 1.7, w: 0.01, h: 2.4,
     line: { color: COLORS.textMuted, width: 1.2, endArrowType: "arrow" },
   });
-  slide.addText("慢 🐌", {
+  slide.addText("Slow 🐌", {
     x: 4.85, y: 1.6, w: 0.6, h: 0.22,
     fontSize: 8, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
-  slide.addText("快 ⚡", {
+  slide.addText("Fast ⚡", {
     x: 4.85, y: 4.1, w: 0.6, h: 0.22,
     fontSize: 8, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
@@ -828,7 +829,7 @@ function slide41(pres) {
     x: 5.4, y: 0.65, w: 4.3, h: 3.1,
     language: "pytest / jest commands",
     code: [
-      "# CI Pipeline 測試順序",
+      "# CI Pipeline test order",
       "",
       "# 1. Unit Tests (fail fast)",
       "pytest tests/unit/ --tb=short",
@@ -846,9 +847,9 @@ function slide41(pres) {
 
   // ── Bottom rule cards (3 cols) ────────────────────────────────────────────
   const rules = [
-    { x: 0.3,  title: "⚡ Fail Fast",  desc: "Unit test 失敗立刻停止 Pipeline" },
-    { x: 3.55, title: "🔁 測試隔離",   desc: "每個 Test 獨立，不依賴順序" },
-    { x: 6.8,  title: "📊 Coverage",   desc: "目標 80%+，關鍵路徑 100%" },
+    { x: 0.3,  title: "⚡ Fail Fast",  desc: "Stop pipeline immediately on unit test failure" },
+    { x: 3.55, title: "🔁 Test Isolation",   desc: "Each test is independent, no order dependency" },
+    { x: 6.8,  title: "📊 Coverage",   desc: "Target 80%+, critical paths 100%" },
   ];
   rules.forEach(r => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -867,51 +868,51 @@ function slide41(pres) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 42 — Part 5 小結
+// Slide 42 — Part 5 Summary
 // ─────────────────────────────────────────────────────────────────────────────
 function slide42(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Part 5 小結：DevOps 讓軟體交付飛起來",
-    partLabel: "PART 5  ·  42 / 50",
+    title: "Part 5 Summary: DevOps Makes Software Delivery Fly",
+    partLabel: "PART 5",
     accentColor: COLORS.success,
   });
 
   addSummaryCard(slide, pres, {
     x: 0.3, y: 0.65, w: 9.4, h: 1.38,
     icon: "🔄",
-    title: "DevOps 是文化，CI/CD 是工具",
+    title: "DevOps Is Culture, CI/CD Is the Toolchain",
     items: [
-      "打破 Dev/Ops 高牆，共同對交付品質負責",
-      "CI/CD Pipeline 讓每次 Commit 都能安全部署",
+      "Break down the Dev/Ops wall — shared responsibility for delivery quality",
+      "CI/CD Pipeline ensures every commit can be safely deployed",
     ],
     color: COLORS.accent,
-    status: "核心理念",
+    status: "Core Principle",
   });
 
   addSummaryCard(slide, pres, {
     x: 0.3, y: 2.12, w: 9.4, h: 1.38,
     icon: "📊",
-    title: "用 DORA Metrics 衡量進步",
+    title: "Measure Progress with DORA Metrics",
     items: [
-      "4 個指標 — 部署頻率、Lead Time、失敗率、MTTR",
-      "Elite 表現者不是天生的 — 是 DevOps 文化建立的",
+      "4 metrics — Deploy Frequency, Lead Time, Failure Rate, MTTR",
+      "Elite performers are not born — they are built by DevOps culture",
     ],
     color: COLORS.success,
-    status: "量化成果",
+    status: "Measurable Outcomes",
   });
 
   addSummaryCard(slide, pres, {
     x: 0.3, y: 3.59, w: 9.4, h: 1.38,
     icon: "🚀",
-    title: "Container + GitOps + CI/CD = 現代部署三劍客",
+    title: "Container + GitOps + CI/CD = The Modern Deployment Trio",
     items: [
-      "Container：環境一致",
-      "GitOps：基礎設施即代碼",
-      "CI/CD：自動化交付 → Part 6: 可觀測性與 SRE",
+      "Container: Consistent environments",
+      "GitOps: Infrastructure as Code",
+      "CI/CD: Automated delivery → Part 6: Observability & SRE",
     ],
     color: COLORS.container,
-    status: "整合視角",
+    status: "Integrated View",
   });
 }
 

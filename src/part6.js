@@ -5,7 +5,8 @@
 
 const fs      = require("fs");
 const pptxgen = require("pptxgenjs");
-const { COLORS, FONTS } = require("./design-system");
+const { COLORS, FONTS, setTheme } = require("./design-system");
+setTheme("light");
 const {
   W, H, HEADER_H, BOTTOM_Y,
   initSlide,
@@ -27,13 +28,13 @@ const {
 } = require("./helpers");
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 43 — 可觀測性三本柱
+// Slide 43 — Observability Three Pillars
 // ─────────────────────────────────────────────────────────────────────────────
 function slide43(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "可觀測性三本柱：Metrics、Logs、Traces",
-    partLabel: "PART 6  ·  43 / 50",
+    title: "Observability Three Pillars: Metrics, Logs, Traces",
+    partLabel: "PART 6",
     accentColor: COLORS.accent,
   });
 
@@ -43,11 +44,11 @@ function slide43(pres) {
       icon: "📈",
       color: COLORS.success,
       items: [
-        { text: "數字型時序資料", sub: "CPU%, 記憶體, 請求數/秒" },
-        { text: "工具: Prometheus + Grafana" },
-        { text: "告警規則：CPU > 80% → 通知" },
-        { text: "適合: 「What 出了問題」" },
-        { text: "保留週期: 月 ~ 年" },
+        { text: "Numeric time-series data", sub: "CPU%, Memory, Requests/sec" },
+        { text: "Tools: Prometheus + Grafana" },
+        { text: "Alert rules: CPU > 80% → Notify" },
+        { text: "Best for: 'What went wrong'" },
+        { text: "Retention: Months to Years" },
       ],
     },
     {
@@ -55,11 +56,11 @@ function slide43(pres) {
       icon: "📝",
       color: COLORS.warning,
       items: [
-        { text: "文字事件流", sub: "結構化 JSON 格式" },
-        { text: "工具: ELK Stack, Loki, CloudWatch" },
-        { text: "stdout → 集中收集" },
-        { text: "適合: 「Why 出了問題」" },
-        { text: "保留週期: 週 ~ 月" },
+        { text: "Text event stream", sub: "Structured JSON format" },
+        { text: "Tools: ELK Stack, Loki, CloudWatch" },
+        { text: "stdout → Centralized collection" },
+        { text: "Best for: 'Why it went wrong'" },
+        { text: "Retention: Weeks to Months" },
       ],
     },
     {
@@ -67,29 +68,29 @@ function slide43(pres) {
       icon: "🔗",
       color: COLORS.infra,
       items: [
-        { text: "分散式請求鏈路追蹤" },
-        { text: "Trace ID 貫穿所有服務" },
-        { text: "工具: Jaeger, Zipkin, Tempo" },
-        { text: "適合: 「Where 出了問題」" },
-        { text: "保留週期: 天 ~ 週 (成本高)" },
+        { text: "Distributed request chain tracing" },
+        { text: "Trace ID spans all services" },
+        { text: "Tools: Jaeger, Zipkin, Tempo" },
+        { text: "Best for: 'Where it went wrong'" },
+        { text: "Retention: Days to Weeks (high cost)" },
       ],
     },
   ], { y: HEADER_H + 0.1, h: H - HEADER_H - 0.55 });
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "三本柱缺一不可：Metrics 告訴你有問題，Logs 告訴你原因，Traces 告訴你在哪個服務",
+    text: "All three pillars are essential: Metrics tell you something is wrong, Logs tell you why, Traces tell you which service",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 44 — SLI SLO SLA 定義
+// Slide 44 — SLI SLO SLA Definition
 // ─────────────────────────────────────────────────────────────────────────────
 function slide44(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "SLI / SLO / SLA：可靠性的三個層次",
-    partLabel: "PART 6  ·  44 / 50",
+    title: "SLI / SLO / SLA: Three Levels of Reliability",
+    partLabel: "PART 6",
     accentColor: COLORS.success,
   });
 
@@ -109,20 +110,20 @@ function slide44(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.border, width: 1.0 },
   });
-  slide.addText("實際量測的服務指標值", {
+  slide.addText("Actual measured service metric values", {
     x: 0.4, y: 1.22, w: 2.8, h: 0.3,
     fontSize: 10, bold: true, color: COLORS.text, fontFace: FONTS.body,
   });
-  slide.addText("一個數字，代表服務現在的表現", {
+  slide.addText("A number representing current service performance", {
     x: 0.4, y: 1.52, w: 2.8, h: 0.25,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
 
   const sliItems = [
-    { text: "可用性: 99.95%", color: COLORS.success },
-    { text: "P99 延遲: 245ms",  color: COLORS.accent },
-    { text: "錯誤率: 0.03%",    color: COLORS.success },
-    { text: "吞吐量: 1200 req/s", color: COLORS.accent },
+    { text: "Availability: 99.95%", color: COLORS.success },
+    { text: "P99 Latency: 245ms",  color: COLORS.accent },
+    { text: "Error Rate: 0.03%",    color: COLORS.success },
+    { text: "Throughput: 1200 req/s", color: COLORS.accent },
   ];
   sliItems.forEach((item, i) => {
     const y = 2.0 + i * 0.52;
@@ -153,20 +154,20 @@ function slide44(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.border, width: 1.0 },
   });
-  slide.addText("你設定的目標數字", {
+  slide.addText("Your defined target numbers", {
     x: 3.65, y: 1.22, w: 2.8, h: 0.3,
     fontSize: 10, bold: true, color: COLORS.text, fontFace: FONTS.body,
   });
-  slide.addText("SLO 是 SLI 的目標值", {
+  slide.addText("SLO is the target value for SLI", {
     x: 3.65, y: 1.52, w: 2.8, h: 0.25,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
 
   const sloItems = [
-    { text: "可用性 SLO: ≥ 99.9%",         color: COLORS.accent },
-    { text: "P99 延遲 SLO: ≤ 500ms",        color: COLORS.accent },
-    { text: "錯誤率 SLO: ≤ 0.1%",           color: COLORS.accent },
-    { text: "Error Budget: 0.1% = 43min/月", color: COLORS.warning },
+    { text: "Availability SLO: ≥ 99.9%",         color: COLORS.accent },
+    { text: "P99 Latency SLO: ≤ 500ms",        color: COLORS.accent },
+    { text: "Error Rate SLO: ≤ 0.1%",           color: COLORS.accent },
+    { text: "Error Budget: 0.1% = 43min/mo", color: COLORS.warning },
   ];
   sloItems.forEach((item, i) => {
     const y = 2.0 + i * 0.52;
@@ -197,20 +198,20 @@ function slide44(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.border, width: 1.0 },
   });
-  slide.addText("對外承諾的法律協議", {
+  slide.addText("External-facing legal agreement", {
     x: 6.9, y: 1.22, w: 2.8, h: 0.3,
     fontSize: 10, bold: true, color: COLORS.text, fontFace: FONTS.body,
   });
-  slide.addText("SLA 違反 → 賠償", {
+  slide.addText("SLA Violation → Compensation", {
     x: 6.9, y: 1.52, w: 2.8, h: 0.25,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
 
   const slaItems = [
-    { text: "AWS EC2: 99.99% 可用性",          color: COLORS.warning, italic: false },
-    { text: "賠償: Service Credit",             color: COLORS.warning, italic: false },
-    { text: "SLO < SLA (保留緩衝)",             color: COLORS.accent,  italic: false },
-    { text: "「SLO 是內部目標，SLA 是外部承諾」", color: COLORS.textMuted, italic: true },
+    { text: "AWS EC2: 99.99% Availability",          color: COLORS.warning, italic: false },
+    { text: "Compensation: Service Credit",             color: COLORS.warning, italic: false },
+    { text: "SLO < SLA (keep buffer)",             color: COLORS.accent,  italic: false },
+    { text: "\"SLO is the internal target, SLA is the external commitment\"", color: COLORS.textMuted, italic: true },
   ];
   slaItems.forEach((item, i) => {
     const y = 2.0 + i * 0.52;
@@ -247,7 +248,7 @@ function slide44(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "SLO 要比 SLA 嚴格 10x — SLA 是 99.9%，你的 SLO 應該是 99.99%，中間是 Error Budget",
+    text: "SLO should be 10x stricter than SLA — if SLA is 99.9%, your SLO should be 99.99%, the gap is your Error Budget",
   });
 }
 
@@ -257,8 +258,8 @@ function slide44(pres) {
 function slide45(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Error Budget：把停機時間變成決策工具",
-    partLabel: "PART 6  ·  45 / 50",
+    title: "Error Budget: Turning Downtime into a Decision Tool",
+    partLabel: "PART 6",
     accentColor: COLORS.warning,
   });
 
@@ -272,7 +273,7 @@ function slide45(pres) {
     x: 0.4, y: 0.68, w: 4.2, h: 0.5,
     fontSize: 16, bold: true, color: COLORS.warning, fontFace: FONTS.body, valign: "middle",
   });
-  slide.addText("SLO = 99.9%  →  Error Budget = 0.1% = 43.8 分鐘/月", {
+  slide.addText("SLO = 99.9%  →  Error Budget = 0.1% = 43.8 min/month", {
     x: 0.4, y: 1.18, w: 4.2, h: 0.3,
     fontSize: 10, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -283,7 +284,7 @@ function slide45(pres) {
     fill: { color: COLORS.cardSuccess },
     line: { color: COLORS.success, width: 1.5 },
   });
-  slide.addText("✅ Budget 充足 → 可以快速部署新功能", {
+  slide.addText("✅ Budget Sufficient → Deploy new features rapidly", {
     x: 0.45, y: 1.88, w: 4.1, h: 0.65,
     fontSize: 10.5, bold: true, color: COLORS.success, fontFace: FONTS.body, valign: "middle",
   });
@@ -294,7 +295,7 @@ function slide45(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 1.5 },
   });
-  slide.addText("🚨 Budget 耗盡 → 停止功能部署，專注穩定性", {
+  slide.addText("🚨 Budget Exhausted → Freeze feature deploys, focus on stability", {
     x: 0.45, y: 2.58, w: 4.1, h: 0.65,
     fontSize: 10.5, bold: true, color: COLORS.danger, fontFace: FONTS.body, valign: "middle",
   });
@@ -309,21 +310,21 @@ function slide45(pres) {
     x: 0.45, y: 3.42, w: 4.1, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.infra, fontFace: FONTS.body,
   });
-  slide.addText("• Budget > 50%：正常部署，可做風險部署", {
+  slide.addText("• Budget > 50%: Normal deploys, risky deploys allowed", {
     x: 0.45, y: 3.74, w: 4.1, h: 0.25,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
-  slide.addText("• Budget 25-50%：謹慎部署，加強測試", {
+  slide.addText("• Budget 25-50%: Deploy cautiously, increase testing", {
     x: 0.45, y: 4.01, w: 4.1, h: 0.25,
     fontSize: 9.5, color: COLORS.warning, fontFace: FONTS.body,
   });
-  slide.addText("• Budget < 25%：凍結功能部署", {
+  slide.addText("• Budget < 25%: Freeze feature deployments", {
     x: 0.45, y: 4.28, w: 4.1, h: 0.25,
     fontSize: 9.5, bold: true, color: COLORS.danger, fontFace: FONTS.body,
   });
 
   // ── Right: Bar chart visualization ───────────────────────────────────────
-  slide.addText("2024 年 Monthly Error Budget 消耗", {
+  slide.addText("2024 Monthly Error Budget Consumption", {
     x: 5.2, y: 0.65, w: 4.4, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -375,24 +376,24 @@ function slide45(pres) {
 
   addAlertBar(slide, pres, {
     y: 3.85,
-    message: "10月份 Error Budget 耗盡！→ 立即凍結功能部署，SRE 介入穩定性改善",
-    tags: ["凍結部署", "SRE 行動", "Root Cause"],
+    message: "October Error Budget exhausted! → Immediately freeze feature deploys, SRE intervenes for stability",
+    tags: ["Freeze Deploys", "SRE Action", "Root Cause"],
   });
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "Error Budget 讓 Dev 和 Ops 有共同語言 — 不是「穩定 vs 速度」，而是「剩多少 budget 可以花」",
+    text: "Error Budget gives Dev and Ops a shared language — not 'stability vs speed', but 'how much budget is left to spend'",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 46 — Prometheus + Grafana 監控
+// Slide 46 — Prometheus + Grafana Monitoring
 // ─────────────────────────────────────────────────────────────────────────────
 function slide46(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "監控實戰：Prometheus + Grafana 組合拳",
-    partLabel: "PART 6  ·  46 / 50",
+    title: "Monitoring in Practice: Prometheus + Grafana Combo",
+    partLabel: "PART 6",
     accentColor: COLORS.success,
   });
 
@@ -423,7 +424,7 @@ function slide46(pres) {
   addNodeCard(slide, pres, {
     x: 2.9, y: 0.68, w: 1.6, h: 1.52,
     emoji: "📊", name: "Prometheus",
-    meta: "時序資料庫\n15s scrape",
+    meta: "Time-Series DB\n15s scrape",
     borderColor: COLORS.success,
   });
 
@@ -437,7 +438,7 @@ function slide46(pres) {
   addNodeCard(slide, pres, {
     x: 5.1, y: 0.68, w: 1.6, h: 1.52,
     emoji: "📈", name: "Grafana",
-    meta: "視覺化\nDashboard",
+    meta: "Visualization\nDashboard",
     borderColor: COLORS.accent,
   });
 
@@ -472,14 +473,14 @@ function slide46(pres) {
   addCodeCard(slide, pres, {
     x: 6.9, y: 0.65, w: 2.8, h: 2.35,
     language: "PromQL",
-    code: "# HTTP 錯誤率\nrate(http_requests_total{\n  status=~'5..'\n}[5m]) /\nrate(http_requests_total[5m])\n\n# P99 延遲\nhistogram_quantile(0.99,\n  rate(http_duration_bucket[5m])\n)\n\n# CPU 告警規則\ncontainer_cpu_usage > 0.8",
+    code: "# HTTP Error Rate\nrate(http_requests_total{\n  status=~'5..'\n}[5m]) /\nrate(http_requests_total[5m])\n\n# P99 Latency\nhistogram_quantile(0.99,\n  rate(http_duration_bucket[5m])\n)\n\n# CPU Alert Rule\ncontainer_cpu_usage > 0.8",
   });
 
   // ── Alert rule label cards ────────────────────────────────────────────────
   const alertRules = [
-    { x: 0.3,  label: "🔴 Critical: 錯誤率 > 1%",   color: COLORS.danger },
+    { x: 0.3,  label: "🔴 Critical: Error Rate > 1%",   color: COLORS.danger },
     { x: 3.4,  label: "🟡 Warning: P99 > 500ms",     color: COLORS.warning },
-    { x: 6.5,  label: "🟢 Info: 部署完成通知",        color: COLORS.success },
+    { x: 6.5,  label: "🟢 Info: Deployment Completed",        color: COLORS.success },
   ];
   alertRules.forEach((r) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -502,13 +503,13 @@ function slide46(pres) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 47 — 分散式追蹤
+// Slide 47 — Distributed Tracing
 // ─────────────────────────────────────────────────────────────────────────────
 function slide47(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "分散式追蹤：找出效能瓶頸在哪裡",
-    partLabel: "PART 6  ·  47 / 50",
+    title: "Distributed Tracing: Finding Performance Bottlenecks",
+    partLabel: "PART 6",
     accentColor: COLORS.infra,
   });
 
@@ -536,7 +537,7 @@ function slide47(pres) {
     x: 5.05, y: 0.78, w: 3.2, h: 0.38,
     fontSize: 10, bold: true, color: COLORS.infra, fontFace: FONTS.code, valign: "middle",
   });
-  slide.addText("貫穿整個請求鏈路", {
+  slide.addText("Spans the entire request chain", {
     x: 8.25, y: 0.78, w: 1.4, h: 0.38,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle",
   });
@@ -561,7 +562,7 @@ function slide47(pres) {
     });
   });
 
-  slide.addText("⚠️ DB query: 245ms — 瓶頸！", {
+  slide.addText("⚠️ DB query: 245ms — Bottleneck!", {
     x: 8.9, y: 1.73, w: 0.9, h: 0.2,
     fontSize: 9, bold: true, color: COLORS.danger, fontFace: FONTS.body,
   });
@@ -570,38 +571,38 @@ function slide47(pres) {
   addCodeCard(slide, pres, {
     x: 0.3, y: 2.38, w: 9.4, h: 1.52,
     language: "Python (OpenTelemetry)",
-    code: "from opentelemetry import trace\n\ntracer = trace.get_tracer(__name__)\n\n@app.get('/checkout')\nasync def checkout(user_id: str):\n    with tracer.start_as_current_span('checkout') as span:\n        span.set_attribute('user.id', user_id)\n        \n        with tracer.start_as_current_span('db.query'):\n            result = await db.fetch_cart(user_id)  # 自動記錄時間\n        \n        return result",
+    code: "from opentelemetry import trace\n\ntracer = trace.get_tracer(__name__)\n\n@app.get('/checkout')\nasync def checkout(user_id: str):\n    with tracer.start_as_current_span('checkout') as span:\n        span.set_attribute('user.id', user_id)\n        \n        with tracer.start_as_current_span('db.query'):\n            result = await db.fetch_cart(user_id)  # Auto-records duration\n        \n        return result",
   });
 
   addTipBar(slide, pres, {
     y: 5.0,
-    text: "沒有 Tracing 的分散式系統，除錯就像蒙眼猜謎 — OpenTelemetry 是現代標準",
+    text: "Debugging a distributed system without tracing is like solving a puzzle blindfolded — OpenTelemetry is the modern standard",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 48 — SRE 工程師的職責
+// Slide 48 — SRE Engineer Responsibilities
 // ─────────────────────────────────────────────────────────────────────────────
 function slide48(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "SRE：把維運當成軟體工程問題來解決",
-    partLabel: "PART 6  ·  48 / 50",
+    title: "SRE: Treating Operations as a Software Engineering Problem",
+    partLabel: "PART 6",
     accentColor: COLORS.accent,
   });
 
   // ── Left: SRE responsibilities ────────────────────────────────────────────
-  slide.addText("SRE 的核心工作", {
+  slide.addText("Core SRE Responsibilities", {
     x: 0.3, y: 0.65, w: 4.4, h: 0.35,
     fontSize: 13, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
 
   const respCards = [
-    { label: "🔧 消除 Toil — 把重複手動工作自動化", color: COLORS.success },
-    { label: "📊 SLI/SLO/Error Budget 管理",        color: COLORS.accent },
-    { label: "🚨 Incident Response 與 On-Call",       color: COLORS.danger },
-    { label: "📝 Postmortem 文化 — Blameless",        color: COLORS.warning },
-    { label: "🏗️ 打造更可靠的系統架構",              color: COLORS.infra },
+    { label: "🔧 Eliminate Toil — Automate repetitive manual work", color: COLORS.success },
+    { label: "📊 SLI/SLO/Error Budget Management",        color: COLORS.accent },
+    { label: "🚨 Incident Response & On-Call",       color: COLORS.danger },
+    { label: "📝 Postmortem Culture — Blameless",        color: COLORS.warning },
+    { label: "🏗️ Build more reliable system architectures",              color: COLORS.infra },
   ];
   respCards.forEach((c, i) => {
     const y = 1.0 + i * 0.62;
@@ -622,11 +623,11 @@ function slide48(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.warning, width: 1.5 },
   });
-  slide.addText("Toil 預算: < 50% 工作時間", {
+  slide.addText("Toil Budget: < 50% of work time", {
     x: 0.45, y: 3.82, w: 4.1, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.warning, fontFace: FONTS.body,
   });
-  slide.addText("超過 50% → SRE 幫你自動化，直到降到 50% 以下", {
+  slide.addText("Exceeds 50% → SRE automates until it drops below 50%", {
     x: 0.45, y: 4.13, w: 4.1, h: 0.42,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -647,24 +648,24 @@ function slide48(pres) {
   });
 
   const rows = [
-    { label: "主要目標", vals: [
-      { t: "穩定",         c: COLORS.textMuted },
-      { t: "速度",         c: COLORS.accent },
-      { t: "可靠性",       c: COLORS.success },
+    { label: "Primary Goal", vals: [
+      { t: "Stability",         c: COLORS.textMuted },
+      { t: "Speed",         c: COLORS.accent },
+      { t: "Reliability",       c: COLORS.success },
     ]},
-    { label: "自動化", vals: [
-      { t: "手動 SSH",     c: COLORS.danger },
+    { label: "Automation", vals: [
+      { t: "Manual SSH",     c: COLORS.danger },
       { t: "CI/CD",        c: COLORS.accent },
-      { t: "全自動化",     c: COLORS.success },
+      { t: "Fully Automated",     c: COLORS.success },
     ]},
-    { label: "故障處理", vals: [
-      { t: "修完拉倒",     c: COLORS.textMuted },
-      { t: "不一定",       c: COLORS.warning },
-      { t: "Postmortem 必須", c: COLORS.success },
+    { label: "Failure Handling", vals: [
+      { t: "Fix & Forget",     c: COLORS.textMuted },
+      { t: "Inconsistent",       c: COLORS.warning },
+      { t: "Postmortem Required", c: COLORS.success },
     ]},
-    { label: "衡量方式", vals: [
-      { t: "有沒有當機",   c: COLORS.textMuted },
-      { t: "部署頻率",     c: COLORS.accent },
+    { label: "Measurement", vals: [
+      { t: "Uptime/Downtime",   c: COLORS.textMuted },
+      { t: "Deploy Frequency",     c: COLORS.accent },
       { t: "SLO/Error Budget", c: COLORS.success },
     ]},
   ];
@@ -691,18 +692,18 @@ function slide48(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "Google 的 SRE 手冊：「SRE 是把軟體工程師扔進維運問題 — 他們的反應是把一切自動化」",
+    text: "Google SRE Handbook: 'SRE is what happens when you ask a software engineer to design an operations team — they automate everything'",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 49 — Postmortem 文化
+// Slide 49 — Postmortem Culture
 // ─────────────────────────────────────────────────────────────────────────────
 function slide49(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Postmortem：從故障中學習，而不是追責",
-    partLabel: "PART 6  ·  49 / 50",
+    title: "Blameless Postmortem: Learning from Failures",
+    partLabel: "PART 6",
     accentColor: COLORS.warning,
   });
 
@@ -711,16 +712,16 @@ function slide49(pres) {
     x: 0.3, y: 0.65, w: 4.4, h: 0.35,
     fontSize: 13, bold: true, color: COLORS.warning, fontFace: FONTS.body,
   });
-  slide.addText("不找兇手，找根本原因 (Root Cause)", {
+  slide.addText("Find the root cause, not someone to blame", {
     x: 0.3, y: 0.95, w: 4.4, h: 0.28,
     fontSize: 10, color: COLORS.textMuted, fontFace: FONTS.body,
   });
 
   const principles = [
-    "✅ 描述事實，不指責個人",
-    "✅ 5-Why 根本原因分析",
-    "✅ 系統性改善，而非懲罰",
-    "✅ 公開分享學習成果",
+    "✅ Describe facts, don't blame individuals",
+    "✅ 5-Why root cause analysis",
+    "✅ Systemic improvement, not punishment",
+    "✅ Share learnings openly",
   ];
   principles.forEach((p, i) => {
     const y = 1.28 + i * 0.58;
@@ -741,7 +742,7 @@ function slide49(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 1.5 },
   });
-  slide.addText("❌ 禁止: 「都是 XXX 的錯」", {
+  slide.addText("❌ Forbidden: 'It was all XXX's fault'", {
     x: 0.45, y: 3.62, w: 4.1, h: 0.52,
     fontSize: 11, bold: true, color: COLORS.danger, fontFace: FONTS.body, valign: "middle",
   });
@@ -750,29 +751,29 @@ function slide49(pres) {
   addCodeCard(slide, pres, {
     x: 5.1, y: 0.65, w: 4.6, h: 4.55,
     language: "Postmortem Template",
-    code: "## Incident Summary\n- Date: 2024-03-15 14:32 UTC\n- Duration: 47 minutes\n- Impact: 全球 23% 用戶無法登入\n- Severity: SEV-1\n\n## Timeline\n- 14:32 Alert triggered: Error rate > 5%\n- 14:38 SRE on-call paged\n- 14:45 Root cause identified: DB migration\n- 15:19 Rollback completed\n\n## Root Cause\nDB migration script 鎖住了 users table\n導致所有登入請求 timeout\n\n## Action Items\n[ ] 加入 DB migration smoke test\n[ ] Migration 改在 Maintenance window\n[ ] 改善 Rollback SOP",
+    code: "## Incident Summary\n- Date: 2024-03-15 14:32 UTC\n- Duration: 47 minutes\n- Impact: 23% of global users unable to log in\n- Severity: SEV-1\n\n## Timeline\n- 14:32 Alert triggered: Error rate > 5%\n- 14:38 SRE on-call paged\n- 14:45 Root cause identified: DB migration\n- 15:19 Rollback completed\n\n## Root Cause\nDB migration script locked the users table\ncausing all login requests to timeout\n\n## Action Items\n[ ] Add DB migration smoke test\n[ ] Schedule migrations during maintenance window\n[ ] Improve rollback SOP",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 50 — 課程總結
+// Slide 50 — Course Summary
 // ─────────────────────────────────────────────────────────────────────────────
 function slide50(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "課程總結：你現在已經了解真實世界的部署",
-    partLabel: "COURSE SUMMARY  ·  50 / 50",
+    title: "Course Summary: You Now Understand Real-World Deployment",
+    partLabel: "COURSE SUMMARY",
     accentColor: COLORS.accent,
   });
 
   // ── Journey milestone cards ───────────────────────────────────────────────
   const milestones = [
-    { x: 0.25, border: COLORS.frontend,  part: "PART 1", emoji: "🖥️",  title: "傳統部署",  sub: "單機→拆分→三層" },
+    { x: 0.25, border: COLORS.frontend,  part: "PART 1", emoji: "🖥️",  title: "Traditional Deploy",  sub: "Single→Split→3-Tier" },
     { x: 1.82, border: COLORS.infra,     part: "PART 2", emoji: "⚖️",  title: "Scale Out", sub: "LB+Cache+MQ" },
-    { x: 3.39, border: COLORS.container, part: "PART 3", emoji: "🐳",  title: "Container", sub: "一致環境" },
-    { x: 4.96, border: COLORS.accent,    part: "PART 4", emoji: "📐",  title: "12-Factor",  sub: "設計原則" },
+    { x: 3.39, border: COLORS.container, part: "PART 3", emoji: "🐳",  title: "Container", sub: "Consistent Env" },
+    { x: 4.96, border: COLORS.accent,    part: "PART 4", emoji: "📐",  title: "12-Factor",  sub: "Design Principles" },
     { x: 6.53, border: COLORS.success,   part: "PART 5", emoji: "🔄",  title: "DevOps",    sub: "CI/CD" },
-    { x: 8.1,  border: COLORS.warning,   part: "PART 6", emoji: "📊",  title: "可觀測性",  sub: "SRE" },
+    { x: 8.1,  border: COLORS.warning,   part: "PART 6", emoji: "📊",  title: "Observability",  sub: "SRE" },
   ];
 
   milestones.forEach((m) => {
@@ -813,11 +814,11 @@ function slide50(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.accent, width: 1.5 },
   });
-  slide.addText("🎯 核心洞察：複雜度是必然的 — 但可以被管理", {
+  slide.addText("🎯 Core Insight: Complexity is inevitable — but it can be managed", {
     x: 0.3, y: 2.55, w: 9.4, h: 0.42,
     fontSize: 14, bold: true, color: COLORS.accent, fontFace: FONTS.body, align: "center",
   });
-  slide.addText("Container + 12-Factor + CI/CD + Observability = 現代 Cloud Native 工程師的工具箱", {
+  slide.addText("Container + 12-Factor + CI/CD + Observability = The Modern Cloud Native Engineer's Toolkit", {
     x: 0.3, y: 2.97, w: 9.4, h: 0.3,
     fontSize: 10, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
@@ -827,23 +828,23 @@ function slide50(pres) {
     {
       x: 0.3,
       border: COLORS.frontend,
-      icon: "🏗️ 架構是演進的",
+      icon: "🏗️ Architecture Evolves",
       iconColor: COLORS.frontend,
-      body: "從單機到分散式\n每一步都有原因\n不要過度設計",
+      body: "From monolith to distributed\nEvery step has a reason\nDon't over-engineer",
     },
     {
       x: 3.45,
       border: COLORS.container,
-      icon: "🐳 Container 是基石",
+      icon: "🐳 Containers Are the Foundation",
       iconColor: COLORS.container,
-      body: "環境一致 + 版本管理\n現代部署的最小單位\n學會用好 Docker",
+      body: "Consistent environments + Versioning\nThe smallest unit of modern deployment\nMaster Docker well",
     },
     {
       x: 6.6,
       border: COLORS.success,
-      icon: "📊 數字說話",
+      icon: "📊 Let Data Decide",
       iconColor: COLORS.success,
-      body: "SLO/SLA/DORA\n用指標驅動改善\n不靠感覺做決策",
+      body: "SLO/SLA/DORA\nDrive improvement with metrics\nDon't rely on gut feelings",
     },
   ];
   takeaways.forEach((t) => {

@@ -1,11 +1,12 @@
 // src/part3.js
-// Part 3: Container 核心概念 (Slides 21–26)
+// Part 3: Container Revolution (Slides 21–26)
 
 "use strict";
 
 const fs      = require("fs");
 const pptxgen = require("pptxgenjs");
-const { COLORS, FONTS } = require("./design-system");
+const { COLORS, FONTS, setTheme } = require("./design-system");
+setTheme("light");
 const {
   W, H, HEADER_H, BOTTOM_H, BOTTOM_Y,
   initSlide,
@@ -27,13 +28,13 @@ const {
 } = require("./helpers");
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 21 — Container 是什麼？
+// Slide 21 — What Is a Container?
 // ─────────────────────────────────────────────────────────────────────────────
 function slide21(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Container 是什麼？解決什麼問題？",
-    partLabel: "PART 3  ·  21 / 50",
+    title: "What Is a Container? What Problems Does It Solve?",
+    partLabel: "PART 3",
     accentColor: COLORS.container,
     complexity: 5,
   });
@@ -45,7 +46,7 @@ function slide21(pres) {
   });
 
   // ── Left column — ❌ Before ───────────────────────────────────────────────
-  addCompareHeading(slide, pres, { x: 0.3, y: 0.62, w: 4.4, label: "❌  Container 之前", type: "bad" });
+  addCompareHeading(slide, pres, { x: 0.3, y: 0.62, w: 4.4, label: "❌  Before Containers", type: "bad" });
 
   // Card 1 — Dev
   slide.addShape(pres.ShapeType.roundRect, {
@@ -57,7 +58,7 @@ function slide21(pres) {
     x: 0.55, y: 1.14, w: 3.8, h: 0.28,
     fontSize: 11, bold: true, color: COLORS.text, fontFace: FONTS.body,
   });
-  slide.addText("手動 brew install 所有依賴", {
+  slide.addText("Manually brew install all dependencies", {
     x: 0.55, y: 1.42, w: 3.8, h: 0.22,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -72,7 +73,7 @@ function slide21(pres) {
     x: 0.55, y: 2.02, w: 3.8, h: 0.28,
     fontSize: 11, bold: true, color: COLORS.text, fontFace: FONTS.body,
   });
-  slide.addText("套件版本與 Dev 不一致，偶爾出現神秘錯誤", {
+  slide.addText("Package versions differ from Dev, random mysterious errors", {
     x: 0.55, y: 2.30, w: 3.8, h: 0.22,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -87,7 +88,7 @@ function slide21(pres) {
     x: 0.55, y: 2.90, w: 3.8, h: 0.28,
     fontSize: 11, bold: true, color: COLORS.danger, fontFace: FONTS.body,
   });
-  slide.addText("系統內建 Python，幾乎無法升級", {
+  slide.addText("System-bundled Python, nearly impossible to upgrade", {
     x: 0.55, y: 3.18, w: 3.8, h: 0.22,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -98,13 +99,13 @@ function slide21(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 1.0 },
   });
-  slide.addText("🔥 「在我這裡可以跑啊！」— 版本地獄", {
+  slide.addText("🔥 \"It works on my machine!\" — Version Hell", {
     x: 0.55, y: 3.78, w: 3.8, h: 0.38,
     fontSize: 10.5, bold: true, color: COLORS.danger, fontFace: FONTS.body, valign: "middle",
   });
 
   // ── Right column — ✅ With Container ─────────────────────────────────────
-  addCompareHeading(slide, pres, { x: 5.2, y: 0.62, w: 4.4, label: "✅  使用 Container 之後", type: "good" });
+  addCompareHeading(slide, pres, { x: 5.2, y: 0.62, w: 4.4, label: "✅  With Containers", type: "good" });
 
   // Dockerfile card
   addCodeCard(slide, pres, {
@@ -119,12 +120,12 @@ function slide21(pres) {
   // Image node
   addNodeCard(slide, pres, {
     x: 8.0, y: 1.05, w: 1.55, h: 1.8,
-    emoji: "📦", name: "Image", meta: "myapp:v1.2.3\n(不可變快照)",
+    emoji: "📦", name: "Image", meta: "myapp:v1.2.3\n(Immutable Snapshot)",
     borderColor: COLORS.container,
   });
 
-  // "docker run → 任何主機都能執行"
-  slide.addText("docker run → 任何主機都能執行", {
+  // "docker run → runs on any host"
+  slide.addText("docker run → Runs identically on any host", {
     x: 5.3, y: 2.95, w: 4.3, h: 0.25,
     fontSize: 11, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
@@ -147,9 +148,9 @@ function slide21(pres) {
 
   // Benefits row
   const benefits = [
-    { x: 5.25, label: "🔒 環境一致", sub: "Dev=Staging=Prod", border: COLORS.success },
-    { x: 6.75, label: "⚡ 秒級啟動", sub: "vs VM 分鐘",       border: COLORS.success },
-    { x: 8.25, label: "📜 版本控管", sub: "tag = 可回滾",      border: COLORS.success },
+    { x: 5.25, label: "🔒 Consistent Env", sub: "Dev=Staging=Prod", border: COLORS.success },
+    { x: 6.75, label: "⚡ Instant Startup", sub: "Seconds vs VM Minutes", border: COLORS.success },
+    { x: 8.25, label: "📜 Version Control", sub: "Tag = Rollback-Ready", border: COLORS.success },
   ];
   benefits.forEach((b) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -169,7 +170,7 @@ function slide21(pres) {
 
   addTipBar(slide, pres, {
     y: 4.75,
-    text: "Container 把「應用 + 所有依賴」打包成一個不可變的 Image — 在哪裡跑都一樣",
+    text: "A Container packages your app + all dependencies into an immutable Image — runs the same everywhere",
   });
 }
 
@@ -179,8 +180,8 @@ function slide21(pres) {
 function slide22(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "VM vs Container：架構深度對比",
-    partLabel: "PART 3  ·  22 / 50",
+    title: "VM vs Container: Architecture Deep Comparison",
+    partLabel: "PART 3",
     accentColor: COLORS.accent,
   });
 
@@ -288,9 +289,9 @@ function slide22(pres) {
 
   // VM characteristics row
   const vmChars = [
-    { label: "啟動: 分鐘", fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
-    { label: "大小: GB",   fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
-    { label: "隔離: 強 (OS)", fill: COLORS.cardSuccess, border: COLORS.success, color: COLORS.success },
+    { label: "Boot: Minutes", fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
+    { label: "Size: GB",     fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
+    { label: "Isolation: Strong (OS)", fill: COLORS.cardSuccess, border: COLORS.success, color: COLORS.success },
   ];
   vmChars.forEach((c, i) => {
     const cx = 0.35 + i * 1.45;
@@ -329,7 +330,7 @@ function slide22(pres) {
     x: 5.25, y: 1.56, w: 2.05, h: 0.28,
     fontSize: 10, bold: true, color: COLORS.text, fontFace: FONTS.body, align: "center",
   });
-  slide.addText("依賴包含在 Image 內", {
+  slide.addText("Dependencies bundled in Image", {
     x: 5.25, y: 1.84, w: 2.05, h: 0.38,
     fontSize: 8, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
@@ -345,7 +346,7 @@ function slide22(pres) {
     x: 7.38, y: 1.56, w: 2.05, h: 0.28,
     fontSize: 10, bold: true, color: COLORS.text, fontFace: FONTS.body, align: "center",
   });
-  slide.addText("依賴包含在 Image 內", {
+  slide.addText("Dependencies bundled in Image", {
     x: 7.38, y: 1.84, w: 2.05, h: 0.38,
     fontSize: 8, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
@@ -385,9 +386,9 @@ function slide22(pres) {
 
   // Container characteristics row
   const ctChars = [
-    { label: "啟動: 秒",        fill: COLORS.cardSuccess, border: COLORS.success, color: COLORS.success },
-    { label: "大小: MB",         fill: COLORS.cardSuccess, border: COLORS.success, color: COLORS.success },
-    { label: "隔離: 輕量 (Process)", fill: "0A1929", border: COLORS.accent, color: COLORS.accent },
+    { label: "Boot: Seconds",          fill: COLORS.cardSuccess, border: COLORS.success, color: COLORS.success },
+    { label: "Size: MB",               fill: COLORS.cardSuccess, border: COLORS.success, color: COLORS.success },
+    { label: "Isolation: Light (Process)", fill: "0A1929", border: COLORS.accent, color: COLORS.accent },
   ];
   ctChars.forEach((c, i) => {
     const cx = 5.25 + i * 1.45;
@@ -404,9 +405,9 @@ function slide22(pres) {
 
   // ── Comparison metrics ────────────────────────────────────────────────────
   const metrics = [
-    { x: 0.3,  w: 3.0, value: "分鐘 → 秒", sub: "啟動時間 VM→Container", border: COLORS.success },
-    { x: 3.6,  w: 3.0, value: "GB → MB",   sub: "Image 大小",            border: COLORS.success },
-    { x: 6.9,  w: 2.8, value: "強→輕量",   sub: "隔離程度",              border: COLORS.accent  },
+    { x: 0.3,  w: 3.0, value: "Min → Sec",  sub: "Boot Time: VM → Container",   border: COLORS.success },
+    { x: 3.6,  w: 3.0, value: "GB → MB",   sub: "Image Size",                  border: COLORS.success },
+    { x: 6.9,  w: 2.8, value: "Strong → Light", sub: "Isolation Level",         border: COLORS.accent  },
   ];
   metrics.forEach((m) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -427,13 +428,13 @@ function slide22(pres) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 23 — Docker 核心概念
+// Slide 23 — Docker Core Concepts
 // ─────────────────────────────────────────────────────────────────────────────
 function slide23(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Docker 核心概念：Image → Container → Registry",
-    partLabel: "PART 3  ·  23 / 50",
+    title: "Docker Core Concepts: Image → Container → Registry",
+    partLabel: "PART 3",
     accentColor: COLORS.container,
   });
 
@@ -448,7 +449,7 @@ function slide23(pres) {
 
   addNodeCard(slide, pres, {
     x: 3.95, y: 0.78, w: 1.55, h: 1.75,
-    emoji: "📦", name: "Image", meta: "不可變快照\nmyapp:v1.2.3",
+    emoji: "📦", name: "Image", meta: "Immutable Snapshot\nmyapp:v1.2.3",
     borderColor: COLORS.container,
   });
 
@@ -456,7 +457,7 @@ function slide23(pres) {
 
   addNodeCard(slide, pres, {
     x: 6.55, y: 0.78, w: 1.55, h: 1.75,
-    emoji: "🚀", name: "Container", meta: "執行中的實例\n(可多個)",
+    emoji: "🚀", name: "Container", meta: "Running Instance\n(Multiple OK)",
     borderColor: COLORS.success,
   });
 
@@ -474,17 +475,17 @@ function slide23(pres) {
     fill: { color: COLORS.bg3 },
     line: { color: COLORS.border, width: 0.75 },
   });
-  slide.addText("常用 Docker 指令", {
+  slide.addText("Common Docker Commands", {
     x: 0.5, y: 2.82, w: 9.0, h: 0.35,
     fontSize: 11, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle",
   });
 
   const commands = [
-    { cmd: "docker build -t myapp:v1.2.3 .",             desc: "從 Dockerfile 建立 Image" },
-    { cmd: "docker run -p 8080:8080 myapp:v1.2.3",       desc: "啟動 Container" },
-    { cmd: "docker ps",                                   desc: "查看執行中的 Container" },
-    { cmd: "docker logs <container-id>",                  desc: "查看 Container log" },
-    { cmd: "docker exec -it <container-id> bash",         desc: "進入 Container 除錯" },
+    { cmd: "docker build -t myapp:v1.2.3 .",             desc: "Build Image from Dockerfile" },
+    { cmd: "docker run -p 8080:8080 myapp:v1.2.3",       desc: "Start a Container" },
+    { cmd: "docker ps",                                   desc: "List running Containers" },
+    { cmd: "docker logs <container-id>",                  desc: "View Container logs" },
+    { cmd: "docker exec -it <container-id> bash",         desc: "Shell into Container for debugging" },
   ];
 
   commands.forEach((row, i) => {
@@ -512,8 +513,8 @@ function slide23(pres) {
 function slide24(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Docker Compose：多容器應用一鍵啟動",
-    partLabel: "PART 3  ·  24 / 50",
+    title: "Docker Compose: Multi-Container Apps in One Command",
+    partLabel: "PART 3",
     accentColor: COLORS.container,
   });
 
@@ -573,7 +574,7 @@ function slide24(pres) {
 
   addTipBar(slide, pres, {
     y: 5.05,
-    text: "一個指令搞定：docker compose up -d — 開發環境從此告別手動啟動多個服務",
+    text: "One command does it all: docker compose up -d — No more manually starting multiple services",
   });
 }
 
@@ -583,15 +584,15 @@ function slide24(pres) {
 function slide25(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Container Registry：Image 的倉庫與版本管理",
-    partLabel: "PART 3  ·  25 / 50",
+    title: "Container Registry: Image Repository & Version Management",
+    partLabel: "PART 3",
     accentColor: COLORS.accent,
   });
 
   // ── Pipeline flow ─────────────────────────────────────────────────────────
   addNodeCard(slide, pres, {
     x: 0.2, y: 0.72, w: 1.35, h: 1.35,
-    emoji: "💻", name: "Developer", meta: "程式碼變更",
+    emoji: "💻", name: "Developer", meta: "Code Changes",
     borderColor: COLORS.client,
   });
 
@@ -620,7 +621,7 @@ function slide25(pres) {
   });
 
   // ── Tag strategy section ──────────────────────────────────────────────────
-  slide.addText("Image Tag 策略", {
+  slide.addText("Image Tag Strategy", {
     x: 0.3, y: 2.55, w: 5.0, h: 0.32,
     fontSize: 13, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
@@ -631,11 +632,11 @@ function slide25(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 1.0 },
   });
-  slide.addText("❌ :latest — 避免在 Production 使用", {
+  slide.addText("❌ :latest — Avoid in Production", {
     x: 0.45, y: 2.89, w: 4.1, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.danger, fontFace: FONTS.body,
   });
-  slide.addText("無法回溯，不知道是哪個版本", {
+  slide.addText("Cannot trace back; unknown which version is running", {
     x: 0.45, y: 3.19, w: 4.1, h: 0.28,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -646,11 +647,11 @@ function slide25(pres) {
     fill: { color: COLORS.cardSuccess },
     line: { color: COLORS.success, width: 1.0 },
   });
-  slide.addText("✅ :v1.2.3 (Semantic Version) — 推薦", {
+  slide.addText("✅ :v1.2.3 (Semantic Version) — Recommended", {
     x: 5.35, y: 2.89, w: 4.1, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
-  slide.addText("明確版本，隨時可回滾", {
+  slide.addText("Explicit version, rollback anytime", {
     x: 5.35, y: 3.19, w: 4.1, h: 0.28,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -665,7 +666,7 @@ function slide25(pres) {
     x: 0.45, y: 3.92, w: 4.1, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
-  slide.addText("每個 commit 對應一個不可變 Image，CI/CD 常用", {
+  slide.addText("Each commit maps to an immutable Image, common in CI/CD", {
     x: 0.45, y: 4.22, w: 4.1, h: 0.28,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -680,25 +681,25 @@ function slide25(pres) {
     x: 5.35, y: 3.92, w: 4.1, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
-  slide.addText("時間戳+Hash，可讀性與唯一性兼具", {
+  slide.addText("Timestamp + Hash for readability and uniqueness", {
     x: 5.35, y: 4.22, w: 4.1, h: 0.28,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
 
   addTipBar(slide, pres, {
     y: 4.92,
-    text: "永遠不要在 Prod 用 :latest — 你永遠不知道 latest 到底是哪個版本",
+    text: "Never use :latest in Prod — you can never be sure which version 'latest' actually is",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 26 — Container 化效益
+// Slide 26 — Containerization Benefits
 // ─────────────────────────────────────────────────────────────────────────────
 function slide26(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Container 化：從維運噩夢到一致部署",
-    partLabel: "PART 3  ·  26 / 50",
+    title: "Containerization: From Operations Nightmare to Consistent Deployment",
+    partLabel: "PART 3",
     accentColor: COLORS.container,
     complexity: 5,
   });
@@ -710,7 +711,7 @@ function slide26(pres) {
   });
 
   // ── Left — ❌ Before ──────────────────────────────────────────────────────
-  addCompareHeading(slide, pres, { x: 0.3, y: 0.62, w: 4.4, label: "❌  Container 化之前", type: "bad" });
+  addCompareHeading(slide, pres, { x: 0.3, y: 0.62, w: 4.4, label: "❌  Before Containerization", type: "bad" });
 
   // Row 1: OS badges
   const osBadges = ["Ubuntu 18", "Ubuntu 20", "CentOS 7", "Debian 10", "RHEL 8"];
@@ -762,9 +763,9 @@ function slide26(pres) {
 
   // Additional chaos rows
   const chaosRows = [
-    { label: "手動 SSH 部署腳本", y: 2.15 },
-    { label: "每台主機設定各不同", y: 2.45 },
-    { label: "「只有我知道怎麼重啟」", y: 2.75 },
+    { label: "Manual SSH deploy scripts", y: 2.15 },
+    { label: "Every host configured differently", y: 2.45 },
+    { label: "\"Only I know how to restart it\"", y: 2.75 },
   ];
   chaosRows.forEach((r) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -784,13 +785,13 @@ function slide26(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 1.0 },
   });
-  slide.addText("😱 15+ 台 × N 個不同設定 = 維運地獄", {
+  slide.addText("😱 15+ hosts × N different configs = Operations Hell", {
     x: 0.45, y: 3.25, w: 4.1, h: 0.4,
     fontSize: 11, bold: true, color: COLORS.danger, fontFace: FONTS.body, valign: "middle",
   });
 
   // ── Right — ✅ After ──────────────────────────────────────────────────────
-  addCompareHeading(slide, pres, { x: 5.2, y: 0.62, w: 4.4, label: "✅  Container 化之後", type: "good" });
+  addCompareHeading(slide, pres, { x: 5.2, y: 0.62, w: 4.4, label: "✅  After Containerization", type: "good" });
 
   addZoneBorder(slide, pres, {
     x: 5.25, y: 0.95, w: 4.35, h: 2.4,
@@ -821,7 +822,7 @@ function slide26(pres) {
     borderColor: COLORS.infra,
   });
 
-  slide.addText("✅ 4 個 Container Image，全部環境一致 — Dev = Staging = Prod", {
+  slide.addText("✅ 4 Container Images, identical across all environments — Dev = Staging = Prod", {
     x: 5.2, y: 3.25, w: 4.55, h: 0.4,
     fontSize: 10, bold: true, color: COLORS.success, fontFace: FONTS.body, valign: "middle",
   });
@@ -832,7 +833,7 @@ function slide26(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.container, width: 1.5 },
   });
-  slide.addText("複雜度 9/10  →  5/10  ↓  維運噩夢  →  標準化部署", {
+  slide.addText("Complexity 9/10  →  5/10  ↓  Operations Nightmare  →  Standardized Deployment", {
     x: 0.3, y: 3.72, w: 9.4, h: 0.62,
     fontSize: 14, bold: true, color: COLORS.container, fontFace: FONTS.body,
     align: "center", valign: "middle",
@@ -840,9 +841,9 @@ function slide26(pres) {
 
   // ── Benefit chips ─────────────────────────────────────────────────────────
   const chips = [
-    { x: 0.3,  border: COLORS.success,   title: "🔒 環境一致",  sub: "Dev = Staging = Prod" },
-    { x: 3.55, border: COLORS.accent,    title: "📜 版本鎖定",  sub: "Image tag 隨時可回滾" },
-    { x: 6.8,  border: COLORS.container, title: "⚡ 快速部署",  sub: "docker pull + run，秒級" },
+    { x: 0.3,  border: COLORS.success,   title: "🔒 Consistent Env",   sub: "Dev = Staging = Prod" },
+    { x: 3.55, border: COLORS.accent,    title: "📜 Version Locked",   sub: "Image tag = instant rollback" },
+    { x: 6.8,  border: COLORS.container, title: "⚡ Rapid Deployment", sub: "docker pull + run in seconds" },
   ];
   chips.forEach((c) => {
     slide.addShape(pres.ShapeType.roundRect, {

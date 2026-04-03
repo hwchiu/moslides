@@ -70,13 +70,13 @@ function addSlideHeader(slide, pres, opts = {}) {
                     : COLORS.success;
     const bx = 6.75, by = 0.12, bw = 1.05, bh = 0.09;
 
-    slide.addText(`複雜度  ${complexity}/${maxComplexity}`, {
+    slide.addText(`Complexity  ${complexity}/${maxComplexity}`, {
       x: bx, y: 0.01, w: bw, h: 0.15,
       fontSize: 7.5, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
     });
     slide.addShape(pres.ShapeType.rect, {
       x: bx, y: by, w: bw, h: bh,
-      fill: { color: "252D38" }, line: { color: "252D38", width: 0 },
+      fill: { color: COLORS.meterBg }, line: { color: COLORS.meterBg, width: 0 },
     });
     slide.addShape(pres.ShapeType.rect, {
       x: bx, y: by, w: Math.max(0.04, bw * ratio), h: bh,
@@ -117,11 +117,11 @@ function addBottomPanel(slide, pres, pros = [], cons = [], opts = {}) {
     line: { color: COLORS.danger, width: 0.5 },
   });
 
-  slide.addText("✅  優點 / 適用場景", {
+  slide.addText("✅  Advantages", {
     x: 0.2, y: y + 0.1, w: midX - 0.3, h: 0.28,
     fontSize: 10.5, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
-  slide.addText("⚠️  限制 / 痛點", {
+  slide.addText("⚠️  Limitations", {
     x: midX + 0.2, y: y + 0.1, w: midX - 0.3, h: 0.28,
     fontSize: 10.5, bold: true, color: COLORS.danger, fontFace: FONTS.body,
   });
@@ -160,16 +160,17 @@ function addBottomPanel(slide, pres, pros = [], cons = [], opts = {}) {
 /**
  * Rounded service node card.
  *
- * opts: { x, y, w=1.3, h=1.05, emoji, name, meta, borderColor }
+ * opts: { x, y, w=1.3, h=1.05, emoji, name, meta, borderColor, nameColor }
+ * nameColor: if set, uses this color for the name text (color-matched to border)
  */
 function addNodeCard(slide, pres, opts = {}) {
-  const { x, y, w = 1.3, h = 1.05, emoji, name, meta, borderColor = COLORS.accent } = opts;
+  const { x, y, w = 1.3, h = 1.05, emoji, name, meta, borderColor = COLORS.accent, nameColor } = opts;
 
   slide.addShape(pres.ShapeType.roundRect, {
     x, y, w, h, rectRadius: 0.1,
     fill: { color: COLORS.bg2 },
     line: { color: borderColor, width: 1.5 },
-    shadow: { type: "outer", color: "000000", blur: 6, offset: 2, angle: 45, opacity: 0.3 },
+    shadow: { type: "outer", color: COLORS.shadowColor, blur: 6, offset: 2, angle: 45, opacity: COLORS.shadowOpacity },
   });
 
   if (emoji) {
@@ -181,7 +182,7 @@ function addNodeCard(slide, pres, opts = {}) {
 
   slide.addText(name || "", {
     x: x + 0.06, y: y + h * 0.52, w: w - 0.12, h: 0.27,
-    fontSize: 10.5, bold: true, color: COLORS.text, fontFace: FONTS.body, align: "center",
+    fontSize: 10.5, bold: true, color: nameColor || COLORS.text, fontFace: FONTS.body, align: "center",
   });
 
   if (meta) {
@@ -224,7 +225,7 @@ function addMiniNode(slide, pres, opts = {}) {
 // ── Connectors ────────────────────────────────────────────────────────────────
 
 /**
- * Horizontal arrow with optional protocol label above.
+ * Horizontal arrow with pill-badge protocol label.
  * opts: { x, y, w=0.55, label="", color }
  */
 function addHArrow(slide, pres, opts = {}) {
@@ -236,9 +237,46 @@ function addHArrow(slide, pres, opts = {}) {
   });
 
   if (label) {
+    // Pill badge background
+    const pillW = Math.max(w * 0.85, 0.6);
+    const pillX = x + (w - pillW) / 2;
+    slide.addShape(pres.ShapeType.roundRect, {
+      x: pillX, y: y - 0.04, w: pillW, h: 0.22, rectRadius: 0.06,
+      fill: { color: COLORS.bg2 },
+      line: { color, width: 0.75 },
+    });
     slide.addText(label, {
-      x: x - 0.05, y: y - 0.02, w: w + 0.1, h: 0.2,
-      fontSize: 8, color, fontFace: FONTS.code, align: "center",
+      x: pillX, y: y - 0.04, w: pillW, h: 0.22,
+      fontSize: 7.5, bold: true, color, fontFace: FONTS.code, align: "center", valign: "middle",
+    });
+  }
+}
+
+/**
+ * Horizontal dashed arrow (for response / reverse flows).
+ * opts: { x, y, w, label="", color, reverse=false }
+ */
+function addDashedHArrow(slide, pres, opts = {}) {
+  const { x, y, w, label = "", color = COLORS.success, reverse = false } = opts;
+
+  slide.addShape(pres.ShapeType.line, {
+    x, y, w, h: 0.01,
+    line: { color, width: 1.5, dashType: "dash",
+            beginArrowType: reverse ? "arrow" : "none",
+            endArrowType: reverse ? "none" : "arrow" },
+  });
+
+  if (label) {
+    const pillW = Math.min(w * 0.5, 2.0);
+    const pillX = x + (w - pillW) / 2;
+    slide.addShape(pres.ShapeType.roundRect, {
+      x: pillX, y: y - 0.25, w: pillW, h: 0.22, rectRadius: 0.06,
+      fill: { color: COLORS.bg2 },
+      line: { color, width: 0.75 },
+    });
+    slide.addText(label, {
+      x: pillX, y: y - 0.25, w: pillW, h: 0.22,
+      fontSize: 7.5, bold: true, color, fontFace: FONTS.code, align: "center", valign: "middle",
     });
   }
 }
@@ -313,7 +351,7 @@ function addAlertBar(slide, pres, opts = {}) {
     if (tx + 0.5 > W - 0.3) return;
     slide.addShape(pres.ShapeType.roundRect, {
       x: tx, y: y + 0.08, w: 1.2, h: 0.25, rectRadius: 0.04,
-      fill: { color: "3D1515" }, line: { color: COLORS.danger, width: 0.5 },
+      fill: { color: COLORS.dangerTagBg }, line: { color: COLORS.danger, width: 0.5 },
     });
     slide.addText(tag, {
       x: tx, y: y + 0.11, w: 1.2, h: 0.18,
@@ -331,7 +369,7 @@ function addTipBar(slide, pres, opts = {}) {
 
   slide.addShape(pres.ShapeType.roundRect, {
     x: 0.3, y, w: 9.4, h: 0.42, rectRadius: 0.06,
-    fill: { color: "0A1929" },
+    fill: { color: COLORS.tipBg },
     line: { color: COLORS.accent, width: 0.75 },
   });
 
@@ -420,7 +458,7 @@ function addSummaryCard(slide, pres, opts = {}) {
   slide.addShape(pres.ShapeType.roundRect, {
     x, y, w, h, rectRadius: 0.1,
     fill: { color: COLORS.bg2 }, line: { color, width: 1.2 },
-    shadow: { type: "outer", color: "000000", blur: 6, offset: 2, angle: 45, opacity: 0.3 },
+    shadow: { type: "outer", color: COLORS.shadowColor, blur: 6, offset: 2, angle: 45, opacity: COLORS.shadowOpacity },
   });
 
   slide.addText(icon, {
@@ -461,7 +499,7 @@ function addMetricCard(slide, pres, opts = {}) {
   slide.addShape(pres.ShapeType.roundRect, {
     x, y, w, h, rectRadius: 0.12,
     fill: { color: COLORS.bg2 }, line: { color, width: 1.5 },
-    shadow: { type: "outer", color: "000000", blur: 8, offset: 3, angle: 45, opacity: 0.35 },
+    shadow: { type: "outer", color: COLORS.shadowColor, blur: 8, offset: 3, angle: 45, opacity: COLORS.shadowOpacity },
   });
 
   slide.addText(value || "", {
@@ -561,8 +599,8 @@ function addCodeCard(slide, pres, opts = {}) {
 
   slide.addShape(pres.ShapeType.roundRect, {
     x, y, w, h, rectRadius: 0.1,
-    fill: { color: "0D1117" }, line: { color: COLORS.border, width: 1.0 },
-    shadow: { type: "outer", color: "000000", blur: 10, offset: 4, angle: 45, opacity: 0.5 },
+    fill: { color: COLORS.codeBg }, line: { color: COLORS.border, width: 1.0 },
+    shadow: { type: "outer", color: COLORS.shadowColor, blur: 10, offset: 4, angle: 45, opacity: COLORS.shadowOpacity },
   });
 
   if (language) {
@@ -583,6 +621,76 @@ function addCodeCard(slide, pres, opts = {}) {
   });
 }
 
+// ── Code-style comment bar ────────────────────────────────────────────────────
+
+/**
+ * Code-comment style section header: "// message"
+ * opts: { y, message, sub="" }
+ */
+function addCommentBar(slide, pres, opts = {}) {
+  const { y = 3.08, message = "", sub = "" } = opts;
+
+  slide.addShape(pres.ShapeType.roundRect, {
+    x: 0.3, y, w: 9.4, h: sub ? 0.52 : 0.34, rectRadius: 0.06,
+    fill: { color: COLORS.bg2 },
+    line: { color: COLORS.border, width: 0.75 },
+  });
+
+  slide.addText(`// ${message}`, {
+    x: 0.5, y: y + 0.02, w: 9.0, h: 0.22,
+    fontSize: 10, bold: true, color: COLORS.textMuted, fontFace: FONTS.code,
+    valign: "middle",
+  });
+
+  if (sub) {
+    slide.addText(sub, {
+      x: 0.7, y: y + 0.24, w: 8.8, h: 0.22,
+      fontSize: 8.5, color: COLORS.textMuted, fontFace: FONTS.code,
+      italic: true, valign: "middle",
+    });
+  }
+}
+
+// ── Knowledge cards (bottom three-column) ─────────────────────────────────────
+
+/**
+ * Three knowledge cards at the bottom of a slide.
+ * cards: [{ title, body, color }]
+ * opts: { y, h=1.0 }
+ */
+function addKnowledgeCards(slide, pres, cards = [], opts = {}) {
+  const { y = H - 1.2, h = 1.05 } = opts;
+  const gap = 0.15;
+  const cardW = (W - 0.4 - gap * (cards.length - 1)) / cards.length;
+
+  cards.forEach((card, i) => {
+    const cx = 0.2 + i * (cardW + gap);
+    const c = card.color || COLORS.accent;
+
+    slide.addShape(pres.ShapeType.roundRect, {
+      x: cx, y, w: cardW, h, rectRadius: 0.08,
+      fill: { color: COLORS.bg2 },
+      line: { color: COLORS.border, width: 0.75 },
+    });
+
+    // Top color accent strip
+    slide.addShape(pres.ShapeType.rect, {
+      x: cx, y, w: cardW, h: 0.04,
+      fill: { color: c }, line: { color: c, width: 0 },
+    });
+
+    slide.addText(card.title || "", {
+      x: cx + 0.12, y: y + 0.1, w: cardW - 0.24, h: 0.28,
+      fontSize: 11, bold: true, color: c, fontFace: FONTS.body, valign: "middle",
+    });
+
+    slide.addText(card.body || "", {
+      x: cx + 0.12, y: y + 0.38, w: cardW - 0.24, h: h - 0.5,
+      fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body, valign: "top",
+    });
+  });
+}
+
 // ── Exports ───────────────────────────────────────────────────────────────────
 
 module.exports = {
@@ -593,10 +701,13 @@ module.exports = {
   addNodeCard,
   addMiniNode,
   addHArrow,
+  addDashedHArrow,
   addVArrow,
   addZoneBorder,
   addAlertBar,
   addTipBar,
+  addCommentBar,
+  addKnowledgeCards,
   addCompareHeading,
   addCompareItem,
   addSummaryCard,

@@ -4,7 +4,8 @@
 
 const fs      = require("fs");
 const pptxgen = require("pptxgenjs");
-const { COLORS, FONTS } = require("./design-system");
+const { COLORS, FONTS, setTheme } = require("./design-system");
+setTheme("light");
 const {
   W, H, HEADER_H, BOTTOM_Y,
   initSlide, addSlideHeader, addBottomPanel,
@@ -14,22 +15,22 @@ const {
 } = require("./helpers");
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 27 — 12-Factor App 介紹
+// Slide 27 — 12-Factor App Introduction
 // ─────────────────────────────────────────────────────────────────────────────
 function slide27(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "12-Factor App：現代應用的設計原則",
-    partLabel: "PART 4  ·  27 / 50",
+    title: "12-Factor App: Modern Application Design Principles",
+    partLabel: "PART 4",
     accentColor: COLORS.accent,
   });
 
-  slide.addText("12-Factor App 是什麼？", {
+  slide.addText("What is the 12-Factor App?", {
     x: 0.3, y: 0.62, w: 9.4, h: 0.28,
     fontSize: 15, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
 
-  slide.addText("由 Heroku 工程師總結的 12 條準則，讓應用程式能在 Cloud Native 環境中良好運作", {
+  slide.addText("12 principles distilled by Heroku engineers to help applications thrive in Cloud Native environments", {
     x: 0.3, y: 0.95, w: 9.4, h: 0.28,
     fontSize: 10, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -85,7 +86,7 @@ function slide27(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "這 12 條原則不是規定，是建議 — 但遵循它們能讓你的 App 在 Container/Cloud 環境中自然地運作",
+    text: "These 12 principles are guidelines, not rules — but following them lets your app run naturally in Container/Cloud environments",
   });
 }
 
@@ -95,8 +96,8 @@ function slide27(pres) {
 function slide28(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Factor 1-3：Codebase、Dependencies、Config",
-    partLabel: "PART 4  ·  28 / 50",
+    title: "Factor 1-3: Codebase, Dependencies, Config",
+    partLabel: "PART 4",
     accentColor: COLORS.accent,
   });
 
@@ -104,28 +105,28 @@ function slide28(pres) {
     {
       title: "① Codebase", icon: "📁", color: COLORS.accent,
       items: [
-        { text: "一個 Repo = 一個應用",     sub: "不要把多個應用混在同一個 repo" },
-        { text: "多個環境 = 同一份 code" },
-        { text: "分支策略：main/dev/feature", sub: "main 永遠對應 Prod" },
-        { text: "❌ 每個環境不同 branch" },
+        { text: "One repo = One application",     sub: "Don't mix multiple apps in a single repo" },
+        { text: "Multiple environments = Same codebase" },
+        { text: "Branch strategy: main/dev/feature", sub: "main always maps to Prod" },
+        { text: "❌ Different branch per environment" },
       ],
     },
     {
       title: "② Dependencies", icon: "📦", color: COLORS.infra,
       items: [
-        { text: "顯式宣告所有依賴",           sub: "requirements.txt / package.json / go.mod" },
-        { text: "不依賴 System-Level 套件",   sub: "不能假設主機有 curl 或 zip" },
-        { text: "Container 完美符合此條",     sub: "Dockerfile 即依賴清單" },
-        { text: "❌ pip install 沒有版本號" },
+        { text: "Explicitly declare all dependencies",           sub: "requirements.txt / package.json / go.mod" },
+        { text: "No system-level package assumptions",   sub: "Cannot assume host has curl or zip" },
+        { text: "Containers perfectly satisfy this factor",     sub: "Dockerfile is your dependency manifest" },
+        { text: "❌ pip install without version pinning" },
       ],
     },
     {
       title: "③ Config", icon: "⚙️", color: COLORS.warning,
       items: [
-        { text: "設定放在環境變數",            sub: "DB_URL, API_KEY, PORT..." },
+        { text: "Store config in environment variables",            sub: "DB_URL, API_KEY, PORT..." },
         { text: "✅ os.getenv('DB_URL')",     sub: "✅ Kubernetes ConfigMap/Secret" },
-        { text: "❌ 設定寫死在程式碼",         sub: "❌ config.dev.py / config.prod.py" },
-        { text: "Config 不進版本控管" },
+        { text: "❌ Hardcoded config in source code",         sub: "❌ config.dev.py / config.prod.py" },
+        { text: "Config must not be committed to version control" },
       ],
     },
   ];
@@ -134,7 +135,7 @@ function slide28(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "Config 放環境變數是 12-Factor 最重要的一條 — 讓同一個 Image 在 dev/staging/prod 都能跑",
+    text: "Storing config in env vars is the most impactful 12-Factor rule — the same image runs across dev/staging/prod",
   });
 }
 
@@ -144,8 +145,8 @@ function slide28(pres) {
 function slide29(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Factor 4-6：Backing Services、Build/Release/Run、Processes",
-    partLabel: "PART 4  ·  29 / 50",
+    title: "Factor 4-6: Backing Services, Build/Release/Run, Processes",
+    partLabel: "PART 4",
     accentColor: COLORS.infra,
   });
 
@@ -153,30 +154,30 @@ function slide29(pres) {
     {
       title: "④ Backing Services", icon: "🔌", color: COLORS.database,
       items: [
-        { text: "資料庫/MQ/Cache = 附加服務" },
-        { text: "本地 = 第三方服務，同等對待", sub: "換 DB 只需換 URL" },
-        { text: "透過 URL/credential 存取" },
-        { text: "❌ 直接 localhost:5432" },
+        { text: "DB/MQ/Cache = Attached resources" },
+        { text: "Local and third-party services treated equally", sub: "Switching DB only requires changing the URL" },
+        { text: "Access via URL/credential" },
+        { text: "❌ Hardcoded localhost:5432" },
         { text: "✅ DB_URL env var" },
       ],
     },
     {
       title: "⑤ Build/Release/Run", icon: "🏗️", color: COLORS.accent,
       items: [
-        { text: "Build：原始碼 → 可執行包" },
-        { text: "Release：Build + Config", sub: "打上版本號，不可變" },
-        { text: "Run：執行特定 Release" },
-        { text: "三個階段嚴格分離" },
-        { text: "Release 不可被修改" },
+        { text: "Build: Source code → Executable artifact" },
+        { text: "Release: Build + Config", sub: "Tagged with version, immutable" },
+        { text: "Run: Execute a specific Release" },
+        { text: "Three stages strictly separated" },
+        { text: "Releases are immutable" },
       ],
     },
     {
       title: "⑥ Processes", icon: "🔄", color: COLORS.success,
       items: [
-        { text: "Process 必須是 Stateless" },
-        { text: "無狀態 = 可隨時增減",         sub: "這就是 Scale Out 的前提！" },
-        { text: "Session/State → 外部儲存",   sub: "Redis / DB" },
-        { text: "❌ 本地檔案系統存 Session" },
+        { text: "Processes must be stateless" },
+        { text: "Stateless = Can scale freely",         sub: "This is the prerequisite for Scale Out!" },
+        { text: "Session/State → External storage",   sub: "Redis / DB" },
+        { text: "❌ Storing sessions on local filesystem" },
         { text: "✅ JWT + Redis" },
       ],
     },
@@ -186,7 +187,7 @@ function slide29(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "Stateless Process (Factor 6) 是 Scale Out 的基石 — 沒有這條，水平擴展就是夢",
+    text: "Stateless Process (Factor 6) is the cornerstone of Scale Out — without it, horizontal scaling is impossible",
   });
 }
 
@@ -196,8 +197,8 @@ function slide29(pres) {
 function slide30(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Factor 7-9：Port Binding、Concurrency、Disposability",
-    partLabel: "PART 4  ·  30 / 50",
+    title: "Factor 7-9: Port Binding, Concurrency, Disposability",
+    partLabel: "PART 4",
     accentColor: COLORS.success,
   });
 
@@ -205,31 +206,31 @@ function slide30(pres) {
     {
       title: "⑦ Port Binding", icon: "🔌", color: COLORS.frontend,
       items: [
-        { text: "應用自帶 HTTP Server" },
-        { text: "透過 Port 對外提供服務",       sub: "不需要外部 Apache/Nginx 才能跑" },
+        { text: "App includes its own HTTP server" },
+        { text: "Exports services via port binding",       sub: "No external Apache/Nginx required to run" },
         { text: "✅ Flask/FastAPI/Express" },
-        { text: "容器化天然符合此條" },
-        { text: "PORT=8080 環境變數控制" },
+        { text: "Containerization naturally satisfies this" },
+        { text: "PORT=8080 controlled via env var" },
       ],
     },
     {
       title: "⑧ Concurrency", icon: "⚡", color: COLORS.accent,
       items: [
-        { text: "透過 Process 類型 Scale" },
+        { text: "Scale via process types" },
         { text: "Web Process × N = Scale Out" },
-        { text: "Worker Process = 非同步任務" },
-        { text: "不同類型可獨立 Scale",         sub: "Web × 5, Worker × 2" },
-        { text: "Kubernetes Deployment 完美支援" },
+        { text: "Worker Process = Async tasks" },
+        { text: "Each type scales independently",         sub: "Web × 5, Worker × 2" },
+        { text: "Kubernetes Deployment supports this perfectly" },
       ],
     },
     {
       title: "⑨ Disposability", icon: "🔄", color: COLORS.success,
       items: [
-        { text: "Process 要能快速啟動",          sub: "目標 < 10 秒" },
-        { text: "優雅關閉 (Graceful Shutdown)" },
-        { text: "接到 SIGTERM → 完成當前請求再關" },
-        { text: "Crash 也沒關係 — 快速重啟" },
-        { text: "Container + K8s 完美搭配" },
+        { text: "Processes must start quickly",          sub: "Target < 10 seconds" },
+        { text: "Graceful Shutdown" },
+        { text: "On SIGTERM → Finish current requests, then exit" },
+        { text: "Crashes are fine — fast restart" },
+        { text: "Container + K8s are a perfect match" },
       ],
     },
   ];
@@ -238,7 +239,7 @@ function slide30(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "Disposability 讓 Kubernetes 可以隨時 kill/restart 你的 Container — 不用怕，設計好就沒問題",
+    text: "Disposability lets Kubernetes kill/restart your containers at any time — design it right, and there's nothing to worry about",
   });
 }
 
@@ -248,8 +249,8 @@ function slide30(pres) {
 function slide31(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Factor 10-12：Dev/Prod Parity、Logs、Admin Processes",
-    partLabel: "PART 4  ·  31 / 50",
+    title: "Factor 10-12: Dev/Prod Parity, Logs, Admin Processes",
+    partLabel: "PART 4",
     accentColor: COLORS.warning,
   });
 
@@ -257,31 +258,31 @@ function slide31(pres) {
     {
       title: "⑩ Dev/Prod Parity", icon: "🔄", color: COLORS.warning,
       items: [
-        { text: "Dev 環境要盡量接近 Prod" },
-        { text: "❌ Dev 用 SQLite, Prod 用 Postgres" },
-        { text: "✅ Docker Compose 模擬全部服務" },
-        { text: "縮短 Dev → Deploy 週期" },
-        { text: "Container 讓 Parity 變容易" },
+        { text: "Dev environment should closely mirror Prod" },
+        { text: "❌ Dev uses SQLite, Prod uses Postgres" },
+        { text: "✅ Docker Compose to replicate all services" },
+        { text: "Shorten the Dev → Deploy cycle" },
+        { text: "Containers make parity easy" },
       ],
     },
     {
       title: "⑪ Logs", icon: "📋", color: COLORS.infra,
       items: [
-        { text: "Log 輸出到 stdout/stderr" },
-        { text: "不要自己處理 Log 檔案" },
-        { text: "由平台收集 (FluentD, CloudWatch)" },
-        { text: "結構化 Log (JSON)",              sub: "方便搜尋與分析" },
+        { text: "Output logs to stdout/stderr" },
+        { text: "Don't manage log files yourself" },
+        { text: "Let the platform collect them (FluentD, CloudWatch)" },
+        { text: "Structured logs (JSON)",              sub: "Easy to search and analyze" },
         { text: "kubectl logs / docker logs" },
       ],
     },
     {
       title: "⑫ Admin Processes", icon: "🛠️", color: COLORS.accent,
       items: [
-        { text: "一次性管理任務 = 獨立 Process" },
+        { text: "One-off admin tasks = Separate process" },
         { text: "DB Migration: kubectl exec" },
-        { text: "Data Cleanup: 獨立 Job" },
-        { text: "與 App 一起打包進 Image" },
-        { text: "❌ 直接 SSH 進 Prod 機器跑" },
+        { text: "Data Cleanup: Dedicated Job" },
+        { text: "Package admin scripts into the same Image" },
+        { text: "❌ SSH into production machines directly" },
       ],
     },
   ];
@@ -290,18 +291,18 @@ function slide31(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "Logs as streams (Factor 11) 讓 ELK Stack / CloudWatch 可以集中管理所有 Container 的 log",
+    text: "Logs as streams (Factor 11) enables ELK Stack / CloudWatch to centrally manage all container logs",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 32 — Container vs 12-Factor 對照
+// Slide 32 — Container vs 12-Factor Alignment
 // ─────────────────────────────────────────────────────────────────────────────
 function slide32(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Container 天然符合 12-Factor App 原則",
-    partLabel: "PART 4  ·  32 / 50",
+    title: "Containers Naturally Align with 12-Factor App Principles",
+    partLabel: "PART 4",
     accentColor: COLORS.container,
   });
 
@@ -315,11 +316,11 @@ function slide32(pres) {
     x: 0.5, y: 0.62, w: 3.0, h: 0.38,
     fontSize: 9.5, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle",
   });
-  slide.addText("Container / Docker 的支援", {
+  slide.addText("Container / Docker Support", {
     x: 3.6, y: 0.62, w: 4.5, h: 0.38,
     fontSize: 9.5, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle",
   });
-  slide.addText("程度", {
+  slide.addText("Level", {
     x: 8.25, y: 0.62, w: 1.3, h: 0.38,
     fontSize: 9.5, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle",
   });
@@ -333,8 +334,8 @@ function slide32(pres) {
     { num: "⑥", name: "Processes",         support: "Stateless Container = Scale Out",        color: COLORS.infra },
     { num: "⑦", name: "Port Binding",      support: "EXPOSE + -p flag",                       color: COLORS.frontend },
     { num: "⑧", name: "Concurrency",       support: "docker run ×N / K8s replicas",           color: COLORS.accent },
-    { num: "⑨", name: "Disposability",     support: "Container 快速啟動/關閉",                  color: COLORS.success },
-    { num: "⑩", name: "Dev/Prod Parity",   support: "同一個 Image，環境一致",                   color: COLORS.warning },
+    { num: "⑨", name: "Disposability",     support: "Containers start/stop quickly",              color: COLORS.success },
+    { num: "⑩", name: "Dev/Prod Parity",   support: "Same image, consistent environments",       color: COLORS.warning },
     { num: "⑪", name: "Logs",              support: "docker logs / stdout",                   color: COLORS.warning },
     { num: "⑫", name: "Admin Processes",   support: "docker exec / K8s Job",                  color: COLORS.accent },
   ];
@@ -372,18 +373,18 @@ function slide32(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "Container 不只解決了環境一致問題 — 它幾乎完美地支援了所有 12-Factor App 的原則",
+    text: "Containers don't just solve environment consistency — they nearly perfectly support all 12-Factor App principles",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 33 — 12-Factor 實戰：一個 API Service
+// Slide 33 — 12-Factor in Practice: An API Service
 // ─────────────────────────────────────────────────────────────────────────────
 function slide33(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "12-Factor 實戰：一個符合規範的 FastAPI Service",
-    partLabel: "PART 4  ·  33 / 50",
+    title: "12-Factor in Practice: A Compliant FastAPI Service",
+    partLabel: "PART 4",
     accentColor: COLORS.container,
   });
 
@@ -407,17 +408,17 @@ function slide33(pres) {
   });
 
   // Right: factor compliance chips
-  slide.addText("遵循了哪些 Factor？", {
+  slide.addText("Which Factors are covered?", {
     x: 5.2, y: 0.65, w: 4.6, h: 0.35,
     fontSize: 13, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
 
   const chips = [
     // Col 1
-    { text: "✅ Factor 2 — 依賴宣告",     col: 0, row: 0 },
-    { text: "✅ Factor 3 — Config 環境變數", col: 0, row: 1 },
+    { text: "✅ Factor 2 — Dep Declaration",     col: 0, row: 0 },
+    { text: "✅ Factor 3 — Config via Env Vars", col: 0, row: 1 },
     { text: "✅ Factor 6 — Stateless",    col: 0, row: 2 },
-    { text: "✅ Factor 9 — 快速啟動",      col: 0, row: 3 },
+    { text: "✅ Factor 9 — Fast Startup",      col: 0, row: 3 },
     // Col 2
     { text: "✅ Factor 4 — Backing Svc",  col: 1, row: 0 },
     { text: "✅ Factor 7 — Port Binding", col: 1, row: 1 },
@@ -450,57 +451,57 @@ function slide33(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "一個符合 12-Factor 的 App 天然就是 Container-ready — 這就是現代 Cloud Native 應用的標配",
+    text: "A 12-Factor compliant app is inherently container-ready — this is the standard for modern Cloud Native applications",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 34 — Part 4 小結
+// Slide 34 — Part 4 Summary
 // ─────────────────────────────────────────────────────────────────────────────
 function slide34(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Part 4 小結：設計優良的 Cloud Native 應用",
-    partLabel: "PART 4  ·  34 / 50",
+    title: "Part 4 Summary: Well-Designed Cloud Native Applications",
+    partLabel: "PART 4",
     accentColor: COLORS.accent,
   });
 
   addSummaryCard(slide, pres, {
     x: 0.3, y: 0.65, w: 9.4, h: 1.32,
     icon: "📐",
-    title: "12-Factor App 不是規定，是智慧結晶",
+    title: "12-Factor App: Not Rules, but Distilled Wisdom",
     items: [
-      "Heroku 從數百個應用中提煉的最佳實踐",
-      "每一條都解決了真實的工程痛點",
+      "Best practices distilled from hundreds of apps by Heroku",
+      "Each factor addresses a real-world engineering pain point",
     ],
     color: COLORS.accent,
-    status: "學習重點",
+    status: "Key Takeaway",
   });
 
   addSummaryCard(slide, pres, {
     x: 0.3, y: 2.05, w: 9.4, h: 1.32,
     icon: "🐳",
-    title: "Container 天然符合 12-Factor — 它們互相強化",
+    title: "Containers Naturally Align with 12-Factor — They Reinforce Each Other",
     items: [
-      "用 Dockerfile 管理依賴 (Factor 2)",
-      "用環境變數設定 (Factor 3)",
+      "Manage dependencies with Dockerfile (Factor 2)",
+      "Configure via environment variables (Factor 3)",
       "Stateless Process = Scale Out (Factor 6)",
     ],
     color: COLORS.container,
-    status: "核心洞察",
+    status: "Core Insight",
   });
 
   addSummaryCard(slide, pres, {
     x: 0.3, y: 3.45, w: 9.4, h: 1.32,
     icon: "🚀",
-    title: "下一步：自動化這一切",
+    title: "Next Step: Automate Everything",
     items: [
-      "手動 docker build/push 只是起點",
-      "CI/CD Pipeline 讓每次 commit 自動部署",
-      "→ Part 5: DevOps 與 CI/CD Pipeline",
+      "Manual docker build/push is just the beginning",
+      "CI/CD Pipelines automate deployment on every commit",
+      "→ Part 5: DevOps and CI/CD Pipelines",
     ],
     color: COLORS.success,
-    status: "預告 Part 5",
+    status: "Part 5 Preview",
   });
 }
 

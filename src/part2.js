@@ -1,11 +1,12 @@
 // src/part2.js
-// Part 2: 分散式架構演進 (Slides 13–20)
+// Part 2: Scale Out Challenges (Slides 13–20)
 
 "use strict";
 
 const fs      = require("fs");
 const pptxgen = require("pptxgenjs");
-const { COLORS, FONTS } = require("./design-system");
+const { COLORS, FONTS, setTheme } = require("./design-system");
+setTheme("light");
 const {
   W, H, HEADER_H, BOTTOM_H, BOTTOM_Y,
   initSlide,
@@ -32,8 +33,8 @@ const {
 function buildSlide13(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Load Balancer：流量分發的核心元件",
-    partLabel: "PART 2  ·  13 / 50",
+    title: "Load Balancer: Core Traffic Distribution Component",
+    partLabel: "PART 2",
     accentColor: COLORS.infra,
     complexity: 5,
   });
@@ -116,31 +117,31 @@ function buildSlide13(pres) {
   // Bottom panel
   addBottomPanel(slide, pres,
     [
-      { title: "流量均勻分散",   sub: "避免單一節點過載" },
-      { title: "高可用性 (HA)",  sub: "一台掛掉，LB 自動排除，服務不中斷" },
+      { title: "Even Traffic Distribution",   sub: "Prevents single-node overload" },
+      { title: "High Availability (HA)",  sub: "If one server fails, LB auto-excludes it — no service interruption" },
     ],
     [
-      { title: "Session 黏性問題",  sub: "同一使用者可能被派到不同 Server" },
-      { title: "LB 本身也需要 HA", sub: "LB 掛掉 → 整個服務掛" },
+      { title: "Session Stickiness Issue",  sub: "Same user may be routed to different servers" },
+      { title: "LB Itself Needs HA", sub: "LB failure → entire service goes down" },
     ],
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 14 — Session 狀態問題
+// Slide 14 — Session State Issues
 // ─────────────────────────────────────────────────────────────────────────────
 function buildSlide14(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Scale Out 的陷阱：Session 狀態問題",
-    partLabel: "PART 2  ·  14 / 50",
+    title: "Scale Out Pitfalls: Session State Issues",
+    partLabel: "PART 2",
     accentColor: COLORS.danger,
   });
 
   // ── Left column ─────────────────────────────────────────────────────────────
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.4,
-    label: "❌  Session 黏性問題",
+    label: "❌  Session Stickiness Problem",
     type: "bad",
   });
 
@@ -188,7 +189,7 @@ function buildSlide14(pres) {
 
   addHArrow(slide, pres, { x: 2.65, y: 2.07, w: 0.05, color: COLORS.textMuted });
 
-  slide.addText("Request #2 → Server B → 找不到 Session → 被登出！", {
+  slide.addText("Request #2 → Server B → Session not found → Logged out!", {
     x: 0.35, y: 2.75, w: 4.3, h: 0.32,
     fontSize: 10, bold: true, color: COLORS.danger,
     fontFace: FONTS.body,
@@ -203,27 +204,27 @@ function buildSlide14(pres) {
   // ── Right column ─────────────────────────────────────────────────────────────
   addCompareHeading(slide, pres, {
     x: 5.2, y: 0.62, w: 4.4,
-    label: "✅  三種解決方案",
+    label: "✅  Three Solutions",
     type: "good",
   });
 
   const solutions = [
     {
       y: 1.1,
-      title: "① JWT Token（無狀態）",
-      sub: "Token存Client，Server無狀態 | 推薦 REST API",
+      title: "① JWT Token (Stateless)",
+      sub: "Token stored on client, server is stateless | Recommended for REST API",
       color: COLORS.success,
     },
     {
       y: 2.15,
-      title: "② Redis 集中 Session",
-      sub: "Session集中存Redis，所有Server共用",
+      title: "② Redis Centralized Session",
+      sub: "Sessions stored centrally in Redis, shared by all servers",
       color: COLORS.infra,
     },
     {
       y: 3.2,
-      title: "③ Sticky Session（不推薦⚠️）",
-      sub: "LB固定綁定IP | 失去Scale Out彈性",
+      title: "③ Sticky Session (Not Recommended ⚠️)",
+      sub: "LB binds to fixed IP | Loses scale out flexibility",
       color: COLORS.warning,
     },
   ];
@@ -248,18 +249,18 @@ function buildSlide14(pres) {
 
   addTipBar(slide, pres, {
     y: 4.85,
-    text: "現代架構首選 JWT + Redis 的組合 — 讓 Server 真正 Stateless",
+    text: "Modern architectures prefer the JWT + Redis combo — making servers truly stateless",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 15 — Read Replica 架構
+// Slide 15 — Read Replica Architecture
 // ─────────────────────────────────────────────────────────────────────────────
 function buildSlide15(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "資料庫的擴展：Read Replica 架構",
-    partLabel: "PART 2  ·  15 / 50",
+    title: "Database Scaling: Read Replica Architecture",
+    partLabel: "PART 2",
     accentColor: COLORS.database,
     complexity: 7,
   });
@@ -323,7 +324,7 @@ function buildSlide15(pres) {
   });
 
   // Replication lag note
-  slide.addText("非同步複製 (async) — 可能有微小延遲 (Replication Lag)", {
+  slide.addText("Async replication — may have slight delay (Replication Lag)", {
     x: 0.3, y: 3.2, w: 7.5, h: 0.25,
     fontSize: 9, color: COLORS.textMuted,
     fontFace: FONTS.body, italic: true,
@@ -332,24 +333,24 @@ function buildSlide15(pres) {
   // Bottom panel
   addBottomPanel(slide, pres,
     [
-      { title: "讀取效能大幅提升",  sub: "90% 操作是 Read，Replica 分流" },
-      { title: "Primary 專注寫入", sub: "Write 效能不受 Read 影響" },
+      { title: "Read Performance Boost",  sub: "90% of operations are reads — offloaded to replicas" },
+      { title: "Primary Focuses on Writes", sub: "Write performance unaffected by reads" },
     ],
     [
-      { title: "Replication Lag",    sub: "Replica 資料可能落後 Primary 數毫秒" },
-      { title: "不解決 Write 瓶頸", sub: "高頻寫入仍然是 Primary 的問題" },
+      { title: "Replication Lag",    sub: "Replica data may lag behind primary by milliseconds" },
+      { title: "Does Not Solve Write Bottleneck", sub: "High-frequency writes remain a primary-only problem" },
     ],
   );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 16 — 三層 Caching 策略
+// Slide 16 — Three-Tier Caching Strategy
 // ─────────────────────────────────────────────────────────────────────────────
 function buildSlide16(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "三層 Caching 策略：從外到內",
-    partLabel: "PART 2  ·  16 / 50",
+    title: "Three-Tier Caching Strategy: Outside to Inside",
+    partLabel: "PART 2",
     accentColor: COLORS.accent,
   });
 
@@ -359,31 +360,31 @@ function buildSlide16(pres) {
       icon: "☁️",
       color: COLORS.cdn,
       items: [
-        { text: "靜態資源 (JS/CSS/圖片)", sub: "TTL: 天/週" },
-        { text: "工具: Cloudflare, CloudFront" },
-        { text: "Cache Hit → 不碰後端" },
+        { text: "Static assets (JS/CSS/images)", sub: "TTL: days/weeks" },
+        { text: "Tools: Cloudflare, CloudFront" },
+        { text: "Cache Hit → no backend contact" },
         { text: "Hit Rate: ~60-80%" },
       ],
     },
     {
-      title: "② Redis 快取",
+      title: "② Redis Cache",
       icon: "⚡",
       color: COLORS.infra,
       items: [
-        { text: "API 回應快取", sub: "TTL: 秒/分鐘" },
-        { text: "Session 儲存" },
-        { text: "工具: Redis, Memcached" },
+        { text: "API response caching", sub: "TTL: seconds/minutes" },
+        { text: "Session storage" },
+        { text: "Tools: Redis, Memcached" },
         { text: "Hit Rate: ~30-50%" },
       ],
     },
     {
-      title: "③ In-Process 快取",
+      title: "③ In-Process Cache",
       icon: "🧠",
       color: COLORS.warning,
       items: [
-        { text: "超熱資料 (config/常數)", sub: "TTL: 秒級" },
-        { text: "不可跨 Server 共用" },
-        { text: "Scale Out 需特別處理" },
+        { text: "Hot data (config/constants)", sub: "TTL: seconds" },
+        { text: "Cannot be shared across servers" },
+        { text: "Requires special handling for scale out" },
         { text: "Hit Rate: ~10-20%" },
       ],
     },
@@ -391,25 +392,25 @@ function buildSlide16(pres) {
 
   addTipBar(slide, pres, {
     y: 5.0,
-    text: "快取失效 (Cache Invalidation) 是分散式系統中最難的問題之一 — 想清楚 TTL 再設計",
+    text: "Cache invalidation is one of the hardest problems in distributed systems — design your TTL strategy carefully",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 17 — 訊息佇列
+// Slide 17 — Message Queues
 // ─────────────────────────────────────────────────────────────────────────────
 function buildSlide17(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "訊息佇列：非同步解耦的利器",
-    partLabel: "PART 2  ·  17 / 50",
+    title: "Message Queues: Async Decoupling Tool",
+    partLabel: "PART 2",
     accentColor: COLORS.infra,
   });
 
   // ── Left: ❌ Synchronous chain ───────────────────────────────────────────────
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.4,
-    label: "❌  同步呼叫鏈",
+    label: "❌  Synchronous Call Chain",
     type: "bad",
   });
 
@@ -437,14 +438,14 @@ function buildSlide17(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 0.75 },
   });
-  slide.addText("任一步驟慢 → 全部等待\n任一步驟失敗 → 整個 Request 失敗", {
+  slide.addText("Any slow step → everything waits\nAny failed step → entire request fails", {
     x: 0.5, y: 2.1, w: 4.1, h: 0.52,
     fontSize: 9.5, color: COLORS.danger,
     fontFace: FONTS.body, valign: "middle",
   });
 
   // Timing diagram: stacked bars showing cumulative latency
-  slide.addText("⏱  總延遲 = 所有步驟之和", {
+  slide.addText("⏱  Total latency = sum of all steps", {
     x: 0.35, y: 2.72, w: 4.2, h: 0.22,
     fontSize: 9, bold: true, color: COLORS.danger,
     fontFace: FONTS.body,
@@ -464,7 +465,7 @@ function buildSlide17(pres) {
   // ── Right: ✅ MQ ─────────────────────────────────────────────────────────────
   addCompareHeading(slide, pres, {
     x: 5.2, y: 0.62, w: 4.4,
-    label: "✅  訊息佇列（非同步）",
+    label: "✅  Message Queue (Async)",
     type: "good",
   });
 
@@ -503,9 +504,9 @@ function buildSlide17(pres) {
 
   // ── Use case cards (3 cols) ─────────────────────────────────────────────────
   const useCases = [
-    { x: 0.3,  title: "📬 訂單→通知",   items: ["非同步寄信", "用戶無需等待"] },
-    { x: 3.55, title: "🏔️ 削峰填谷",    items: ["瞬間大量請求", "Queue緩衝消化"] },
-    { x: 6.8,  title: "🔓 服務解耦",    items: ["各服務獨立Scale", "互不影響"] },
+    { x: 0.3,  title: "📬 Order→Notify",   items: ["Async email sending", "Users don't wait"] },
+    { x: 3.55, title: "🏔️ Peak Shaving",    items: ["Sudden traffic spikes", "Queue absorbs the load"] },
+    { x: 6.8,  title: "🔓 Service Decoupling",    items: ["Services scale independently", "No mutual impact"] },
   ];
   useCases.forEach((u) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -527,13 +528,13 @@ function buildSlide17(pres) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 18 — 完整分散式架構全貌
+// Slide 18 — Complete Distributed Architecture
 // ─────────────────────────────────────────────────────────────────────────────
 function buildSlide18(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "完整分散式架構：你現在需要維運什麼？",
-    partLabel: "PART 2  ·  18 / 50",
+    title: "Complete Distributed Architecture: What You Now Need to Operate",
+    partLabel: "PART 2",
     accentColor: COLORS.danger,
     complexity: 9,
   });
@@ -585,7 +586,7 @@ function buildSlide18(pres) {
   addMiniNode(slide, pres, { x: 5.95, y: 3.09, emoji: "🗄️", label: "Replica 3", borderColor: COLORS.database });
 
   // ── Right side summary ───────────────────────────────────────────────────────
-  slide.addText("你在維運的機器", {
+  slide.addText("Machines You Operate", {
     x: 6.7, y: 0.7, w: 3.0, h: 0.36,
     fontSize: 13, bold: true, color: COLORS.warning,
     fontFace: FONTS.title,
@@ -621,7 +622,7 @@ function buildSlide18(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 1.5 },
   });
-  slide.addText("15+ 台機器", {
+  slide.addText("15+ Machines", {
     x: 6.7, y: 3.22, w: 2.8, h: 0.7,
     fontSize: 20, bold: true, color: COLORS.danger,
     fontFace: FONTS.title, align: "center", valign: "middle",
@@ -630,19 +631,19 @@ function buildSlide18(pres) {
   // Alert bar
   addAlertBar(slide, pres, {
     y: 3.72,
-    message: "每台機器設定各不相同、環境飄移 — 部署靠手動 SSH，每次都是一場冒險",
-    tags: ["環境不一致", "設定漂移", "更新困難"],
+    message: "Each machine configured differently, environments drift — deployment via manual SSH, every release is a gamble",
+    tags: ["Env Inconsistency", "Config Drift", "Painful Updates"],
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 19 — 維運複雜度爆炸
+// Slide 19 — Operations Complexity Explosion
 // ─────────────────────────────────────────────────────────────────────────────
 function buildSlide19(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "部署惡夢：維運複雜度爆炸",
-    partLabel: "PART 2  ·  19 / 50",
+    title: "Deployment Nightmare: Operations Complexity Explosion",
+    partLabel: "PART 2",
     accentColor: COLORS.danger,
   });
 
@@ -650,45 +651,45 @@ function buildSlide19(pres) {
     {
       x: 0.3, y: 0.65,
       emoji: "😱",
-      title: "環境不一致",
+      title: "Environment Inconsistency",
       items: [
         "• Dev: Mac + Python 3.9",
         "• Staging: Ubuntu + Python 3.8",
         "• Prod: CentOS + Python 3.6 (!!)",
-        "• 「在我這裡可以跑！」",
+        '• "It works on my machine!"',
       ],
     },
     {
       x: 5.2, y: 0.65,
       emoji: "🔄",
-      title: "更新困難",
+      title: "Difficult Updates",
       items: [
-        "• 15台機器逐一SSH更新",
-        "• 更新中失敗 → 版本不一致",
-        "• 需要停機維護窗口",
-        "• 每次部署都提心吊膽",
+        "• SSH into 15 machines one by one",
+        "• Mid-update failure → version mismatch",
+        "• Requires maintenance downtime window",
+        "• Every deployment is nerve-wracking",
       ],
     },
     {
       x: 0.3, y: 3.05,
       emoji: "📋",
-      title: "設定管理混亂",
+      title: "Config Management Chaos",
       items: [
-        "• DB密碼寫死在程式碼",
-        "• 各機器設定微妙不同",
-        "• 沒有版本控管",
-        "• 新人入職需一週搞懂",
+        "• DB passwords hardcoded in source",
+        "• Each machine's config subtly differs",
+        "• No version control for configs",
+        "• New hires need a week to understand",
       ],
     },
     {
       x: 5.2, y: 3.05,
       emoji: "🤯",
-      title: "Dev/Prod 落差",
+      title: "Dev/Prod Gap",
       items: [
-        "• Dev本機 vs 15台Prod",
-        "• 本機測試通過 → Prod爆炸",
-        "• 「It works on my machine」",
-        "• 除錯難度 ×10",
+        "• Local dev vs 15 prod machines",
+        "• Passes locally → blows up in prod",
+        '• "It works on my machine"',
+        "• Debugging difficulty ×10",
       ],
     },
   ];
@@ -727,13 +728,13 @@ function buildSlide19(pres) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 20 — Part 2 小結
+// Slide 20 — Part 2 Summary
 // ─────────────────────────────────────────────────────────────────────────────
 function buildSlide20(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Part 2 小結：問題累積，需要新思維",
-    partLabel: "PART 2  ·  20 / 50",
+    title: "Part 2 Summary: Problems Accumulate, Need New Thinking",
+    partLabel: "PART 2",
     accentColor: COLORS.infra,
   });
 
@@ -745,17 +746,17 @@ function buildSlide20(pres) {
     fill: { color: COLORS.bg3 },
     line: { color: COLORS.border, width: 0.5 },
   });
-  slide.addText("技術",      { x: 0.5,  y: 0.65, w: 2.5, h: 0.38, fontSize: 10, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle" });
-  slide.addText("解決了什麼", { x: 3.1,  y: 0.65, w: 3.0, h: 0.38, fontSize: 10, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle" });
-  slide.addText("帶來的代價", { x: 6.3,  y: 0.65, w: 3.3, h: 0.38, fontSize: 10, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle" });
+  slide.addText("Technology",      { x: 0.5,  y: 0.65, w: 2.5, h: 0.38, fontSize: 10, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle" });
+  slide.addText("What It Solved", { x: 3.1,  y: 0.65, w: 3.0, h: 0.38, fontSize: 10, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle" });
+  slide.addText("Cost Incurred", { x: 6.3,  y: 0.65, w: 3.3, h: 0.38, fontSize: 10, bold: true, color: COLORS.textMuted, fontFace: FONTS.body, valign: "middle" });
 
   const rows = [
-    { tech: "⚖️ Load Balancer",  solved: "流量分散、高可用",  cost: "Session 黏性問題",      danger: false },
-    { tech: "💾 Redis Session",  solved: "Stateless 實現",   cost: "Redis 本身要 HA",       danger: false },
-    { tech: "🗄️ Read Replica",   solved: "讀取效能提升",     cost: "Replication Lag",       danger: false },
-    { tech: "⚡ Cache",           solved: "效能大幅提升",     cost: "快取失效複雜",           danger: false },
-    { tech: "📋 Message Queue",  solved: "非同步解耦",       cost: "最終一致性問題",         danger: false },
-    { tech: "🏗️ 分散式架構",     solved: "高可用、可擴展",   cost: "維運 15+ 台機器！",       danger: true  },
+    { tech: "⚖️ Load Balancer",  solved: "Traffic distribution, HA",  cost: "Session stickiness issue",      danger: false },
+    { tech: "💾 Redis Session",  solved: "Stateless achieved",   cost: "Redis itself needs HA",       danger: false },
+    { tech: "🗄️ Read Replica",   solved: "Read performance boost",     cost: "Replication Lag",       danger: false },
+    { tech: "⚡ Cache",           solved: "Major perf improvement",     cost: "Cache invalidation complexity",           danger: false },
+    { tech: "📋 Message Queue",  solved: "Async decoupling",       cost: "Eventual consistency issues",         danger: false },
+    { tech: "🏗️ Distributed Arch",     solved: "HA, scalable",   cost: "Operating 15+ machines!",       danger: true  },
   ];
 
   rows.forEach((row, i) => {
@@ -792,7 +793,7 @@ function buildSlide20(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 0.75 },
   });
-  slide.addText("複雜度 10/10 🔴", {
+  slide.addText("Complexity 10/10 🔴", {
     x: 7.5, y: 0.68, w: 2.1, h: 0.3,
     fontSize: 12, bold: true, color: COLORS.danger,
     fontFace: FONTS.body, align: "center", valign: "middle",
@@ -805,7 +806,7 @@ function buildSlide20(pres) {
     line: { color: COLORS.danger, width: 1.2 },
   });
   slide.addText(
-    "🔥  這樣下去不行了！15 台機器各自獨立設定 — 部署一次靠手動 SSH，版本飄移是常態",
+    "🔥  This can't go on! 15 machines each configured independently — deployment via manual SSH, version drift is the norm",
     {
       x: 0.5, y: 3.5, w: 9.0, h: 0.8,
       fontSize: 12, bold: true, color: COLORS.danger,
@@ -820,7 +821,7 @@ function buildSlide20(pres) {
     line: { color: COLORS.success, width: 1.2 },
   });
   slide.addText(
-    "💡  Part 3 預告：Container 技術如何把這一切簡化 — 統一打包、環境一致、秒級部署",
+    "💡  Part 3 Preview: How container technology simplifies all of this — unified packaging, consistent environments, instant deployment",
     {
       x: 0.5, y: 4.42, w: 9.0, h: 0.82,
       fontSize: 12, bold: true, color: COLORS.success,

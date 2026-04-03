@@ -5,7 +5,8 @@
 
 const pptxgen = require("pptxgenjs");
 const fs = require("fs");
-const { COLORS, FONTS } = require("./design-system");
+const { COLORS, FONTS, setTheme } = require("./design-system");
+setTheme("light");
 const {
   W, H, HEADER_H, BOTTOM_Y,
   initSlide,
@@ -32,8 +33,8 @@ const {
 function slide91(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "可觀測性 vs 監控：不只是看圖表",
-    partLabel: "PART 7 METRICS  · 91 / 150",
+    title: "Observability vs Monitoring: Beyond Just Charts",
+    partLabel: "PART 7",
     accentColor: COLORS.accent,
   });
 
@@ -46,15 +47,15 @@ function slide91(pres) {
   // Left: Monitoring
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.4,
-    label: "📊 傳統監控 (Monitoring)",
+    label: "📊 Traditional Monitoring",
     type: "bad",
   });
 
   const monitoringItems = [
-    { title: "你事先知道要看什麼", sub: "預設 Dashboard" },
-    { title: "只知道 What 壞了", sub: "CPU高、回應慢" },
-    { title: "無法回答未知問題", sub: "遇到新型故障束手無策" },
-    { title: "靜態告警閾值", sub: "CPU>80% 就告警" },
+    { title: "You know what to look for in advance", sub: "Pre-built Dashboards" },
+    { title: "Only knows WHAT is broken", sub: "High CPU, slow responses" },
+    { title: "Cannot answer unknown questions", sub: "Helpless against novel failures" },
+    { title: "Static alert thresholds", sub: "Alert when CPU > 80%" },
   ];
   monitoringItems.forEach((item, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -75,15 +76,15 @@ function slide91(pres) {
   // Right: Observability
   addCompareHeading(slide, pres, {
     x: 5.2, y: 0.62, w: 4.4,
-    label: "🔍 可觀測性 (Observability)",
+    label: "🔍 Observability",
     type: "good",
   });
 
   const obsItems = [
-    { title: "能從外部推導系統內部狀態" },
-    { title: "知道 What/Why/Where", sub: "三本柱" },
-    { title: "可回答任意問題", sub: "即使是第一次發生的問題" },
-    { title: "動態、可查詢", sub: "不需要預設 Dashboard" },
+    { title: "Infer internal system state from external outputs" },
+    { title: "Knows What / Why / Where", sub: "Three Pillars" },
+    { title: "Can answer any question", sub: "Even first-time incidents" },
+    { title: "Dynamic and queryable", sub: "No pre-built dashboards needed" },
   ];
   obsItems.forEach((item, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -117,7 +118,7 @@ function slide91(pres) {
 
   addTipBar(slide, pres, {
     y: 4.5,
-    text: "可觀測性的三本柱：Metrics（什麼出問題）+ Logs（為什麼）+ Traces（在哪個服務）— 缺一不可",
+    text: "Three Pillars of Observability: Metrics (what is broken) + Logs (why) + Traces (which service) — all three are essential",
   });
 }
 
@@ -127,8 +128,8 @@ function slide91(pres) {
 function slide92(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "三本柱總覽：Metrics、Logs、Traces 各自解決什麼",
-    partLabel: "PART 7 METRICS  · 92 / 150",
+    title: "Three Pillars Overview: What Metrics, Logs, Traces Each Solve",
+    partLabel: "PART 7",
     accentColor: COLORS.accent,
   });
 
@@ -138,12 +139,12 @@ function slide92(pres) {
       icon: "📈",
       color: COLORS.success,
       items: [
-        { text: "數值型時序資料" },
+        { text: "Numeric time-series data" },
         { text: "What is happening now?" },
-        { text: "CPU%, Req/s, 錯誤率, P99延遲" },
-        { text: "適合：告警、容量規劃" },
-        { text: "保留：月到年（低成本）" },
-        { text: "工具：Prometheus, Grafana" },
+        { text: "CPU%, Req/s, Error Rate, P99 Latency" },
+        { text: "Best for: Alerting, capacity planning" },
+        { text: "Retention: Months to years (low cost)" },
+        { text: "Tools: Prometheus, Grafana" },
       ],
     },
     {
@@ -151,12 +152,12 @@ function slide92(pres) {
       icon: "📝",
       color: COLORS.warning,
       items: [
-        { text: "文字事件流" },
+        { text: "Textual event stream" },
         { text: "Why did it happen?" },
-        { text: "請求詳細記錄、錯誤堆疊" },
-        { text: "適合：除錯、審計" },
-        { text: "保留：天到月（高成本）" },
-        { text: "工具：ELK, Loki, Fluentd" },
+        { text: "Request details, error stack traces" },
+        { text: "Best for: Debugging, auditing" },
+        { text: "Retention: Days to months (high cost)" },
+        { text: "Tools: ELK, Loki, Fluentd" },
       ],
     },
     {
@@ -164,19 +165,19 @@ function slide92(pres) {
       icon: "🔗",
       color: COLORS.infra,
       items: [
-        { text: "分散式請求鏈路" },
+        { text: "Distributed request path" },
         { text: "Where is it slow?" },
-        { text: "哪個服務、哪個函式、耗時多少" },
-        { text: "適合：效能分析、依賴追蹤" },
-        { text: "保留：天到週（最高成本）" },
-        { text: "工具：Jaeger, Tempo, Zipkin" },
+        { text: "Which service, which function, how long" },
+        { text: "Best for: Perf analysis, dependency tracking" },
+        { text: "Retention: Days to weeks (highest cost)" },
+        { text: "Tools: Jaeger, Tempo, Zipkin" },
       ],
     },
   ], { y: HEADER_H + 0.12, h: H - HEADER_H - 0.6 });
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "從成本角度：Metrics 最便宜（數字），Logs 中等（文字），Traces 最貴（每個 Span 都要儲存）",
+    text: "Cost perspective: Metrics are cheapest (numbers), Logs are moderate (text), Traces are most expensive (every Span must be stored)",
   });
 }
 
@@ -186,8 +187,8 @@ function slide92(pres) {
 function slide93(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "單體 vs 分散式：為什麼可觀測性變得關鍵",
-    partLabel: "PART 7 METRICS  · 93 / 150",
+    title: "Monolithic vs Distributed: Why Observability Becomes Critical",
+    partLabel: "PART 7",
     accentColor: COLORS.danger,
   });
 
@@ -200,20 +201,20 @@ function slide93(pres) {
   // Left: Monolith
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.2,
-    label: "🖥️ 單體服務：簡單偵錯",
+    label: "🖥️ Monolith: Simple Debugging",
     type: "good",
   });
 
   addNodeCard(slide, pres, {
     x: 1.2, y: 1.1, w: 2.2, h: 1.0,
-    emoji: "⚙️", name: "Monolith App", meta: "一個 Process",
+    emoji: "⚙️", name: "Monolith App", meta: "Single Process",
     borderColor: COLORS.backend,
   });
 
   const debugCards = [
     { text: "tail -f app.log" },
     { text: "print() / console.log()" },
-    { text: "gdb / pdb 本地除錯" },
+    { text: "gdb / pdb local debugging" },
   ];
   debugCards.forEach((card, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -232,7 +233,7 @@ function slide93(pres) {
     fill: { color: COLORS.cardSuccess },
     line: { color: COLORS.success, width: 0.8 },
   });
-  slide.addText("✅ 問題出在這個 process，直接找就好", {
+  slide.addText("✅ The problem is in this process — just search here", {
     x: 0.45, y: 3.68, w: 3.9, h: 0.38,
     fontSize: 10, bold: true, color: COLORS.success, fontFace: FONTS.body, valign: "middle",
   });
@@ -240,7 +241,7 @@ function slide93(pres) {
   // Right: Distributed
   addCompareHeading(slide, pres, {
     x: 5.1, y: 0.62, w: 4.4,
-    label: "🕸️ 分散式：除錯地獄",
+    label: "🕸️ Distributed: Debugging Nightmare",
     type: "bad",
   });
 
@@ -266,13 +267,13 @@ function slide93(pres) {
 
   addAlertBar(slide, pres, {
     y: 3.18,
-    message: "User說結帳很慢！是哪個服務？哪個函式？沒有 Tracing 只能每個服務慢慢查 log...",
-    tags: ["15分鐘找問題", "有時找不到"],
+    message: "User says checkout is slow! Which service? Which function? Without tracing, you have to check logs on every service...",
+    tags: ["15 min to find issue", "Sometimes unfindable"],
   });
 
   addTipBar(slide, pres, {
     y: 4.75,
-    text: "分散式系統中一個請求可能觸碰 10+ 個服務 — 沒有 Traces，你根本不知道慢在哪",
+    text: "In distributed systems, a single request may touch 10+ services — without Traces, you have no idea where the bottleneck is",
   });
 }
 
@@ -282,8 +283,8 @@ function slide93(pres) {
 function slide94(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Metrics：數字告訴你系統的健康狀態",
-    partLabel: "PART 7 METRICS  · 94 / 150",
+    title: "Metrics: Numbers Tell You System Health",
+    partLabel: "PART 7",
     accentColor: COLORS.success,
     complexity: 3,
   });
@@ -294,7 +295,7 @@ function slide94(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.success, width: 1.0 },
   });
-  slide.addText("Metrics = 時間序列數字資料", {
+  slide.addText("Metrics = Numeric Time-Series Data", {
     x: 0.4, y: 0.68, w: 4.5, h: 0.3,
     fontSize: 14, bold: true, color: COLORS.success,
     fontFace: FONTS.body, align: "center",
@@ -305,7 +306,7 @@ function slide94(pres) {
     fontFace: FONTS.code, align: "center",
   });
 
-  slide.addText("Production 服務在跑，但你怎麼知道它健康嗎？", {
+  slide.addText("Your service is running in production — but how do you know it's healthy?", {
     x: 0.3, y: 1.62, w: 4.7, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.text, fontFace: FONTS.body,
   });
@@ -333,7 +334,7 @@ function slide94(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 1.0 },
   });
-  slide.addText("❌ 沒有 Metrics 就像開車沒有儀表板 — 不知道速度、油量、引擎狀態", {
+  slide.addText("❌ Without Metrics, it's like driving without a dashboard — no speed, fuel, or engine status", {
     x: 0.45, y: 3.97, w: 4.45, h: 0.62,
     fontSize: 10, color: COLORS.danger, fontFace: FONTS.body, valign: "middle",
   });
@@ -378,9 +379,9 @@ function slide94(pres) {
 
   // 3 property cards
   const propCards = [
-    { x: 5.4,  icon: "⏱️", label: "時序", sub: "按時間排列\n可計算趨勢",   border: COLORS.accent },
-    { x: 6.88, icon: "🏷️", label: "標籤", sub: "service, env\nversion, region", border: COLORS.accent },
-    { x: 8.36, icon: "💡", label: "高效", sub: "數字 = 小\n保存成本低",   border: COLORS.success },
+    { x: 5.4,  icon: "⏱️", label: "Time-Series", sub: "Ordered by time\nTrend analysis",   border: COLORS.accent },
+    { x: 6.88, icon: "🏷️", label: "Labels", sub: "service, env\nversion, region", border: COLORS.accent },
+    { x: 8.36, icon: "💡", label: "Efficient", sub: "Numbers = small\nLow storage cost",   border: COLORS.success },
   ];
   propCards.forEach(card => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -400,7 +401,7 @@ function slide94(pres) {
 
   addTipBar(slide, pres, {
     y: 4.92,
-    text: "Metrics 不是 Logs — Metrics 只存數字，成本極低，適合長期保留（1年以上都沒問題）",
+    text: "Metrics are not Logs — Metrics only store numbers, extremely low cost, suitable for long-term retention (1+ years is no problem)",
   });
 }
 
@@ -410,8 +411,8 @@ function slide94(pres) {
 function slide95(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "四種 Metric 資料類型：Counter、Gauge、Histogram、Summary",
-    partLabel: "PART 7 METRICS  · 95 / 150",
+    title: "Four Metric Data Types: Counter, Gauge, Histogram, Summary",
+    partLabel: "PART 7",
     accentColor: COLORS.success,
   });
 
@@ -421,11 +422,11 @@ function slide95(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.success, width: 1.2 },
   });
-  slide.addText("① Counter — 只增不減", {
+  slide.addText("① Counter — Only Goes Up", {
     x: 0.5, y: 0.72, w: 4.1, h: 0.28,
     fontSize: 12, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
-  slide.addText("適用：請求總數、錯誤總數、位元組數", {
+  slide.addText("Use cases: Total requests, total errors, bytes transferred", {
     x: 0.5, y: 1.0, w: 4.1, h: 0.22,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -437,7 +438,7 @@ function slide95(pres) {
     x: 0.55, y: 1.24, w: 3.8, h: 0.32,
     fontSize: 8.5, color: COLORS.text, fontFace: FONTS.code, valign: "middle",
   });
-  slide.addText("⚠️ Counter 本身無意義，用 rate() 換算每秒速率", {
+  slide.addText("⚠️ Counter alone is meaningless — use rate() to compute per-second rate", {
     x: 0.5, y: 1.62, w: 4.0, h: 0.25,
     fontSize: 9, color: COLORS.warning, fontFace: FONTS.body,
   });
@@ -462,11 +463,11 @@ function slide95(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.accent, width: 1.2 },
   });
-  slide.addText("② Gauge — 可升可降", {
+  slide.addText("② Gauge — Goes Up and Down", {
     x: 5.4, y: 0.72, w: 4.1, h: 0.28,
     fontSize: 12, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
-  slide.addText("適用：當前連線數、記憶體用量、Queue深度", {
+  slide.addText("Use cases: Active connections, memory usage, queue depth", {
     x: 5.4, y: 1.0, w: 4.1, h: 0.22,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -478,7 +479,7 @@ function slide95(pres) {
     x: 5.45, y: 1.24, w: 3.8, h: 0.32,
     fontSize: 8.5, color: COLORS.text, fontFace: FONTS.code, valign: "middle",
   });
-  slide.addText("直接使用數值，不需要 rate()", {
+  slide.addText("Use value directly — no rate() needed", {
     x: 5.4, y: 1.62, w: 4.0, h: 0.25,
     fontSize: 9, color: COLORS.success, fontFace: FONTS.body,
   });
@@ -505,23 +506,23 @@ function slide95(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.warning, width: 1.2 },
   });
-  slide.addText("③ Histogram — 分桶分布", {
+  slide.addText("③ Histogram — Bucketed Distribution", {
     x: 0.5, y: 3.08, w: 4.1, h: 0.28,
     fontSize: 12, bold: true, color: COLORS.warning, fontFace: FONTS.body,
   });
-  slide.addText("適用：請求延遲、回應大小的分布", {
+  slide.addText("Use cases: Request latency and response size distribution", {
     x: 0.5, y: 3.36, w: 4.1, h: 0.22,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
-  slide.addText("桶 (Bucket): _le=0.1, _le=0.5, _le=1.0, _le=+Inf", {
+  slide.addText("Buckets: _le=0.1, _le=0.5, _le=1.0, _le=+Inf", {
     x: 0.5, y: 3.6, w: 4.1, h: 0.22,
     fontSize: 9, color: COLORS.text, fontFace: FONTS.code,
   });
-  slide.addText("用 histogram_quantile(0.99, ...) 計算 P99", {
+  slide.addText("Use histogram_quantile(0.99, ...) to compute P99", {
     x: 0.5, y: 3.82, w: 4.1, h: 0.22,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
-  slide.addText("Server 端計算分位數，最靈活", {
+  slide.addText("Server-side quantile computation — most flexible", {
     x: 0.5, y: 4.08, w: 4.1, h: 0.22,
     fontSize: 9, color: COLORS.success, fontFace: FONTS.body,
   });
@@ -532,23 +533,23 @@ function slide95(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.infra, width: 1.2 },
   });
-  slide.addText("④ Summary — 客戶端分位數", {
+  slide.addText("④ Summary — Client-Side Quantiles", {
     x: 5.4, y: 3.08, w: 4.1, h: 0.28,
     fontSize: 12, bold: true, color: COLORS.infra, fontFace: FONTS.body,
   });
-  slide.addText("適用：需要精確分位數，資料量小", {
+  slide.addText("Use cases: When precise quantiles needed, low data volume", {
     x: 5.4, y: 3.36, w: 4.1, h: 0.22,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
-  slide.addText("直接輸出 P50、P90、P99 分位數", {
+  slide.addText("Directly outputs P50, P90, P99 quantiles", {
     x: 5.4, y: 3.6, w: 4.1, h: 0.22,
     fontSize: 9, color: COLORS.text, fontFace: FONTS.body,
   });
-  slide.addText("⚠️ 無法跨 instance 聚合", {
+  slide.addText("⚠️ Cannot aggregate across instances", {
     x: 5.4, y: 3.82, w: 4.1, h: 0.22,
     fontSize: 9, color: COLORS.danger, fontFace: FONTS.body,
   });
-  slide.addText("多數情況用 Histogram，Summary 漸少用", {
+  slide.addText("Use Histogram in most cases; Summary is rarely used now", {
     x: 5.4, y: 4.08, w: 4.1, h: 0.22,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -560,8 +561,8 @@ function slide95(pres) {
 function slide96(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Push vs Pull：收集模式的根本差異",
-    partLabel: "PART 7 METRICS  · 96 / 150",
+    title: "Push vs Pull: Fundamental Collection Mode Differences",
+    partLabel: "PART 7",
     accentColor: COLORS.accent,
   });
 
@@ -597,15 +598,15 @@ function slide96(pres) {
 
   addNodeCard(slide, pres, {
     x: 0.5, y: 1.95, w: 2.8, h: 0.88,
-    emoji: "📊", name: "Prometheus", meta: "每 15 秒主動 scrape",
+    emoji: "📊", name: "Prometheus", meta: "Actively scrapes every 15s",
     borderColor: COLORS.accent,
   });
 
   const pullCards = [
-    { text: "✅ Collector控制抓取時機", border: COLORS.success, fill: COLORS.bg2 },
-    { text: "✅ 服務掛了立刻發現 (scrape失敗)", border: COLORS.success, fill: COLORS.bg2 },
-    { text: "⚠️ 服務必須暴露 HTTP /metrics", border: COLORS.warning, fill: COLORS.bg2 },
-    { text: "⚠️ 短暫 Batch Job 會錯過", border: COLORS.warning, fill: COLORS.bg2 },
+    { text: "✅ Collector controls scrape timing", border: COLORS.success, fill: COLORS.bg2 },
+    { text: "✅ Detects service down immediately (scrape fails)", border: COLORS.success, fill: COLORS.bg2 },
+    { text: "⚠️ Services must expose HTTP /metrics", border: COLORS.warning, fill: COLORS.bg2 },
+    { text: "⚠️ Short-lived batch jobs may be missed", border: COLORS.warning, fill: COLORS.bg2 },
   ];
   pullCards.forEach((card, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -649,10 +650,10 @@ function slide96(pres) {
   });
 
   const pushCards = [
-    { text: "✅ 適合短暫 Batch/Cron Job", border: COLORS.success },
-    { text: "✅ 可穿越 NAT、Firewall",      border: COLORS.success },
-    { text: "⚠️ Collector成為流量接收端",   border: COLORS.warning },
-    { text: "⚠️ 服務掛了難以偵測",          border: COLORS.warning },
+    { text: "✅ Ideal for short-lived Batch/Cron Jobs", border: COLORS.success },
+    { text: "✅ Can traverse NAT and firewalls",      border: COLORS.success },
+    { text: "⚠️ Collector becomes the traffic sink",   border: COLORS.warning },
+    { text: "⚠️ Hard to detect when a service is down",          border: COLORS.warning },
   ];
   pushCards.forEach((card, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -667,7 +668,7 @@ function slide96(pres) {
 
   addTipBar(slide, pres, {
     y: 5.1,
-    text: "Kubernetes 環境首選 Pull (Prometheus) — 因為 K8s 的服務發現讓 Prometheus 自動找到所有 Pod",
+    text: "In Kubernetes, Pull (Prometheus) is the go-to — K8s service discovery lets Prometheus automatically find all Pods",
   });
 }
 
@@ -677,8 +678,8 @@ function slide96(pres) {
 function slide97(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Prometheus 架構深度解析：Pull Mode 實作",
-    partLabel: "PART 7 METRICS  · 97 / 150",
+    title: "Prometheus Architecture Deep Dive: Pull Mode in Action",
+    partLabel: "PART 7",
     accentColor: COLORS.success,
   });
 
@@ -728,7 +729,7 @@ function slide97(pres) {
   addCodeCard(slide, pres, {
     x: 0.3, y: 3.62, w: 9.4, h: 1.7,
     language: "prometheus.yml",
-    code: `global:\n  scrape_interval: 15s\n  evaluation_interval: 15s\n\nscrape_configs:\n  - job_name: 'api-service'\n    static_configs:\n      - targets: ['api-01:8080', 'api-02:8080']\n\n  - job_name: 'kubernetes-pods'  # K8s 自動服務發現\n    kubernetes_sd_configs:\n      - role: pod\n    relabel_configs:\n      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]\n        action: keep\n        regex: true`,
+    code: `global:\n  scrape_interval: 15s\n  evaluation_interval: 15s\n\nscrape_configs:\n  - job_name: 'api-service'\n    static_configs:\n      - targets: ['api-01:8080', 'api-02:8080']\n\n  - job_name: 'kubernetes-pods'  # K8s auto service discovery\n    kubernetes_sd_configs:\n      - role: pod\n    relabel_configs:\n      - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]\n        action: keep\n        regex: true`,
   });
 }
 
@@ -738,8 +739,8 @@ function slide97(pres) {
 function slide98(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Kubernetes + Prometheus：自動服務發現",
-    partLabel: "PART 7 METRICS  · 98 / 150",
+    title: "Kubernetes + Prometheus: Auto Service Discovery",
+    partLabel: "PART 7",
     accentColor: COLORS.container,
   });
 
@@ -778,16 +779,16 @@ function slide98(pres) {
   addVArrow(slide, pres, { x: 1.55, y: 2.22, h: -0.62, color: COLORS.success });
 
   // Right: benefits
-  slide.addText("自動發現的好處", {
+  slide.addText("Benefits of Auto-Discovery", {
     x: 5.8, y: 0.72, w: 3.85, h: 0.3,
     fontSize: 12, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
 
   const benefits = [
-    { text: "🔄 新 Pod 啟動 → 自動加入監控", bold: true, color: COLORS.success },
-    { text: "🗑️ Pod 刪除 → 自動移除，不留殘餘" },
-    { text: "📈 Scale Out ×10 → Prometheus 自動找到全部" },
-    { text: "0️⃣ 不需要人工修改 prometheus.yml" },
+    { text: "🔄 New Pod starts → automatically added to monitoring", bold: true, color: COLORS.success },
+    { text: "🗑️ Pod deleted → automatically removed, no stale targets" },
+    { text: "📈 Scale out ×10 → Prometheus discovers all automatically" },
+    { text: "0️⃣ No manual edits to prometheus.yml needed" },
   ];
   benefits.forEach((b, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -804,7 +805,7 @@ function slide98(pres) {
   addCodeCard(slide, pres, {
     x: 5.75, y: 3.3, w: 3.85, h: 1.85,
     language: "pod annotation",
-    code: `# 在 Pod spec 加上 annotation\nmetadata:\n  annotations:\n    prometheus.io/scrape: 'true'\n    prometheus.io/path: '/metrics'\n    prometheus.io/port: '8080'\n\n# Prometheus 自動偵測所有帶\n# 這個 annotation 的 Pod`,
+    code: `# Add annotation to Pod spec\nmetadata:\n  annotations:\n    prometheus.io/scrape: 'true'\n    prometheus.io/path: '/metrics'\n    prometheus.io/port: '8080'\n\n# Prometheus auto-discovers all Pods\n# with this annotation`,
   });
 }
 
@@ -814,8 +815,8 @@ function slide98(pres) {
 function slide99(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Push Mode 實戰：StatsD、Pushgateway、OTLP Collector",
-    partLabel: "PART 7 METRICS  · 99 / 150",
+    title: "Push Mode in Practice: StatsD, Pushgateway, OTLP Collector",
+    partLabel: "PART 7",
     accentColor: COLORS.warning,
   });
 
@@ -825,11 +826,11 @@ function slide99(pres) {
       icon: "📡",
       color: COLORS.warning,
       items: [
-        { text: "UDP fire-and-forget", sub: "不阻塞 application" },
-        { text: "Client library 極簡單" },
+        { text: "UDP fire-and-forget", sub: "Non-blocking for application" },
+        { text: "Client library is extremely simple" },
         { text: "statsd.increment('orders.created')" },
-        { text: "適合：高頻計數器" },
-        { text: "DogStatsD 支援 Tags" },
+        { text: "Best for: High-frequency counters" },
+        { text: "DogStatsD supports Tags" },
         { text: "Backend: Graphite / Prometheus" },
       ],
     },
@@ -838,12 +839,12 @@ function slide99(pres) {
       icon: "🔄",
       color: COLORS.accent,
       items: [
-        { text: "Prometheus 官方中繼站" },
-        { text: "用途：Batch Job / Cron Job" },
-        { text: "Job 完成 → push → Prometheus scrape" },
-        { text: "注意：不適合長期服務" },
-        { text: "注意：不自動 TTL 清除" },
-        { text: "K8s Job 完成 metrics 保存" },
+        { text: "Official Prometheus relay station" },
+        { text: "Use case: Batch Job / Cron Job" },
+        { text: "Job done → push → Prometheus scrapes" },
+        { text: "Note: Not suitable for long-running services" },
+        { text: "Note: No automatic TTL cleanup" },
+        { text: "Preserves K8s Job completion metrics" },
       ],
     },
     {
@@ -851,19 +852,19 @@ function slide99(pres) {
       icon: "🏗️",
       color: COLORS.container,
       items: [
-        { text: "OpenTelemetry 統一 Pipeline" },
-        { text: "同時接收 Metrics/Logs/Traces" },
-        { text: "多個 Receiver：OTLP, Prometheus" },
-        { text: "多個 Exporter：Prometheus, Jaeger" },
-        { text: "Sidecar 或 DaemonSet 部署" },
-        { text: "未來標準，推薦採用" },
+        { text: "OpenTelemetry unified pipeline" },
+        { text: "Receives Metrics/Logs/Traces simultaneously" },
+        { text: "Multiple Receivers: OTLP, Prometheus" },
+        { text: "Multiple Exporters: Prometheus, Jaeger" },
+        { text: "Deploy as Sidecar or DaemonSet" },
+        { text: "The future standard — recommended adoption" },
       ],
     },
   ], { y: HEADER_H + 0.1, h: H - HEADER_H - 0.62 });
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "StatsD UDP 是最輕量的 push — 即使 collector 掛了也不影響 app，適合不能 block 的關鍵路徑",
+    text: "StatsD UDP is the lightest push mode — even if the collector is down, the app is unaffected; ideal for critical hot paths",
   });
 }
 
@@ -873,20 +874,20 @@ function slide99(pres) {
 function slide100(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "PromQL：Prometheus 查詢語言實戰",
-    partLabel: "PART 7 METRICS  · 100 / 150",
+    title: "PromQL: Prometheus Query Language in Practice",
+    partLabel: "PART 7",
     accentColor: COLORS.accent,
   });
 
   addCodeCard(slide, pres, {
     x: 0.3, y: 0.65, w: 9.4, h: 4.62,
     language: "PromQL Examples",
-    code: `# 1. Counter Rate — 每秒 HTTP 請求數\nrate(http_requests_total[5m])\n\n# 2. 按 status 碼分組的錯誤率\nsum by(status) (rate(http_requests_total[5m]))\n\n# 3. P99 延遲 — 最常用的 SLO 指標\nhistogram_quantile(0.99,\n  rate(http_request_duration_seconds_bucket[5m])\n)\n\n# 4. 錯誤率 (5xx / total)\nsum(rate(http_requests_total{status=~'5..'}[5m]))\n  / sum(rate(http_requests_total[5m])) * 100\n\n# 5. Recording Rule — 預計算複雜查詢（放 prometheus.yml）\nrecord: job:http_error_rate:ratio5m\nexpr: |\n  sum(rate(http_requests_total{status=~'5..'}[5m]))\n  / sum(rate(http_requests_total[5m]))\n\n# 6. 跨 K8s Pod 聚合\nsum by(namespace, deployment) (\n  rate(http_requests_total[5m])\n)`,
+    code: `# 1. Counter Rate — HTTP requests per second\nrate(http_requests_total[5m])\n\n# 2. Error rate grouped by status code\nsum by(status) (rate(http_requests_total[5m]))\n\n# 3. P99 Latency — most common SLO metric\nhistogram_quantile(0.99,\n  rate(http_request_duration_seconds_bucket[5m])\n)\n\n# 4. Error rate (5xx / total)\nsum(rate(http_requests_total{status=~'5..'}[5m]))\n  / sum(rate(http_requests_total[5m])) * 100\n\n# 5. Recording Rule — pre-compute complex queries (in prometheus.yml)\nrecord: job:http_error_rate:ratio5m\nexpr: |\n  sum(rate(http_requests_total{status=~'5..'}[5m]))\n  / sum(rate(http_requests_total[5m]))\n\n# 6. Aggregate across K8s Pods\nsum by(namespace, deployment) (\n  rate(http_requests_total[5m])\n)`,
   });
 
   addTipBar(slide, pres, {
     y: 5.38,
-    text: "Recording Rules 是效能關鍵 — 把複雜 PromQL 預計算儲存，Grafana 查詢快 10 倍",
+    text: "Recording Rules are a performance key — pre-compute complex PromQL and store the result; Grafana queries become 10x faster",
   });
 }
 
@@ -896,42 +897,42 @@ function slide100(pres) {
 function slide101(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "監控方法論：USE、RED、四個黃金信號",
-    partLabel: "PART 7 METRICS  · 101 / 150",
+    title: "Monitoring Methodologies: USE, RED, Four Golden Signals",
+    partLabel: "PART 7",
     accentColor: COLORS.success,
   });
 
   const cols = [
     {
       x: 0.3, border: COLORS.database, heading: "🔧 USE Method",
-      sub: "適用：基礎設施資源",
+      sub: "Best for: Infrastructure resources",
       cards: [
-        { label: "U — Utilization", detail: "資源使用率\nCPU: 75%, Disk: 60%" },
-        { label: "S — Saturation",  detail: "資源飽和度\nLoad Average, Queue深度" },
-        { label: "E — Errors",      detail: "錯誤率\nDisk IO errors, NIC drops" },
+        { label: "U — Utilization", detail: "Resource usage rate\nCPU: 75%, Disk: 60%" },
+        { label: "S — Saturation",  detail: "Resource saturation\nLoad Average, Queue depth" },
+        { label: "E — Errors",      detail: "Error rate\nDisk IO errors, NIC drops" },
       ],
-      footer: "問：這個資源過載了嗎？",
+      footer: "Ask: Is this resource overloaded?",
     },
     {
       x: 3.45, border: COLORS.backend, heading: "🌐 RED Method",
-      sub: "適用：微服務 API",
+      sub: "Best for: Microservice APIs",
       cards: [
-        { label: "R — Rate",     detail: "每秒請求數\nHTTP req/s, RPC/s" },
-        { label: "E — Errors",   detail: "錯誤率\n5xx%, failed RPC %" },
-        { label: "D — Duration", detail: "延遲分布\nP50/P95/P99 latency" },
+        { label: "R — Rate",     detail: "Requests per second\nHTTP req/s, RPC/s" },
+        { label: "E — Errors",   detail: "Error rate\n5xx%, failed RPC %" },
+        { label: "D — Duration", detail: "Latency distribution\nP50/P95/P99 latency" },
       ],
-      footer: "問：這個服務表現如何？",
+      footer: "Ask: How is this service performing?",
     },
     {
-      x: 6.6, border: COLORS.accent, heading: "⭐ 四個黃金信號",
-      sub: "Google SRE Book — 對用戶最重要",
+      x: 6.6, border: COLORS.accent, heading: "⭐ Four Golden Signals",
+      sub: "Google SRE Book — Most important to users",
       cards: [
-        { label: "Latency",    detail: "好請求 vs 壞請求的延遲" },
-        { label: "Traffic",    detail: "系統需求量 req/s" },
-        { label: "Errors",     detail: "失敗請求的比率" },
-        { label: "Saturation", detail: "系統飽和度 (最受限的資源)" },
+        { label: "Latency",    detail: "Good request vs bad request latency" },
+        { label: "Traffic",    detail: "System demand in req/s" },
+        { label: "Errors",     detail: "Failed request ratio" },
+        { label: "Saturation", detail: "System saturation (most constrained resource)" },
       ],
-      footer: "問：用戶的體驗如何？",
+      footer: "Q: How is the user experience?",
     },
   ];
 
@@ -973,7 +974,7 @@ function slide101(pres) {
 
   addTipBar(slide, pres, {
     y: 5.38,
-    text: "新服務先從 RED 方法開始 — Rate + Errors + Duration 三個 Metric 能告訴你 80% 的問題",
+    text: "Start new services with the RED method — Rate + Errors + Duration, three metrics that reveal 80% of problems",
   });
 }
 
@@ -983,24 +984,24 @@ function slide101(pres) {
 function slide102(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Grafana Dashboard 設計：讓數據說話",
-    partLabel: "PART 7 METRICS  · 102 / 150",
+    title: "Grafana Dashboard Design: Let the Data Speak",
+    partLabel: "PART 7",
     accentColor: COLORS.accent,
   });
 
   // Left: design principles
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.3,
-    label: "Dashboard 設計原則",
+    label: "Dashboard Design Principles",
     type: "good",
   });
 
   const principles = [
-    { text: "🎯 一個 Dashboard = 一個服務/系統", border: COLORS.success },
-    { text: "📊 頂部：RED/四黃金信號 (用戶影響)",  border: COLORS.success },
-    { text: "📉 中部：資源使用 (USE Method)",       border: COLORS.accent },
-    { text: "🔗 底部：下游依賴狀態",                border: COLORS.accent },
-    { text: "🏷️ 使用 Variables：env, datacenter, pod", border: COLORS.warning },
+    { text: "🎯 One Dashboard = one service/system", border: COLORS.success },
+    { text: "📊 Top: RED/Golden Signals (user impact)",  border: COLORS.success },
+    { text: "📉 Middle: Resource usage (USE Method)",       border: COLORS.accent },
+    { text: "🔗 Bottom: Downstream dependency status",                border: COLORS.accent },
+    { text: "🏷️ Use Variables: env, datacenter, pod", border: COLORS.warning },
   ];
   principles.forEach((p, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -1017,7 +1018,7 @@ function slide102(pres) {
     x: 0.3, y: 3.72, w: 4.3, h: 0.58, rectRadius: 0.07,
     fill: { color: COLORS.cardDanger }, line: { color: COLORS.danger, width: 0.8 },
   });
-  slide.addText("❌ 把所有 Metric 塞進一個 Dashboard\n❌ 沒有時間範圍選擇器", {
+  slide.addText("❌ Cramming all metrics into one Dashboard\n❌ No time range selector", {
     x: 0.45, y: 3.72, w: 4.0, h: 0.58,
     fontSize: 9.5, color: COLORS.danger, fontFace: FONTS.body, valign: "middle",
   });
@@ -1095,22 +1096,22 @@ function slide102(pres) {
 function slide103(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "告警設計：避免告警疲勞的藝術",
-    partLabel: "PART 7 METRICS  · 103 / 150",
+    title: "Alert Design: The Art of Avoiding Alert Fatigue",
+    partLabel: "PART 7",
     accentColor: COLORS.danger,
   });
 
   // Left: symptom vs cause
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.4,
-    label: "❌ Cause-based 告警（不推薦）",
+    label: "❌ Cause-Based Alerts (Not Recommended)",
     type: "bad",
   });
 
   const badAlerts = [
-    { title: "CPU > 80%",       sub: "CPU高不一定影響用戶" },
-    { title: "Memory > 70%",    sub: "可能只是 cache，正常" },
-    { title: "Disk IOPS > 1000", sub: "業務繁忙期的正常現象" },
+    { title: "CPU > 80%",       sub: "High CPU doesn't always affect users" },
+    { title: "Memory > 70%",    sub: "Might just be cache — perfectly normal" },
+    { title: "Disk IOPS > 1000", sub: "Normal during peak business hours" },
   ];
   badAlerts.forEach((a, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -1129,14 +1130,14 @@ function slide103(pres) {
 
   addCompareHeading(slide, pres, {
     x: 0.3, y: 2.9, w: 4.4,
-    label: "✅ Symptom-based 告警（推薦）",
+    label: "✅ Symptom-Based Alerts (Recommended)",
     type: "good",
   });
 
   const goodAlerts = [
-    { title: "錯誤率 > 1% 持續 2 分鐘",  sub: "用戶正在受影響" },
-    { title: "P99 延遲 > 2000ms",         sub: "用戶感受到服務變慢" },
-    { title: "SLO burn rate 過快",         sub: "Error Budget 快耗盡" },
+    { title: "Error rate > 1% for 2 minutes",  sub: "Users are being affected right now" },
+    { title: "P99 latency > 2000ms",         sub: "Users are experiencing slowness" },
+    { title: "SLO burn rate too high",         sub: "Error budget is being depleted fast" },
   ];
   goodAlerts.forEach((a, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -1154,7 +1155,7 @@ function slide103(pres) {
   });
 
   // Right: severity tiers
-  slide.addText("告警嚴重度分級", {
+  slide.addText("Alert Severity Levels", {
     x: 5.2, y: 0.65, w: 4.4, h: 0.3,
     fontSize: 13, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
@@ -1162,20 +1163,20 @@ function slide103(pres) {
   const tiers = [
     {
       fill: COLORS.cardDanger, border: COLORS.danger,
-      title: "🚨 P1 CRITICAL — 立即叫醒 On-Call",
-      detail: "現在有用戶受影響 | 5分鐘內必須回應 | 打電話+PagerDuty",
+      title: "🚨 P1 CRITICAL — Wake up On-Call immediately",
+      detail: "Users affected right now | Respond within 5 min | Phone call + PagerDuty",
       titleColor: COLORS.danger,
     },
     {
       fill: COLORS.cardWarn, border: COLORS.warning,
-      title: "⚠️ P2 WARNING — 工作時間處理",
-      detail: "可能影響用戶 | 今天內處理 | Slack 通知即可",
+      title: "⚠️ P2 WARNING — Handle during business hours",
+      detail: "May affect users | Fix today | Slack notification is fine",
       titleColor: COLORS.warning,
     },
     {
       fill: COLORS.bg2, border: COLORS.accent,
-      title: "💡 P3 INFO — 排程處理",
-      detail: "潛在問題 | 本週處理 | Ticket 追蹤",
+      title: "💡 P3 INFO — Scheduled resolution",
+      detail: "Potential issue | Fix this week | Track via ticket",
       titleColor: COLORS.accent,
     },
   ];
@@ -1198,18 +1199,18 @@ function slide103(pres) {
     x: 5.2, y: 3.72, w: 4.4, h: 0.85, rectRadius: 0.08,
     fill: { color: COLORS.bg2 }, line: { color: COLORS.success, width: 0.8 },
   });
-  slide.addText("📌 每個告警必須：", {
+  slide.addText("📌 Every alert must have:", {
     x: 5.35, y: 3.76, w: 4.1, h: 0.25,
     fontSize: 10.5, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
-  slide.addText("1. 有 Runbook 連結  2. 明確的負責人  3. 明確的回應 SLA", {
+  slide.addText("1. A Runbook link  2. A clear owner  3. A defined response SLA", {
     x: 5.35, y: 4.0, w: 4.1, h: 0.52,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
 
   addTipBar(slide, pres, {
     y: 4.78,
-    text: "告警疲勞是 SRE 最大敵人 — 每週 review 告警，把沒人 action 的告警關掉或降級",
+    text: "Alert fatigue is the SRE's worst enemy — review alerts weekly; disable or downgrade alerts nobody acts on",
   });
 }
 
@@ -1219,15 +1220,15 @@ function slide103(pres) {
 function slide104(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "AlertManager：智慧路由與告警管理",
-    partLabel: "PART 7 METRICS  · 104 / 150",
+    title: "AlertManager: Intelligent Routing & Alert Management",
+    partLabel: "PART 7",
     accentColor: COLORS.danger,
   });
 
   // Left: flow diagram
   addNodeCard(slide, pres, {
     x: 0.3, y: 0.78, w: 1.5, h: 0.85,
-    emoji: "📊", name: "Prometheus", meta: "發送告警",
+    emoji: "📊", name: "Prometheus", meta: "Sends alerts",
     borderColor: COLORS.success,
   });
 
@@ -1235,7 +1236,7 @@ function slide104(pres) {
 
   addNodeCard(slide, pres, {
     x: 2.45, y: 0.78, w: 1.8, h: 0.85,
-    emoji: "🔀", name: "AlertManager", meta: "路由引擎",
+    emoji: "🔀", name: "AlertManager", meta: "Routing Engine",
     borderColor: COLORS.danger,
   });
 
@@ -1272,16 +1273,16 @@ function slide104(pres) {
   });
 
   // Right: advanced features
-  slide.addText("進階功能", {
+  slide.addText("Advanced Features", {
     x: 5.5, y: 0.75, w: 4.1, h: 0.3,
     fontSize: 12, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
 
   const features = [
-    { border: COLORS.infra,    icon: "🔕", title: "Inhibition (抑制)", detail: "DB 掛了 → 抑制 API 告警，避免重複通知" },
-    { border: COLORS.warning,  icon: "🔇", title: "Silence (靜音)",    detail: "維護窗口期間靜音特定告警" },
-    { border: COLORS.success,  icon: "📦", title: "Grouping (分組)",   detail: "同一服務的多個告警合併通知" },
-    { border: COLORS.accent,   icon: "🔁", title: "Repeat Interval",  detail: "不要每分鐘重複，設定 4h 重複" },
+    { border: COLORS.infra,    icon: "🔕", title: "Inhibition", detail: "DB is down → suppress API alerts to avoid duplicate notifications" },
+    { border: COLORS.warning,  icon: "🔇", title: "Silence",    detail: "Mute specific alerts during maintenance windows" },
+    { border: COLORS.success,  icon: "📦", title: "Grouping",   detail: "Merge multiple alerts from the same service into one notification" },
+    { border: COLORS.accent,   icon: "🔁", title: "Repeat Interval",  detail: "Don't repeat every minute — set 4h repeat interval" },
   ];
   features.forEach((f, i) => {
     slide.addShape(pres.ShapeType.roundRect, {
@@ -1300,7 +1301,7 @@ function slide104(pres) {
 
   addTipBar(slide, pres, {
     y: 4.88,
-    text: "Inhibition 規則可以大幅減少告警噪音 — datacenter 掛了就不用個別通知每個服務",
+    text: "Inhibition rules can drastically reduce alert noise — if the datacenter is down, no need to notify every individual service",
   });
 }
 
@@ -1310,15 +1311,15 @@ function slide104(pres) {
 function slide105(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Metrics 小結：從收集到告警的完整鏈路",
-    partLabel: "PART 7 METRICS  · 105 / 150",
+    title: "Metrics Summary: The Complete Pipeline from Collection to Alerting",
+    partLabel: "PART 7",
     accentColor: COLORS.success,
   });
 
   // Full journey timeline
   addNodeCard(slide, pres, {
     x: 0.2, y: 0.72, w: 1.65, h: 1.4,
-    emoji: "⚙️", name: "Instrument", meta: "Prometheus client\n定義 Metrics",
+    emoji: "⚙️", name: "Instrument", meta: "Prometheus client\nDefine Metrics",
     borderColor: COLORS.backend,
   });
   addHArrow(slide, pres, { x: 1.9, y: 1.35, label: "expose", color: COLORS.success, w: 0.5 });
@@ -1354,18 +1355,18 @@ function slide105(pres) {
   const cards = [
     {
       x: 0.3, border: COLORS.success,
-      title: "🎯 選對 Metric 類型",
-      body: "Counter → rate()\nGauge → 直接用\nHistogram → P99\n不要用 average latency!",
+      title: "🎯 Choose the Right Metric Type",
+      body: "Counter → rate()\nGauge → use directly\nHistogram → P99\nDon't use average latency!",
     },
     {
       x: 3.45, border: COLORS.accent,
       title: "📐 Pull > Push in K8s",
-      body: "Prometheus + K8s SD\n自動發現所有 Pod\n短暫 Job 用 Pushgateway\n統一 → OTLP Collector",
+      body: "Prometheus + K8s SD\nAuto-discover all Pods\nShort-lived Jobs use Pushgateway\nUnified → OTLP Collector",
     },
     {
       x: 6.6, border: COLORS.warning,
-      title: "⚠️ 告警要有意義",
-      body: "Symptom-based 優先\n每個告警要有 Runbook\n控制告警數量\n避免告警疲勞",
+      title: "⚠️ Alerts Must Be Meaningful",
+      body: "Symptom-based first\nEvery alert needs a Runbook\nControl alert volume\nAvoid alert fatigue",
     },
   ];
   cards.forEach(card => {

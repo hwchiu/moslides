@@ -5,7 +5,8 @@
 
 const fs      = require("fs");
 const pptxgen = require("pptxgenjs");
-const { COLORS, FONTS } = require("./design-system");
+const { COLORS, FONTS, setTheme } = require("./design-system");
+setTheme("light");
 const {
   W, H, HEADER_H, BOTTOM_Y,
   initSlide,
@@ -27,13 +28,13 @@ const {
 } = require("./helpers");
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 106 — Logs 是什麼？解決什麼問題
+// Slide 106 — Logs: Application Event Records
 // ─────────────────────────────────────────────────────────────────────────────
 function slide106(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Logs：應用程式的事件日誌 — 除錯的最後防線",
-    partLabel: "PART 8 LOGS  · 106 / 150",
+    title: "Logs: Application Event Records — The Last Line of Defense for Debugging",
+    partLabel: "PART 8",
     accentColor: COLORS.warning,
   });
 
@@ -43,20 +44,20 @@ function slide106(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.warning, width: 1.5 },
   });
-  slide.addText("Logs = 帶時間戳的結構化事件記錄", {
+  slide.addText("Logs = Timestamped Structured Event Records", {
     x: 0.3, y: 0.68, w: 4.5, h: 0.42,
     fontSize: 13, bold: true, color: COLORS.warning, fontFace: FONTS.body, align: "center", valign: "middle",
   });
-  slide.addText("記錄了系統在特定時刻「發生了什麼事」", {
+  slide.addText("Records what happened in the system at a specific moment", {
     x: 0.3, y: 1.08, w: 4.5, h: 0.38,
     fontSize: 10, color: COLORS.textMuted, fontFace: FONTS.body, align: "center", valign: "middle",
   });
 
   // 3 problem scenarios
   const scenarios = [
-    { text: "🔥 Prod 突然出現 500 錯誤 — 哪個 API？哪個 user？什麼原因？", border: COLORS.danger, fill: COLORS.cardDanger },
-    { text: "🐛 用戶說「我的訂單消失了」— 什麼時候？哪個 service 出問題？", border: COLORS.warning, fill: COLORS.cardWarn },
-    { text: "🔐 安全審計 — 誰在什麼時候刪除了這筆資料？", border: COLORS.accent, fill: COLORS.bg2 },
+    { text: "🔥 Prod suddenly returns 500 errors — which API? which user? what cause?", border: COLORS.danger, fill: COLORS.cardDanger },
+    { text: "🐛 User reports 'my order disappeared' — when? which service failed?", border: COLORS.warning, fill: COLORS.cardWarn },
+    { text: "🔐 Security audit — who deleted this record and when?", border: COLORS.accent, fill: COLORS.bg2 },
   ];
   scenarios.forEach((s, i) => {
     const y = 1.62 + i * 0.58;
@@ -77,7 +78,7 @@ function slide106(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 1.5 },
   });
-  slide.addText("❌ 沒有 Log：只能重現問題、猜測原因、無法審計", {
+  slide.addText("❌ Without Logs: Can only reproduce issues, guess causes, no audit trail", {
     x: 0.45, y: 3.34, w: 4.2, h: 0.58,
     fontSize: 10.5, bold: true, color: COLORS.danger, fontFace: FONTS.body, valign: "middle",
   });
@@ -91,25 +92,25 @@ function slide106(pres) {
 
   addTipBar(slide, pres, {
     y: 5.38,
-    text: "一條好的 Log 應該能讓你在不重現問題的情況下，100% 知道發生了什麼 — 包含 trace_id 讓你串聯 Traces",
+    text: "A good log entry should tell you 100% what happened without reproducing the issue — include trace_id to correlate with Traces",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 107 — 結構化日誌 vs 非結構化日誌
+// Slide 107 — Structured vs Unstructured Logs
 // ─────────────────────────────────────────────────────────────────────────────
 function slide107(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "結構化日誌 vs 非結構化日誌：機器可讀才是關鍵",
-    partLabel: "PART 8 LOGS  · 107 / 150",
+    title: "Structured vs Unstructured Logs: Machine-Readability Is Key",
+    partLabel: "PART 8",
     accentColor: COLORS.warning,
   });
 
   // Left - unstructured
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.4,
-    label: "❌ 非結構化日誌（人能讀，機器難讀）",
+    label: "❌ Unstructured Logs (Human-readable, Machine-unfriendly)",
     type: "bad",
   });
   addCodeCard(slide, pres, {
@@ -119,9 +120,9 @@ function slide107(pres) {
   });
 
   const badProblems = [
-    "❌ 難以 grep: 要猜 format",
-    "❌ 無法自動解析 email / latency",
-    "❌ Kibana/Loki 無法做 aggregation",
+    "❌ Hard to grep: must guess the format",
+    "❌ Cannot auto-parse email / latency",
+    "❌ Kibana/Loki cannot perform aggregation",
   ];
   badProblems.forEach((t, i) => {
     const y = 2.98 + i * 0.45;
@@ -139,7 +140,7 @@ function slide107(pres) {
   // Right - structured
   addCompareHeading(slide, pres, {
     x: 5.2, y: 0.62, w: 4.4,
-    label: "✅ 結構化日誌（JSON / key=value）",
+    label: "✅ Structured Logs (JSON / key=value)",
     type: "good",
   });
   addCodeCard(slide, pres, {
@@ -149,9 +150,9 @@ function slide107(pres) {
   });
 
   const goodBenefits = [
-    "✅ 機器自動解析 — ES/Loki 自動建 index",
-    "✅ 可 aggregation: avg(duration_ms) by user",
-    "✅ 可直接 join with Traces (trace_id)",
+    "✅ Auto-parsed by machines — ES/Loki auto-index fields",
+    "✅ Supports aggregation: avg(duration_ms) by user",
+    "✅ Can join with Traces via trace_id",
   ];
   goodBenefits.forEach((t, i) => {
     const y = 2.98 + i * 0.45;
@@ -174,13 +175,13 @@ function slide107(pres) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 108 — Log 等級設計原則
+// Slide 108 — Log Level Design
 // ─────────────────────────────────────────────────────────────────────────────
 function slide108(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Log 等級設計：什麼情況記哪個等級",
-    partLabel: "PART 8 LOGS  · 108 / 150",
+    title: "Log Level Design: When to Use Which Level",
+    partLabel: "PART 8",
     accentColor: COLORS.warning,
   });
 
@@ -188,31 +189,31 @@ function slide108(pres) {
     {
       y: 0.68, fill: COLORS.bg2, border: COLORS.textMuted,
       badge: "🔵 DEBUG", badgeColor: COLORS.textMuted,
-      desc: "詳細的除錯資訊 — 只在開發/除錯時開啟，Production 通常關閉",
+      desc: "Detailed debug info — enable only in dev/debug, usually off in Production",
       example: "SQL query: SELECT * FROM users WHERE id=123 (12ms)",
     },
     {
       y: 1.46, fill: COLORS.bg2, border: COLORS.success,
       badge: "🟢 INFO", badgeColor: COLORS.success,
-      desc: "正常運作的重要事件 — 服務啟動、請求成功、狀態變更",
+      desc: "Normal operation events — service start, request success, state changes",
       example: "payment_completed: order_id=456, amount=299.99, user=john",
     },
     {
       y: 2.24, fill: COLORS.cardWarn, border: COLORS.warning,
       badge: "🟡 WARN", badgeColor: COLORS.warning,
-      desc: "不預期但已處理的情況 — 不影響主流程，但值得注意",
+      desc: "Unexpected but handled situations — no impact on main flow, but worth noting",
       example: "retry_attempt: db_connection failed, retry 2/3",
     },
     {
       y: 3.02, fill: COLORS.cardDanger, border: COLORS.danger,
       badge: "🔴 ERROR", badgeColor: COLORS.danger,
-      desc: "發生了不預期的錯誤 — 需要人工介入，影響部分功能",
+      desc: "Unexpected error occurred — requires human intervention, partial functionality affected",
       example: "payment_failed: stripe_api_error, user_id=789",
     },
     {
       y: 3.80, fill: COLORS.cardDanger, border: COLORS.danger,
       badge: "💀 CRITICAL/FATAL", badgeColor: COLORS.danger,
-      desc: "系統無法繼續運作 — 整個服務掛掉，立即需要人工處理",
+      desc: "System cannot continue — entire service is down, immediate human action required",
       example: "db_connection_pool_exhausted: all 100 connections in use",
     },
   ];
@@ -243,35 +244,35 @@ function slide108(pres) {
     fill: { color: COLORS.cardDanger },
     line: { color: COLORS.danger, width: 1.2 },
   });
-  slide.addText("❌ 常見錯誤：ERROR catch Exception (全部 catch 都用 ERROR) | INFO 記太多（噪音）| DEBUG 留在 Prod（效能問題）", {
+  slide.addText("❌ Common Mistakes: ERROR catch Exception (catching everything as ERROR) | Too many INFO logs (noise) | DEBUG left in Prod (perf issue)", {
     x: 0.45, y: 4.62, w: 9.1, h: 0.65,
     fontSize: 10, color: COLORS.danger, fontFace: FONTS.body, valign: "middle",
   });
 
   addTipBar(slide, pres, {
     y: 5.35,
-    text: "Production 建議：INFO 以上，關鍵路徑才用 DEBUG | 每條 Log 都問：On-Call 人員看到這條能做什麼决定？",
+    text: "Production recommendation: INFO and above, use DEBUG only for critical paths | For every log ask: What decision can the on-call engineer make from this?",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 109 — Correlation ID：串聯跨服務的 Log
+// Slide 109 — Correlation ID: Log Correlation in Distributed Systems
 // ─────────────────────────────────────────────────────────────────────────────
 function slide109(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Correlation ID：如何在分散式系統中串聯日誌",
-    partLabel: "PART 8 LOGS  · 109 / 150",
+    title: "Correlation ID: How to Correlate Logs in Distributed Systems",
+    partLabel: "PART 8",
     accentColor: COLORS.infra,
   });
 
   // Left: problem
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.4,
-    label: "❌ 沒有 Correlation ID",
+    label: "❌ Without Correlation ID",
     type: "bad",
   });
-  slide.addText("用戶說結帳失敗，你要查哪裡？", {
+  slide.addText("User reports checkout failure — where do you look?", {
     x: 0.4, y: 1.12, w: 4.3, h: 0.28,
     fontSize: 11, bold: true, color: COLORS.text, fontFace: FONTS.body,
   });
@@ -294,7 +295,7 @@ function slide109(pres) {
     });
   });
 
-  slide.addText("這三條 Log 是同一個請求嗎？🤷 完全無法確定！", {
+  slide.addText("Are these 3 logs from the same request? 🤷 No way to tell!", {
     x: 0.3, y: 2.92, w: 4.4, h: 0.35,
     fontSize: 10, bold: true, color: COLORS.danger, fontFace: FONTS.body, valign: "middle",
   });
@@ -302,7 +303,7 @@ function slide109(pres) {
   // Right: solution
   addCompareHeading(slide, pres, {
     x: 5.2, y: 0.62, w: 4.4,
-    label: "✅ 使用 Trace ID 作為 Correlation ID",
+    label: "✅ Using Trace ID as Correlation ID",
     type: "good",
   });
 
@@ -324,7 +325,7 @@ function slide109(pres) {
     });
   });
 
-  slide.addText("✅ 用 trace_id='abc-123' 一次查到所有相關 Log！", {
+  slide.addText("✅ Query trace_id='abc-123' to find all related logs at once!", {
     x: 5.2, y: 3.12, w: 4.4, h: 0.35,
     fontSize: 10, bold: true, color: COLORS.success, fontFace: FONTS.body, valign: "middle",
   });
@@ -333,23 +334,23 @@ function slide109(pres) {
   addCodeCard(slide, pres, {
     x: 0.3, y: 3.52, w: 9.4, h: 1.52,
     language: "Python FastAPI + OpenTelemetry",
-    code: "from opentelemetry import trace\nimport structlog\n\n@app.middleware('http')\nasync def logging_middleware(request, call_next):\n    span = trace.get_current_span()\n    trace_id = format(span.get_span_context().trace_id, '032x')\n    # 所有後續 log 自動帶 trace_id\n    structlog.contextvars.bind_contextvars(trace_id=trace_id)\n    return await call_next(request)",
+    code: "from opentelemetry import trace\nimport structlog\n\n@app.middleware('http')\nasync def logging_middleware(request, call_next):\n    span = trace.get_current_span()\n    trace_id = format(span.get_span_context().trace_id, '032x')\n    # All subsequent logs automatically include trace_id\n    structlog.contextvars.bind_contextvars(trace_id=trace_id)\n    return await call_next(request)",
   });
 
   addTipBar(slide, pres, {
     y: 5.12,
-    text: "使用 OpenTelemetry trace_id 作為 Correlation ID — 一個 ID 串聯 Logs + Traces + Metrics",
+    text: "Use OpenTelemetry trace_id as Correlation ID — one ID to link Logs + Traces + Metrics",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 110 — 單體服務的 Log 收集
+// Slide 110 — Monolithic Service Log Collection
 // ─────────────────────────────────────────────────────────────────────────────
 function slide110(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "單體服務 Log 收集：從 stdout 到集中儲存",
-    partLabel: "PART 8 LOGS  · 110 / 150",
+    title: "Monolithic Service Log Collection: From stdout to Centralized Storage",
+    partLabel: "PART 8",
     accentColor: COLORS.warning,
     complexity: 2,
   });
@@ -380,33 +381,33 @@ function slide110(pres) {
 
   addTipBar(slide, pres, {
     y: 4.82,
-    text: "單體服務 Log 收集很簡單 — 輸出到 stdout，OS 幫你存到 journald，Filebeat/Fluentd 收集傳送",
+    text: "Monolithic log collection is straightforward — output to stdout, OS saves to journald, Filebeat/Fluentd collects and ships",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 111 — 分散式架構的 Log 收集挑戰
+// Slide 111 — Distributed Log Collection Challenges
 // ─────────────────────────────────────────────────────────────────────────────
 function slide111(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "分散式架構 Log 收集：Container 環境的挑戰",
-    partLabel: "PART 8 LOGS  · 111 / 150",
+    title: "Distributed Log Collection: Container Environment Challenges",
+    partLabel: "PART 8",
     accentColor: COLORS.danger,
   });
 
   // Left: challenges
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.4,
-    label: "分散式 Log 的四大挑戰",
+    label: "Four Major Challenges of Distributed Logs",
     type: "bad",
   });
 
   const challenges = [
-    { title: "🗑️ 容器是短暫的", desc: "Container 重啟/刪除 → Log 消失！\n不能再 tail log file 了", border: COLORS.danger, fill: COLORS.cardDanger },
-    { title: "📍 Pod 分散在多個 Node", desc: "50 個 Pod × 10 台 Node = Log 到處都是\n人工 kubectl logs 是不可能的", border: COLORS.danger, fill: COLORS.cardDanger },
-    { title: "📊 Log 量爆炸", desc: "50 個微服務 × 1000 req/s = TB 級 Log/天\n需要取樣與過濾策略", border: COLORS.warning, fill: COLORS.cardWarn },
-    { title: "🔗 無法關聯", desc: "同一個請求跨多 service 的 Log 分散各處\n沒有 Correlation ID 無從查起", border: COLORS.warning, fill: COLORS.cardWarn },
+    { title: "🗑️ Containers Are Ephemeral", desc: "Container restart/delete → Logs are gone!\nCan no longer tail log files", border: COLORS.danger, fill: COLORS.cardDanger },
+    { title: "📍 Pods Spread Across Nodes", desc: "50 Pods × 10 Nodes = Logs everywhere\nManual kubectl logs is impossible", border: COLORS.danger, fill: COLORS.cardDanger },
+    { title: "📊 Log Volume Explosion", desc: "50 microservices × 1000 req/s = TB-level Logs/day\nSampling and filtering strategies needed", border: COLORS.warning, fill: COLORS.cardWarn },
+    { title: "🔗 Cannot Correlate", desc: "Logs from the same request span multiple services\nWithout Correlation ID, impossible to trace", border: COLORS.warning, fill: COLORS.cardWarn },
   ];
   challenges.forEach((c, i) => {
     const y = 1.1 + i * 0.62;
@@ -428,15 +429,15 @@ function slide111(pres) {
   // Right: solutions
   addCompareHeading(slide, pres, {
     x: 5.1, y: 0.62, w: 4.5,
-    label: "✅ 解決方案",
+    label: "✅ Solutions",
     type: "good",
   });
 
   const solutions = [
-    { title: "📤 Log 輸出到 stdout", desc: "Container 不寫檔案，K8s 自動保存 stdout\nkubectl logs 就能看", border: COLORS.success, fill: COLORS.cardSuccess },
-    { title: "🔄 DaemonSet / Sidecar 收集", desc: "每個 Node 跑一個 log collector\n自動收集所有 Container 的 stdout", border: COLORS.success, fill: COLORS.cardSuccess },
-    { title: "🏷️ 加入 Metadata", desc: "自動附加：pod name, namespace, node\napp label → 方便過濾", border: COLORS.accent, fill: COLORS.bg2 },
-    { title: "⚡ 集中儲存 + 搜尋", desc: "Elasticsearch / Loki\n全文搜尋 + 結構化查詢", border: COLORS.accent, fill: COLORS.bg2 },
+    { title: "📤 Output Logs to stdout", desc: "Containers don't write files, K8s auto-saves stdout\nkubectl logs just works", border: COLORS.success, fill: COLORS.cardSuccess },
+    { title: "🔄 DaemonSet / Sidecar Collection", desc: "One log collector per Node\nAuto-collects stdout from all Containers", border: COLORS.success, fill: COLORS.cardSuccess },
+    { title: "🏷️ Attach Metadata", desc: "Auto-append: pod name, namespace, node\napp label → easy filtering", border: COLORS.accent, fill: COLORS.bg2 },
+    { title: "⚡ Centralized Storage + Search", desc: "Elasticsearch / Loki\nFull-text search + structured queries", border: COLORS.accent, fill: COLORS.bg2 },
   ];
   solutions.forEach((s, i) => {
     const y = 1.1 + i * 0.62;
@@ -457,23 +458,23 @@ function slide111(pres) {
 
   addTipBar(slide, pres, {
     y: 4.78,
-    text: "K8s 的 Container stdout → /var/log/containers/*.log 會自動保存 — Log collector 只需要 tail 這個目錄",
+    text: "K8s Container stdout → /var/log/containers/*.log is auto-saved — Log collectors only need to tail this directory",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 112 — Sidecar vs DaemonSet 收集模式
+// Slide 112 — Sidecar vs DaemonSet Collection Pattern
 // ─────────────────────────────────────────────────────────────────────────────
 function slide112(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Log 收集架構：Sidecar 模式 vs DaemonSet 模式",
-    partLabel: "PART 8 LOGS  · 112 / 150",
+    title: "Log Collection Architecture: Sidecar vs DaemonSet Pattern",
+    partLabel: "PART 8",
     accentColor: COLORS.container,
   });
 
   // Left: DaemonSet
-  slide.addText("🔵 DaemonSet 模式（推薦）", {
+  slide.addText("🔵 DaemonSet Pattern (Recommended)", {
     x: 0.4, y: 0.65, w: 4.2, h: 0.3,
     fontSize: 12, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
@@ -504,13 +505,13 @@ function slide112(pres) {
   addNodeCard(slide, pres, { x: 3.15, y: 1.65, w: 1.35, h: 1.0, emoji: "🔄", name: "Fluent Bit\n(DaemonSet)", meta: "1 per Node", borderColor: COLORS.success });
   addHArrow(slide, pres, { x: 2.92, y: 2.22, color: COLORS.warning, w: 0.2 });
 
-  slide.addText("✅ 1個 Collector = 1個Node | 輕量 | 所有Pod共享", {
+  slide.addText("✅ 1 Collector = 1 Node | Lightweight | Shared by all Pods", {
     x: 0.4, y: 4.52, w: 4.1, h: 0.3,
     fontSize: 10, color: COLORS.success, fontFace: FONTS.body,
   });
 
   // Right: Sidecar
-  slide.addText("🟡 Sidecar 模式（特殊場景）", {
+  slide.addText("🟡 Sidecar Pattern (Special Cases)", {
     x: 5.2, y: 0.65, w: 4.4, h: 0.3,
     fontSize: 12, bold: true, color: COLORS.warning, fontFace: FONTS.body,
   });
@@ -521,10 +522,10 @@ function slide112(pres) {
   addHArrow(slide, pres, { x: 6.85, y: 1.78, label: "shared\nvolume", color: COLORS.warning, w: 0.38 });
 
   const useCases = [
-    { text: "適合：需要每個 App 有自己的 Log 格式設定", fill: COLORS.bg2, border: COLORS.border, color: COLORS.text },
-    { text: "適合：寫到檔案的 legacy app（不改 code）", fill: COLORS.bg2, border: COLORS.border, color: COLORS.text },
-    { text: "⚠️ 缺點：每個 Pod 多一個 sidecar container（資源×2）", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
-    { text: "⚠️ 缺點：設定複雜，難統一管理", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
+    { text: "Use when: each app needs its own log format configuration", fill: COLORS.bg2, border: COLORS.border, color: COLORS.text },
+    { text: "Use when: legacy app writes to files (no code change)", fill: COLORS.bg2, border: COLORS.border, color: COLORS.text },
+    { text: "⚠️ Downside: extra sidecar container per Pod (2× resources)", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
+    { text: "⚠️ Downside: complex config, hard to manage uniformly", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
   ];
   useCases.forEach((uc, i) => {
     const y = 3.0 + i * 0.48;
@@ -541,18 +542,18 @@ function slide112(pres) {
 
   addTipBar(slide, pres, {
     y: 4.78,
-    text: "K8s 環境 99% 用 DaemonSet (Fluent Bit) — 除非你有 legacy app 無法改為 stdout 輸出",
+    text: "In K8s, 99% use DaemonSet (Fluent Bit) — unless you have a legacy app that cannot output to stdout",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 113 — ELK / EFK Stack 架構
+// Slide 113 — ELK / EFK Stack Architecture
 // ─────────────────────────────────────────────────────────────────────────────
 function slide113(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "ELK / EFK Stack：業界最廣泛的 Log 集中管理方案",
-    partLabel: "PART 8 LOGS  · 113 / 150",
+    title: "ELK / EFK Stack: The Industry's Most Widely Used Log Management Solution",
+    partLabel: "PART 8",
     accentColor: COLORS.accent,
   });
 
@@ -595,7 +596,7 @@ function slide113(pres) {
     x: 0.45, y: 3.66, w: 4.0, h: 0.28,
     fontSize: 11, bold: true, color: COLORS.container, fontFace: FONTS.body,
   });
-  slide.addText("Logstash → Fluentd（更輕量，CNCF 標準）", {
+  slide.addText("Logstash → Fluentd (lighter, CNCF standard)", {
     x: 0.45, y: 3.94, w: 4.0, h: 0.28,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -606,29 +607,29 @@ function slide113(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.success, width: 1.2 },
   });
-  slide.addText("🆕 Grafana Loki：輕量替代方案", {
+  slide.addText("🆕 Grafana Loki: Lightweight Alternative", {
     x: 5.0, y: 3.66, w: 4.5, h: 0.28,
     fontSize: 11, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
-  slide.addText("標籤式索引（不全文索引）→ 儲存成本降低 90%", {
+  slide.addText("Label-based indexing (no full-text indexing) → 90% storage cost reduction", {
     x: 5.0, y: 3.94, w: 4.5, h: 0.28,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
 
   addTipBar(slide, pres, {
     y: 4.45,
-    text: "ELK 強大但貴 (Elasticsearch 儲存成本高)；Loki 便宜但搜尋較弱 — 根據預算和查詢需求選擇",
+    text: "ELK is powerful but expensive (Elasticsearch storage costs are high); Loki is cheap but weaker at search — choose based on budget and query needs",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 114 — Fluentd / Fluent Bit 工作原理
+// Slide 114 — Fluentd / Fluent Bit
 // ─────────────────────────────────────────────────────────────────────────────
 function slide114(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Fluentd / Fluent Bit：Log 收集管線的瑞士刀",
-    partLabel: "PART 8 LOGS  · 114 / 150",
+    title: "Fluentd / Fluent Bit: The Swiss Army Knife of Log Pipelines",
+    partLabel: "PART 8",
     accentColor: COLORS.warning,
   });
 
@@ -644,7 +645,7 @@ function slide114(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.warning, width: 1.2 },
   });
-  slide.addText("⬇️ INPUT 插件", {
+  slide.addText("⬇️ INPUT Plugins", {
     x: 0.55, y: 1.0, w: 2.0, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.warning, fontFace: FONTS.body,
   });
@@ -669,7 +670,7 @@ function slide114(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.accent, width: 1.2 },
   });
-  slide.addText("🔧 FILTER 插件", {
+  slide.addText("🔧 FILTER Plugins", {
     x: 0.55, y: 2.14, w: 2.0, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
@@ -694,7 +695,7 @@ function slide114(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.success, width: 1.2 },
   });
-  slide.addText("⬆️ OUTPUT 插件", {
+  slide.addText("⬆️ OUTPUT Plugins", {
     x: 0.55, y: 3.26, w: 2.0, h: 0.3,
     fontSize: 11, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
@@ -723,15 +724,15 @@ function slide114(pres) {
     fill: { color: COLORS.bg3 },
     line: { color: COLORS.border, width: 0 },
   });
-  slide.addText("比較項目  |  Fluentd  |  Fluent Bit", {
+  slide.addText("Comparison  |  Fluentd  |  Fluent Bit", {
     x: 5.85, y: 0.75, w: 3.65, h: 0.3,
     fontSize: 9, bold: true, color: COLORS.text, fontFace: FONTS.body, valign: "middle",
   });
   const tableRows = [
-    "語言  |  Ruby  |  C/Rust (輕量)",
-    "記憶體  |  ~40MB  |  ~650KB(!)",
+    "Language  |  Ruby  |  C/Rust (lightweight)",
+    "Memory  |  ~40MB  |  ~650KB(!)",
     "Plugin  |  1000+  |  70+",
-    "適合  |  伺服器  |  K8s DaemonSet",
+    "Best for  |  Servers  |  K8s DaemonSet",
   ];
   tableRows.forEach((row, i) => {
     const y = 1.08 + i * 0.28;
@@ -754,18 +755,18 @@ function slide114(pres) {
 
   addTipBar(slide, pres, {
     y: 5.4,
-    text: "Fluent Bit 在 K8s 中幾乎是標準配置 — 只佔 650KB 記憶體，每個 Node 跑一個，自動收集所有 Container Log",
+    text: "Fluent Bit is nearly standard in K8s — uses only 650KB memory, one per Node, auto-collects all Container logs",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 115 — Grafana Loki：Label-based Log 管理
+// Slide 115 — Grafana Loki: Label-based Log Management
 // ─────────────────────────────────────────────────────────────────────────────
 function slide115(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Grafana Loki：像 Prometheus 一樣管理 Log",
-    partLabel: "PART 8 LOGS  · 115 / 150",
+    title: "Grafana Loki: Managing Logs Like Prometheus",
+    partLabel: "PART 8",
     accentColor: COLORS.success,
   });
 
@@ -778,31 +779,31 @@ function slide115(pres) {
 
   const compareRows = [
     {
-      label: "索引方式",
-      left: "Elasticsearch: 全文索引\n儲存成本高",
+      label: "Indexing",
+      left: "Elasticsearch: Full-text index\nHigh storage cost",
       leftFill: COLORS.cardWarn, leftBorder: COLORS.warning,
-      right: "Loki: 只索引 Labels\n儲存成本低 90%",
+      right: "Loki: Index labels only\n90% lower storage cost",
       rightFill: COLORS.cardSuccess, rightBorder: COLORS.success,
     },
     {
-      label: "搜尋能力",
-      left: "全文任意搜尋，非常強大",
+      label: "Search",
+      left: "Full-text arbitrary search, very powerful",
       leftFill: COLORS.bg2, leftBorder: COLORS.border,
-      right: "LogQL 查詢，需要有 label",
+      right: "LogQL queries, requires labels",
       rightFill: COLORS.bg2, rightBorder: COLORS.border,
     },
     {
-      label: "整合",
-      left: "Kibana (需另外安裝)",
+      label: "Integration",
+      left: "Kibana (separate installation)",
       leftFill: COLORS.bg2, leftBorder: COLORS.border,
-      right: "Grafana 原生支援（一站式）",
+      right: "Native Grafana support (all-in-one)",
       rightFill: COLORS.bg2, rightBorder: COLORS.border,
     },
     {
-      label: "成本",
-      left: "💰 昂貴（EC2 + Disk 開銷大）",
+      label: "Cost",
+      left: "💰 Expensive (high EC2 + Disk overhead)",
       leftFill: COLORS.cardDanger, leftBorder: COLORS.danger,
-      right: "💚 便宜（S3 儲存 log data）",
+      right: "💚 Affordable (S3 for log data storage)",
       rightFill: COLORS.cardSuccess, rightBorder: COLORS.success,
     },
   ];
@@ -839,11 +840,11 @@ function slide115(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.success, width: 1.2 },
   });
-  slide.addText("選 Loki：有 Grafana 生態、成本敏感、logs 主要按 service/namespace 查", {
+  slide.addText("Choose Loki: Grafana ecosystem, cost-sensitive, logs queried by service/namespace", {
     x: 0.45, y: 3.52, w: 4.1, h: 0.35,
     fontSize: 10, color: COLORS.success, fontFace: FONTS.body, valign: "middle",
   });
-  slide.addText("選 ES：需要複雜全文搜尋、已有 Elastic 投資", {
+  slide.addText("Choose ES: Need complex full-text search, existing Elastic investment", {
     x: 0.45, y: 3.86, w: 4.1, h: 0.3,
     fontSize: 9, color: COLORS.textMuted, fontFace: FONTS.body,
   });
@@ -852,7 +853,7 @@ function slide115(pres) {
   addCodeCard(slide, pres, {
     x: 5.15, y: 0.72, w: 4.55, h: 2.28,
     language: "LogQL Examples",
-    code: '# 1. 過濾特定 service 的 ERROR log\n{service="payment-svc", env="prod"}\n  |= "ERROR"\n\n# 2. 解析 JSON + 過濾欄位\n{service="api"}\n  | json\n  | status >= 500\n\n# 3. 計算每分鐘錯誤率\nsum(rate({service="api"} |= "ERROR" [1m]))\n  by (service)\n\n# 4. 用 trace_id 找關聯 log\n{namespace="prod"}\n  |= `trace_id="abc-123-xyz"`',
+    code: '# 1. Filter ERROR logs for a specific service\n{service="payment-svc", env="prod"}\n  |= "ERROR"\n\n# 2. Parse JSON + filter fields\n{service="api"}\n  | json\n  | status >= 500\n\n# 3. Calculate error rate per minute\nsum(rate({service="api"} |= "ERROR" [1m]))\n  by (service)\n\n# 4. Find correlated logs by trace_id\n{namespace="prod"}\n  |= `trace_id="abc-123-xyz"`',
   });
 
   addNodeCard(slide, pres, { x: 5.15, y: 3.12, w: 2.1, h: 1.2, emoji: "🔄", name: "Promtail\nAgent", meta: "push logs\n(DaemonSet)", borderColor: COLORS.warning });
@@ -861,18 +862,18 @@ function slide115(pres) {
 
   addTipBar(slide, pres, {
     y: 4.45,
-    text: "Loki 的理念：只索引 Label（service, env, pod），log 正文存 S3 — 省錢但犧牲全文搜尋彈性",
+    text: "Loki's philosophy: Index only labels (service, env, pod), store log body in S3 — saves money but sacrifices full-text search flexibility",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 116 — Log 取樣策略與成本控制
+// Slide 116 — Log Sampling Strategies
 // ─────────────────────────────────────────────────────────────────────────────
 function slide116(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Log 取樣策略：在完整性與成本之間取得平衡",
-    partLabel: "PART 8 LOGS  · 116 / 150",
+    title: "Log Sampling Strategies: Balancing Completeness and Cost",
+    partLabel: "PART 8",
     accentColor: COLORS.warning,
   });
 
@@ -882,25 +883,25 @@ function slide116(pres) {
     fill: { color: COLORS.cardWarn },
     line: { color: COLORS.warning, width: 1.5 },
   });
-  slide.addText("典型系統的 Log 量", {
+  slide.addText("Typical System Log Volume", {
     x: 0.3, y: 0.68, w: 4.4, h: 0.3,
     fontSize: 12, bold: true, color: COLORS.warning, fontFace: FONTS.body, align: "center",
   });
-  slide.addText("50 微服務 × 1000 req/s × avg 3 log lines × 500 bytes", {
+  slide.addText("50 microservices × 1000 req/s × avg 3 log lines × 500 bytes", {
     x: 0.3, y: 1.0, w: 4.4, h: 0.3,
     fontSize: 10, color: COLORS.textMuted, fontFace: FONTS.body, align: "center",
   });
-  slide.addText("= 75 MB/s = 6.5 TB/天 = 195 TB/月 💸", {
+  slide.addText("= 75 MB/s = 6.5 TB/day = 195 TB/month 💸", {
     x: 0.3, y: 1.3, w: 4.4, h: 0.55,
     fontSize: 12, bold: true, color: COLORS.danger, fontFace: FONTS.body, align: "center", valign: "middle",
   });
 
   // 4 sampling strategies
   const strategies = [
-    { title: "① 100% 記錄 Errors", desc: "所有 ERROR 都保留 — 不取樣，成本可接受", fill: COLORS.cardSuccess, border: COLORS.success },
-    { title: "② N% 取樣 Success", desc: "正常請求只記 10% — 統計上夠用，省 90% 成本", fill: COLORS.bg2, border: COLORS.accent },
-    { title: "③ Head-based 取樣", desc: "請求開始時決定：如果 trace 被取樣，所有 log 都保留", fill: COLORS.bg2, border: COLORS.accent },
-    { title: "④ Dynamic 取樣", desc: "新型 trace_id 全保留，重複 pattern 降取樣率", fill: COLORS.bg2, border: COLORS.infra },
+    { title: "① 100% Record Errors", desc: "Keep all ERRORs — no sampling, cost is acceptable", fill: COLORS.cardSuccess, border: COLORS.success },
+    { title: "② N% Sample Success", desc: "Normal requests keep only 10% — statistically sufficient, saves 90% cost", fill: COLORS.bg2, border: COLORS.accent },
+    { title: "③ Head-based Sampling", desc: "Decide at request start: if trace is sampled, keep all its logs", fill: COLORS.bg2, border: COLORS.accent },
+    { title: "④ Dynamic Sampling", desc: "New trace_ids keep all; repeated patterns reduce sample rate", fill: COLORS.bg2, border: COLORS.infra },
   ];
   strategies.forEach((s, i) => {
     const y = 2.05 + i * 0.65;
@@ -920,15 +921,15 @@ function slide116(pres) {
   });
 
   // Right: retention policy
-  slide.addText("Log 保留政策 (ILM)", {
+  slide.addText("Log Retention Policy (ILM)", {
     x: 5.2, y: 0.68, w: 4.4, h: 0.3,
     fontSize: 12, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
 
   const tiers = [
-    { title: "🔥 Hot (0-7天)", desc: "SSD 儲存、快速查詢 | 最近發生的問題 | 最貴", fill: COLORS.cardSuccess, border: COLORS.success, titleColor: COLORS.success },
-    { title: "⚡ Warm (7-30天)", desc: "HDD 儲存 | 本月事件 | 中等成本", fill: COLORS.cardWarn, border: COLORS.warning, titleColor: COLORS.warning },
-    { title: "❄️ Cold (30天以上)", desc: "S3/GCS 物件儲存 | 合規/審計用 | 極低成本", fill: COLORS.bg2, border: COLORS.textMuted, titleColor: COLORS.textMuted },
+    { title: "🔥 Hot (0-7 days)", desc: "SSD storage, fast queries | Recent incidents | Most expensive", fill: COLORS.cardSuccess, border: COLORS.success, titleColor: COLORS.success },
+    { title: "⚡ Warm (7-30 days)", desc: "HDD storage | This month's events | Medium cost", fill: COLORS.cardWarn, border: COLORS.warning, titleColor: COLORS.warning },
+    { title: "❄️ Cold (30+ days)", desc: "S3/GCS object storage | Compliance/audit | Very low cost", fill: COLORS.bg2, border: COLORS.textMuted, titleColor: COLORS.textMuted },
   ];
   tiers.forEach((t, i) => {
     const y = 1.05 + i * 0.72;
@@ -950,59 +951,59 @@ function slide116(pres) {
   addCodeCard(slide, pres, {
     x: 5.15, y: 3.25, w: 4.55, h: 1.72,
     language: "Fluent Bit sampling filter",
-    code: "[FILTER]\n  Name     grep\n  Match    *\n  # 只保留 ERROR 和 WARN\n  Regex    level ^(ERROR|WARN)$\n\n[FILTER]\n  Name     sampling\n  Match    *\n  # 每 10 條 INFO 保留 1 條\n  Rate     0.1\n  Condition  level INFO",
+    code: "[FILTER]\n  Name     grep\n  Match    *\n  # Keep only ERROR and WARN\n  Regex    level ^(ERROR|WARN)$\n\n[FILTER]\n  Name     sampling\n  Match    *\n  # Keep 1 out of every 10 INFO logs\n  Rate     0.1\n  Condition  level INFO",
   });
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "Log 成本控制三原則：ERROR 100% 保留、INFO 取樣 10%、DEBUG 不進 Production",
+    text: "Three principles for log cost control: ERROR 100% retained, INFO sampled at 10%, DEBUG never in Production",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 117 — Log 查詢與分析實戰
+// Slide 117 — Log Query in Practice
 // ─────────────────────────────────────────────────────────────────────────────
 function slide117(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Log 查詢實戰：從混亂到洞察只需幾個指令",
-    partLabel: "PART 8 LOGS  · 117 / 150",
+    title: "Log Query in Practice: From Chaos to Insight in a Few Commands",
+    partLabel: "PART 8",
     accentColor: COLORS.accent,
   });
 
   addCodeCard(slide, pres, {
     x: 0.3, y: 0.65, w: 9.4, h: 4.62,
     language: "Log Query Examples (Kibana KQL / Loki LogQL)",
-    code: '# ===== Kibana KQL =====\n\n# 1. 找特定服務最近 1 小時的 ERROR\nservice:"payment-svc" AND level:ERROR\n\n# 2. 找特定用戶的所有操作（審計）\nuser_id:"user-789" AND @timestamp:[now-24h TO now]\n\n# 3. 找高延遲請求 (>1000ms)\nservice:"api" AND duration_ms:>1000\n\n# 4. 找特定 trace 的所有相關 log\ntrace_id:"abc-123-xyz"\n\n\n# ===== Grafana LogQL (Loki) =====\n\n# 5. 統計每個服務的錯誤率 (per minute)\nsum by(service) (\n  rate({namespace="prod"} |= "ERROR" [1m])\n)\n\n# 6. 從 JSON log 提取欄位並過濾\n{service="order-svc"}\n  | json\n  | duration_ms > 500\n  | line_format "{{.user_id}} took {{.duration_ms}}ms"\n\n# 7. 找最慢的 API endpoints\ntopk(10,\n  sum by(path) (rate({service="api"}\n    | json | duration_ms > 0 [5m])\n  )\n)',
+    code: '# ===== Kibana KQL =====\n\n# 1. Find ERROR logs for a specific service in the last hour\nservice:"payment-svc" AND level:ERROR\n\n# 2. Find all actions by a specific user (audit)\nuser_id:"user-789" AND @timestamp:[now-24h TO now]\n\n# 3. Find high-latency requests (>1000ms)\nservice:"api" AND duration_ms:>1000\n\n# 4. Find all related logs for a specific trace\ntrace_id:"abc-123-xyz"\n\n\n# ===== Grafana LogQL (Loki) =====\n\n# 5. Calculate error rate per service (per minute)\nsum by(service) (\n  rate({namespace="prod"} |= "ERROR" [1m])\n)\n\n# 6. Extract fields from JSON logs and filter\n{service="order-svc"}\n  | json\n  | duration_ms > 500\n  | line_format "{{.user_id}} took {{.duration_ms}}ms"\n\n# 7. Find the slowest API endpoints\ntopk(10,\n  sum by(path) (rate({service="api"}\n    | json | duration_ms > 0 [5m])\n  )\n)',
   });
 
   addTipBar(slide, pres, {
     y: 5.38,
-    text: "在 Grafana 裡可以從 Metrics 告警直接跳到 Logs（Explore），再跳到 Traces — 這就是可觀測性的魔力",
+    text: "In Grafana you can jump from Metrics alerts directly to Logs (Explore), then to Traces — that is the power of observability",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 118 — Log-based 告警
+// Slide 118 — Log-based Alerting
 // ─────────────────────────────────────────────────────────────────────────────
 function slide118(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Log-based 告警：讓 Log 不只是被動紀錄",
-    partLabel: "PART 8 LOGS  · 118 / 150",
+    title: "Log-based Alerting: Making Logs More Than Passive Records",
+    partLabel: "PART 8",
     accentColor: COLORS.danger,
   });
 
   // Left: alert types
-  slide.addText("Log 告警三種模式", {
+  slide.addText("Three Log Alerting Modes", {
     x: 0.4, y: 0.68, w: 4.6, h: 0.3,
     fontSize: 12, bold: true, color: COLORS.accent, fontFace: FONTS.body,
   });
 
   const modes = [
-    { title: "🔴 關鍵字告警", desc: "Log 出現 CRITICAL / OOM / panic → 立即告警", border: COLORS.danger },
-    { title: "🟡 頻率告警 (Rate Alert)", desc: "1分鐘內 ERROR > 50 條 → 代表事情不對勁", border: COLORS.warning },
-    { title: "🔵 缺失告警 (Absence Alert)", desc: "健康檢查 log 5分鐘沒出現 → 服務可能掛了", border: COLORS.accent },
+    { title: "🔴 Keyword Alert", desc: "Log contains CRITICAL / OOM / panic → alert immediately", border: COLORS.danger },
+    { title: "🟡 Rate Alert", desc: "ERROR count > 50 in 1 minute → something is wrong", border: COLORS.warning },
+    { title: "🔵 Absence Alert", desc: "Health check log missing for 5 minutes → service may be down", border: COLORS.accent },
   ];
   modes.forEach((m, i) => {
     const y = 1.0 + i * 0.72;
@@ -1040,46 +1041,46 @@ function slide118(pres) {
     fill: { color: COLORS.bg2 },
     line: { color: COLORS.success, width: 1.2 },
   });
-  slide.addText("📊 從 Log 提取 Metrics", {
+  slide.addText("📊 Deriving Metrics from Logs", {
     x: 5.3, y: 3.26, w: 4.2, h: 0.32,
     fontSize: 11, bold: true, color: COLORS.success, fontFace: FONTS.body,
   });
-  slide.addText("Loki 可以從 Log 即時計算 Metrics\n不需要在 App 裡多加 Prometheus client\n→ 適合 Legacy App 快速補 Metrics", {
+  slide.addText("Loki can compute Metrics from Logs in real time\nNo need to add a Prometheus client in the App\n→ Great for quickly adding Metrics to Legacy Apps", {
     x: 5.3, y: 3.6, w: 4.2, h: 1.12,
     fontSize: 9.5, color: COLORS.textMuted, fontFace: FONTS.body,
   });
 
   addTipBar(slide, pres, {
     y: 4.98,
-    text: "Log 告警比 Metric 告警更 context-rich — 告警訊息可以直接附上 log 內容，On-Call 一眼看到問題",
+    text: "Log alerts are more context-rich than Metric alerts — alert messages can include log content, so on-call can see the problem at a glance",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 119 — Log 最佳實踐清單
+// Slide 119 — Log Engineering Best Practices
 // ─────────────────────────────────────────────────────────────────────────────
 function slide119(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Log 工程最佳實踐：讓 Log 真正有價值",
-    partLabel: "PART 8 LOGS  · 119 / 150",
+    title: "Log Engineering Best Practices: Making Logs Truly Valuable",
+    partLabel: "PART 8",
     accentColor: COLORS.success,
   });
 
   // Left: DOs
   addCompareHeading(slide, pres, {
     x: 0.3, y: 0.62, w: 4.4,
-    label: "✅ Log 的正確做法",
+    label: "✅ Logging Best Practices",
     type: "good",
   });
 
   const dos = [
-    { title: "✅ 統一輸出到 stdout", desc: "容器化環境的標準，K8s/Docker 自動處理" },
-    { title: "✅ 使用結構化 JSON 格式", desc: "機器可讀，Kibana/Loki 可自動解析欄位" },
-    { title: "✅ 每條 Log 帶 trace_id / correlation_id", desc: "串聯跨服務請求，一個 ID 追蹤所有相關 Log" },
-    { title: "✅ 包含必要 Context", desc: "user_id, service, version, env, duration_ms" },
-    { title: "✅ Error Log 帶完整 Stack Trace", desc: "不要只記 message，要記 exception chain" },
-    { title: "✅ 設定合理的 Log Level", desc: "Production: INFO+，DEBUG 只在需要時開" },
+    { title: "✅ Output to stdout uniformly", desc: "Standard for containerized environments, K8s/Docker auto-handles" },
+    { title: "✅ Use structured JSON format", desc: "Machine-readable, Kibana/Loki auto-parse fields" },
+    { title: "✅ Include trace_id / correlation_id in every log", desc: "Correlate cross-service requests, one ID to trace all related logs" },
+    { title: "✅ Include necessary context", desc: "user_id, service, version, env, duration_ms" },
+    { title: "✅ Error logs with full Stack Trace", desc: "Don't just log the message, include the exception chain" },
+    { title: "✅ Set appropriate Log Levels", desc: "Production: INFO+, enable DEBUG only when needed" },
   ];
   dos.forEach((d, i) => {
     const y = 1.08 + i * 0.52;
@@ -1101,17 +1102,17 @@ function slide119(pres) {
   // Right: DON'Ts
   addCompareHeading(slide, pres, {
     x: 5.1, y: 0.62, w: 4.4,
-    label: "❌ Log 的錯誤做法",
+    label: "❌ Logging Anti-Patterns",
     type: "bad",
   });
 
   const donts = [
-    { title: "❌ Log 敏感資料", desc: "密碼、信用卡號、個人資料 — GDPR 違規！", fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
-    { title: "❌ DEBUG Log 留在 Production", desc: "效能問題 + 儲存成本爆炸", fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
-    { title: "❌ catch(e) { logger.error('error') }", desc: "沒有 context，無法除錯", fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
-    { title: "❌ Log 但不看", desc: "收集了大量 Log 但沒有 Dashboard 或告警", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
-    { title: "❌ 每個 request 都 Log 全部欄位", desc: "無取樣策略 → 儲存成本 ×10", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
-    { title: "❌ 只記錯誤，不記成功", desc: "無法分析正常流量 pattern", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
+    { title: "❌ Log sensitive data", desc: "Passwords, credit card numbers, PII — GDPR violation!", fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
+    { title: "❌ DEBUG logs left in Production", desc: "Performance issues + storage cost explosion", fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
+    { title: "❌ catch(e) { logger.error('error') }", desc: "No context, impossible to debug", fill: COLORS.cardDanger, border: COLORS.danger, color: COLORS.danger },
+    { title: "❌ Log but never look", desc: "Collect massive logs but no Dashboard or alerts", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
+    { title: "❌ Log all fields for every request", desc: "No sampling strategy → 10× storage cost", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
+    { title: "❌ Only log errors, never successes", desc: "Cannot analyze normal traffic patterns", fill: COLORS.cardWarn, border: COLORS.warning, color: COLORS.warning },
   ];
   donts.forEach((d, i) => {
     const y = 1.08 + i * 0.52;
@@ -1132,18 +1133,18 @@ function slide119(pres) {
 
   addTipBar(slide, pres, {
     y: 5.08,
-    text: "最重要的 Log 原則：每一條 Log 都要有讀的人 — 寫了沒人看的 Log 是浪費，告警和 Dashboard 才是目的",
+    text: "The most important logging principle: every log should have a reader — logs nobody reads are waste; alerts and dashboards are the purpose",
   });
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Slide 120 — Logs 章節小結
+// Slide 120 — Logs Summary
 // ─────────────────────────────────────────────────────────────────────────────
 function slide120(pres) {
   const slide = initSlide(pres);
   addSlideHeader(slide, pres, {
-    title: "Logs 小結：從事件記錄到系統洞察",
-    partLabel: "PART 8 LOGS  · 120 / 150",
+    title: "Logs Summary: From Event Records to System Insight",
+    partLabel: "PART 8",
     accentColor: COLORS.warning,
   });
 
@@ -1162,18 +1163,18 @@ function slide120(pres) {
   const cards = [
     {
       x: 0.3, color: COLORS.warning,
-      title: "📋 結構化優先",
-      items: "JSON 格式\n機器可讀\ntrace_id 必帶\n包含足夠 context\n不含敏感資料",
+      title: "📋 Structured First",
+      items: "JSON format\nMachine-readable\ntrace_id required\nInclude enough context\nNo sensitive data",
     },
     {
       x: 3.45, color: COLORS.container,
-      title: "🔄 DaemonSet 收集",
-      items: "K8s 環境標準:\nFluent Bit DaemonSet\n自動收集 stdout\n自動加 k8s metadata\n送 Loki 或 ES",
+      title: "🔄 DaemonSet Collection",
+      items: "K8s standard:\nFluent Bit DaemonSet\nAuto-collect stdout\nAuto-add k8s metadata\nShip to Loki or ES",
     },
     {
       x: 6.6, color: COLORS.danger,
-      title: "💰 成本控制",
-      items: "ERROR → 100% 保留\nINFO → 10% 取樣\nDEBUG → 不進 Prod\nHot/Warm/Cold 分層\nLoki 比 ES 省 90%",
+      title: "💰 Cost Control",
+      items: "ERROR → 100% retained\nINFO → 10% sampled\nDEBUG → not in Prod\nHot/Warm/Cold tiers\nLoki 90% cheaper than ES",
     },
   ];
 
