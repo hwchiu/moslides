@@ -238,81 +238,63 @@ The `pres` object must be passed into helper functions for shape access.
 
 ---
 
-## 10. Working with .pptx Template Masters
+## 10. Template Master Support (Optional)
 
-When a `.pptx` template file is provided (e.g., from a school or company), follow this workflow:
+The system supports two modes — **with or without** a `.pptx` template:
 
-### Setup Workflow
+| Mode | When | What Happens |
+|------|------|-------------|
+| **No template** | `templates/` is empty | Uses built-in design-system colors, helpers draw all chrome (header, background, etc.) |
+| **With template** | `.pptx` file in `templates/` | Post-processes with python-pptx to apply master layouts; helpers skip elements the master provides |
 
-1. **Analyze the template** — Use python-pptx to extract master/layout info:
+### When No Template Exists (Default)
+
+Everything works as described in this guide — `design-system.js` defines colors, `helpers.js` draws headers/backgrounds/footers, slides are self-contained.
+
+### When a Template Is Provided
+
+#### One-Time Setup
+
+1. **Place template** in `templates/` (e.g., `templates/school.pptx`)
+
+2. **Analyze it** — extract layouts, colors, safe zones:
    ```python
    from pptx import Presentation
-   tmpl = Presentation("template.pptx")
+   tmpl = Presentation("templates/school.pptx")
    for layout in tmpl.slide_layouts:
        print(f"Layout: {layout.name}")
        for ph in layout.placeholders:
-           print(f"  Placeholder {ph.placeholder_format.idx}: {ph.name} ({ph.left}, {ph.top}, {ph.width}, {ph.height})")
+           print(f"  Placeholder {ph.placeholder_format.idx}: {ph.name}")
    ```
 
-2. **Update `design-system.js`** — Match the template's color palette, fonts, and spacing so generated content is visually consistent with the master.
+3. **Update `design-system.js`** — match the template's palette and fonts
 
-3. **Determine safe zones** — Identify the content area that doesn't overlap with master chrome (logo, footer, header strip). Document these as constants:
+4. **Define safe zones** — the content area that doesn't overlap master chrome:
    ```js
-   // Safe content area (inside master chrome)
    const SAFE = { x: 0.5, y: 0.8, w: 9.0, h: 4.2 };
    ```
 
-4. **Update `helpers.js`** — Adjust header, tip bar, and card positions to fit within the template's safe zones.
+5. **Adjust `helpers.js`** — skip elements the master already provides (background, logo, footer); fit content within safe zones
 
-### Generation Workflow
-
-Two-stage process:
+#### Build Flow
 
 ```
-Stage 1: pptxgenjs        Stage 2: python-pptx
-Generate content slides → Apply template masters & layouts
-(src/partN.js)            (src/apply-template.py)
+node src/partN.js                    → output/partN.pptx (content only)
+python3 src/apply-template.py        → output/partN.pptx (with master applied)
+node src/merge.js                    → output/final.pptx
 ```
 
-**Stage 1** — Generate slides as usual with pptxgenjs. Content placement respects the safe zones defined above. Skip any elements the master already provides (background, logo, footer, page numbers).
+The `apply-template.py` step is **skipped entirely** when no template exists.
 
-**Stage 2** — Post-process with python-pptx to apply the real master:
-```python
-from pptx import Presentation
-from pptx.util import Emu
-
-template = Presentation("template.pptx")
-content  = Presentation("output/partN.pptx")
-
-# Get the desired layout from template
-layout = template.slide_layouts[1]  # e.g., "Content" layout
-
-for slide in content.slides:
-    slide.slide_layout = layout  # Apply master layout
-
-content.save("output/partN_final.pptx")
-```
-
-### Template Checklist
+#### Template Checklist
 
 When receiving a new template:
-- [ ] Extract all layout names and placeholder positions
+- [ ] Extract layout names and placeholder positions
 - [ ] Map template colors → `design-system.js` tokens
 - [ ] Map template fonts → `FONTS` object
 - [ ] Measure safe zones (content area boundaries)
 - [ ] Identify which elements the master provides (skip in helpers)
 - [ ] Test with a single slide before full generation
-
-### File Organization
-
-```
-templates/
-  corporate.pptx       # The source template file
-  README.md            # Documents layout names, safe zones, color mapping
-src/
-  apply-template.py    # Post-processing script to apply master
-  design-system.js     # Updated to match template palette
-```
 
 ---
 
@@ -330,7 +312,7 @@ To start a new deck on any topic:
 3. Define `buildSlideN(pres)` functions for each slide
 4. Write `async function main()` that creates `new pptxgen()`, calls each builder, and saves
 5. Run `node src/myTopic.js` to generate
-6. If using a template, run `python3 src/apply-template.py` to apply masters
+6. If a template exists in `templates/`, run `python3 src/apply-template.py` to apply masters
 7. If merging multiple parts, add the file path to `merge.js`
 
 ### Commit Convention
