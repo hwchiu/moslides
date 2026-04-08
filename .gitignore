@@ -1,0 +1,7 @@
+node_modules/
+output/*.pptx
+output/*.pdf
+output/qa/
+templates/*.pptx
+*.pptx
+!src/**
